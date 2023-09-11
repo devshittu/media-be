@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -136,3 +137,9 @@ AUTHENTICATION_BACKENDS = (
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
+
+
+# Define constants using environment variables or provide default values
+POSTS_PER_PAGE = config('POSTS_PER_PAGE', default=10, cast=int)
+ANCESTORS_PER_PAGE = config('ANCESTORS_PER_PAGE', default=4, cast=int)
+DESCENDANTS_PER_PAGE = config('DESCENDANTS_PER_PAGE', default=5, cast=int)
