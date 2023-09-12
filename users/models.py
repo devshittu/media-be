@@ -102,5 +102,5 @@ class Setting(models.Model):
 def create_user_settings(sender, instance, created, **kwargs):
     if created:
         create_default_settings(instance)
-    
+
 # users/models.py
