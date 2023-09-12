@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     # App
     'authentication',
     'users',
+    'system_messaging',
+    'multimedia',
+    'analytics',
+    'stories',
 
     'rest_framework',
     'rest_framework.authtoken',  # Add this line
@@ -173,8 +177,6 @@ JWT_AUTH_COOKIE = 'jwt-auth'  # Name of the cookie
 JWT_AUTH_REFRESH_COOKIE = 'jwt-refresh-auth'  # Name of the refresh cookie
 
 
-
-
 # environment variables
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
@@ -182,3 +184,7 @@ AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
 GS_BUCKET_NAME = config('GS_BUCKET_NAME')
 GS_CREDENTIALS = config('GS_CREDENTIALS')
 GS_PROJECT_ID = config('GS_PROJECT_ID')
+
+TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN')
+TWILIO_PHONE_NUMBER = config('TWILIO_PHONE_NUMBER')
