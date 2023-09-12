@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # App
+    'authentication',
+    'users',
 
     'rest_framework',
     'rest_framework.authtoken',  # Add this line
@@ -136,6 +139,8 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+AUTH_USER_MODEL = 'authentication.CustomUser'
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
 
 
@@ -143,3 +148,37 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For developm
 POSTS_PER_PAGE = config('POSTS_PER_PAGE', default=10, cast=int)
 ANCESTORS_PER_PAGE = config('ANCESTORS_PER_PAGE', default=4, cast=int)
 DESCENDANTS_PER_PAGE = config('DESCENDANTS_PER_PAGE', default=5, cast=int)
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'dj_rest_auth.authentication.AllAuthJWTAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ),
+}
+
+
+# Use email for authentication instead of usernames
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+
+# Require email confirmation before allowing login
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+# For development, use the console backend to display sent emails
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+JWT_AUTH_COOKIE = 'jwt-auth'  # Name of the cookie
+JWT_AUTH_REFRESH_COOKIE = 'jwt-refresh-auth'  # Name of the refresh cookie
+
+
+
+
+# environment variables
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+GS_BUCKET_NAME = config('GS_BUCKET_NAME')
+GS_CREDENTIALS = config('GS_CREDENTIALS')
+GS_PROJECT_ID = config('GS_PROJECT_ID')
