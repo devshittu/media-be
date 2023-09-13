@@ -3,6 +3,25 @@ from django.contrib.auth import get_user_model
 from PIL import Image
 import imageio
 from pydub import AudioSegment
+from django.core.exceptions import ValidationError
+
+def validate_file_size(value):
+    """Validate the size of the uploaded file."""
+    filesize = value.size
+
+    if filesize > 10485760:  # 10MB
+        raise ValidationError("The maximum file size that can be uploaded is 10MB")
+    else:
+        return value
+
+def validate_file_extension(value):
+    """Validate the file extension of the uploaded file."""
+    import os
+    ext = os.path.splitext(value.name)[1]
+    valid_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mp3']
+    if not ext.lower() in valid_extensions:
+        raise ValidationError('Unsupported file extension.')
+
 
 MEDIA_CHOICES = [
     ('video', 'Video'),
@@ -15,7 +34,7 @@ class Multimedia(models.Model):
     """
     Multimedia model to store media associated with posts.
     """
-    file = models.FileField(upload_to='media_files/')
+    file = models.FileField(upload_to='media_files/', validators=[validate_file_size, validate_file_extension])
     thumbnail = models.ImageField(upload_to='thumbnails/', null=True, blank=True)
     media_type = models.CharField(max_length=10, choices=MEDIA_CHOICES)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
