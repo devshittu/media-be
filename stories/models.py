@@ -4,11 +4,7 @@ from django.utils.text import slugify
 import time
 from django.utils import timezone
 from autoslug import AutoSlugField
-
-class ActiveManager(models.Manager):
-    def active(self):
-        return self.filter(deleted_at__isnull=True)
-
+from utils.managers import ActiveManager
 
 class Category(models.Model):
     title = models.CharField(max_length=100)
@@ -16,16 +12,12 @@ class Category(models.Model):
     # slug = models.SlugField(unique=True)
     slug = AutoSlugField(populate_from='title', unique=True, always_update=True)
     
-    created_at = models.BigIntegerField(default=lambda: int(time.time()))
-    updated_at = models.BigIntegerField(default=lambda: int(time.time()))
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
 
     objects = ActiveManager()
-
-    def save(self, *args, **kwargs):
-        self.updated_at = int(time.time())
-        super().save(*args, **kwargs)
 
     def delete(self, using=None, keep_parents=False):
         self.deleted_at = timezone.now()
@@ -48,20 +40,16 @@ class Story(models.Model):
     parent_story = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='child_stories', db_index=True)
     likes = models.PositiveIntegerField(default=0)
     dislikes = models.PositiveIntegerField(default=0)
-    # slug = models.SlugField(unique=True, blank=True)
-    created_at = models.BigIntegerField(default=lambda: int(time.time()), db_index=True)
-    updated_at = models.BigIntegerField(default=lambda: int(time.time()))
-    event_occurred_at = models.BigIntegerField(default=lambda: int(time.time()), db_index=True, help_text="Date and time when the event/incident occurred.")
-    event_reported_at = models.BigIntegerField(default=lambda: int(time.time()), db_index=True, auto_now_add=True, help_text="Date and time when the event/incident was reported to the system.")
     source_link = models.URLField(blank=True, null=True, help_text="URL where the full story can be read.")
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    event_occurred_at = models.DateTimeField(db_index=True, help_text="Date and time when the event/incident occurred.")
+    event_reported_at = models.DateTimeField(db_index=True, auto_now_add=True, help_text="Date and time when the event/incident was reported to the system.")
     deleted_at = models.DateTimeField(null=True, blank=True)
 
    
     objects = ActiveManager()
 
-    def save(self, *args, **kwargs):
-        self.updated_at = int(time.time())
-        super().save(*args, **kwargs)
 
     def delete(self, using=None, keep_parents=False):
         self.deleted_at = timezone.now()
@@ -114,54 +102,27 @@ class Story(models.Model):
 
 
 
-class Media(models.Model):
-    """Model representing media associated with a story."""
-    MEDIA_CHOICES = [
-        ('video', 'Video'),
-        ('audio', 'Audio Note'),
-        ('gif', 'GIF'),
-        ('photo', 'Photo'),
-    ]
+# class UserInterest(models.Model):
+#     """Model representing a user's interest in a story."""
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     story = models.ForeignKey(Story, on_delete=models.CASCADE)
+#     is_interested = models.BooleanField()
+#     deleted_at = models.DateTimeField(null=True, blank=True)
 
-    story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='media')
-    media_type = models.CharField(max_length=10, choices=MEDIA_CHOICES)
-    media_file = models.FileField(upload_to='media/')
-    deleted_at = models.DateTimeField(null=True, blank=True)
+#     objects = ActiveManager()
 
-    objects = ActiveManager()
+#     class Meta:
+#         unique_together = ['user', 'story']
 
-    def __str__(self):
-        return f"{self.media_type} for {self.story.title}"
+#     def __str__(self):
+#         return f"{self.user.username} - {'Interested' if self.is_interested else 'Not Interested'} in {self.story.title}"
 
-    def delete(self, using=None, keep_parents=False):
-        self.deleted_at = timezone.now()
-        self.save()
-    
-    def restore(self):
-        self.deleted_at = None
-        self.save()
+#     def delete(self, using=None, keep_parents=False):
+#         self.deleted_at = timezone.now()
+#         self.save()
 
-class UserInterest(models.Model):
-    """Model representing a user's interest in a story."""
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    story = models.ForeignKey(Story, on_delete=models.CASCADE)
-    is_interested = models.BooleanField()
-    deleted_at = models.DateTimeField(null=True, blank=True)
-
-    objects = ActiveManager()
-
-    class Meta:
-        unique_together = ['user', 'story']
-
-    def __str__(self):
-        return f"{self.user.username} - {'Interested' if self.is_interested else 'Not Interested'} in {self.story.title}"
-
-    def delete(self, using=None, keep_parents=False):
-        self.deleted_at = timezone.now()
-        self.save()
-
-    def restore(self):
-        self.deleted_at = None
-        self.save()
+#     def restore(self):
+#         self.deleted_at = None
+#         self.save()
 
 # stories/models.py
