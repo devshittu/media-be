@@ -2,7 +2,7 @@ from rest_framework.pagination import PageNumberPagination, CursorPagination
 from rest_framework.response import Response
 from core.settings import ANCESTORS_PER_PAGE, DESCENDANTS_PER_PAGE
 
-
+# TODO can we make this more generic?
 # class CenteredPagination(PageNumberPagination):
 #     page_size = 10
 
