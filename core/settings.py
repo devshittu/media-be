@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from utils.constants import DEFAULT_PAGE_SIZE
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -91,8 +94,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'mediabedb'),  # Default value is 'mediabedb'
+        'USER': os.environ.get('POSTGRES_USER', 'mediabeuser'),  # Default value is 'mediabeuser'
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'mediabepassword'),  # Default value is 'mediabepassword'
+        'HOST': 'db',  # This should match the service name for Postgres in your docker-compose file
+        'PORT': '5432',  # Default port for PostgreSQL
     }
 }
 
@@ -158,6 +165,12 @@ REST_FRAMEWORK = {
         'dj_rest_auth.authentication.AllAuthJWTAuthentication',
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ),
+
+    'DEFAULT_PAGINATION_CLASS': 'utils.pagination.CustomPageNumberPagination',
+    'PAGE_SIZE': DEFAULT_PAGE_SIZE,  # Adjust this number based on how many records you want per page
+    'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.OrderingFilter'],
+    'EXCEPTION_HANDLER': 'utils.handlers.custom_exception_handler',
+    
 }
 
 
