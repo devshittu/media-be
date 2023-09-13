@@ -4,6 +4,7 @@ from PIL import Image
 import imageio
 from pydub import AudioSegment
 from django.core.exceptions import ValidationError
+from utils.models import SoftDeletableModel
 
 def validate_file_size(value):
     """Validate the size of the uploaded file."""
@@ -30,7 +31,7 @@ MEDIA_CHOICES = [
     ('photo', 'Photo'),
 ]
 
-class Multimedia(models.Model):
+class Multimedia(SoftDeletableModel):
     """
     Multimedia model to store media associated with posts.
     """
