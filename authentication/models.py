@@ -1,8 +1,37 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils import timezone
 from django.dispatch import receiver
+from django.contrib.postgres.fields import ArrayField
 from django.db.models.signals import post_save
+
+
+# Custom user manager for email-based authentication
+class CustomUserManager(BaseUserManager):
+    """
+    Custom manager for User model with email as the unique identifier
+    for authentication instead of usernames.
+    """
+    def create_user(self, email, password=None, **extra_fields):
+        """
+        Create and return a User with an email and password.
+        """
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        """
+        Create and return a superuser with an email and password.
+        """
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self.create_user(email, password, **extra_fields)
 
 class CustomUser(AbstractUser):
     """
@@ -20,16 +49,40 @@ class CustomUser(AbstractUser):
     # 'last_login' is already provided by AbstractUser.
     
     # For roles, we can use a ManyToMany relationship with a Role model.
-    roles = models.ManyToManyField('Role', related_name='users')
+    ROLE_CHOICES = [
+        ('reader', 'Reader'),
+        ('writer', 'Writer'),
+        ('editor', 'Editor'),
+        ('reviewer', 'Reviewer'),
+        ('publisher', 'Publisher'),
+    ]
+    roles = ArrayField(
+        models.CharField(max_length=10, choices=ROLE_CHOICES),
+        default=list,
+        blank=True
+    )
+    # roles = models.ManyToManyField('Role', related_name='users')
     
+    username = models.CharField(max_length=30, unique=True)
     avatar_url = models.URLField(blank=True, null=True)  # URL for the user's avatar.
     display_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     bio = models.TextField(max_length=500, blank=True)
     phone_number = models.CharField(max_length=15, blank=True)
     last_activity = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     has_completed_setup = models.BooleanField(default=False, null=True, blank=True)
    
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+
+    def __str__(self):
+        return self.email
+    
     def update_last_activity(self):
         """
         Update the last activity timestamp for the user.
@@ -64,3 +117,4 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
         # Handle tasks when a user's details are updated.
         pass
 
+# authentication/models.py
