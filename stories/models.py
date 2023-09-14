@@ -1,36 +1,23 @@
 from django.db import models
+from django.urls import reverse
 from django.conf import settings
-from django.utils.text import slugify
-import time
-from django.utils import timezone
 from autoslug import AutoSlugField
-from utils.managers import ActiveManager
+from utils.managers import SoftDeleteManager, ActiveUnflaggedManager
+from feedback.managers import ReportManager
+from utils.models import SoftDeletableModel, TimestampedModel, FlaggedContentMixin
 
-class Category(models.Model):
+class Category(SoftDeletableModel, TimestampedModel):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    # slug = models.SlugField(unique=True)
     slug = AutoSlugField(populate_from='title', unique=True, always_update=True)
     
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True, blank=True)
+    objects = SoftDeleteManager()
 
-
-    objects = ActiveManager()
-
-    def delete(self, using=None, keep_parents=False):
-        self.deleted_at = timezone.now()
-        self.save()
-
-    def restore(self):
-        self.deleted_at = None
-        self.save()
 
     def __str__(self):
         return self.title
 
-class Story(models.Model):
+class Story(FlaggedContentMixin, SoftDeletableModel, TimestampedModel):
     """Model representing a user's story."""
     title = models.CharField(max_length=70)
     slug = AutoSlugField(populate_from='title', unique=True, always_update=True, db_index=True)
@@ -38,37 +25,35 @@ class Story(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='stories')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     parent_story = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='child_stories', db_index=True)
-    likes = models.PositiveIntegerField(default=0)
-    dislikes = models.PositiveIntegerField(default=0)
     source_link = models.URLField(blank=True, null=True, help_text="URL where the full story can be read.")
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
-    updated_at = models.DateTimeField(auto_now=True)
     event_occurred_at = models.DateTimeField(db_index=True, help_text="Date and time when the event/incident occurred.")
     event_reported_at = models.DateTimeField(db_index=True, auto_now_add=True, help_text="Date and time when the event/incident was reported to the system.")
-    deleted_at = models.DateTimeField(null=True, blank=True)
 
-   
-    objects = ActiveManager()
+    objects = models.Manager()  # Default manager
+    active_objects = SoftDeleteManager()  # For filtering soft-deleted items
+    report_objects = ReportManager()  # For filtering flagged items
+    # active_unflagged_objects = StoryManager()  # For filtering both soft-deleted and flagged items
 
+    active_unflagged_objects = ActiveUnflaggedManager()
 
-    def delete(self, using=None, keep_parents=False):
-        self.deleted_at = timezone.now()
-        self.save()
+    @property
+    def likes_count(self):
+        return self.likes_set.count()
 
-    def restore(self):
-        self.deleted_at = None
-        self.save()
-
+    @property
+    def dislikes_count(self):
+        return self.dislikes_set.count()
+    
     def __str__(self):
         return self.title
     
     # def get_all_parents(self):
     #     """Recursively retrieve all parent posts."""
     #     parents = []
-    #     current = self.parent_post
+    #     current = self.parent_story
     #     while current:
     #         parents.insert(0, current)
-    #         current = current.parent_post
+    #         current = current.parent_story
     #     return parents
 
     # def get_all_children(self):
@@ -98,31 +83,58 @@ class Story(models.Model):
             children.extend(child.child_stories.all())
             i += 1
         return children
+    
+    def get_absolute_url(self):
+        return reverse('story-retrieve-update-destroy', kwargs={'story_slug': self.slug})
 
 
+class Like(SoftDeletableModel, TimestampedModel):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='likes_set')
+    
+    class Meta:
+        unique_together = ['user', 'story']
 
+class Dislike(SoftDeletableModel, TimestampedModel):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='dislikes_set')
+    created_at = models.DateTimeField(auto_now_add=True)
 
-# class UserInterest(models.Model):
-#     """Model representing a user's interest in a story."""
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-#     story = models.ForeignKey(Story, on_delete=models.CASCADE)
-#     is_interested = models.BooleanField()
-#     deleted_at = models.DateTimeField(null=True, blank=True)
+    class Meta:
+        unique_together = ['user', 'story']
 
-#     objects = ActiveManager()
+class Bookmark(SoftDeletableModel, TimestampedModel):
+    BOOKMARK_CATEGORIES = [
+        ('Read Later', 'Read Later'),
+        ('Favorites', 'Favorites'),
+        ('Save', 'Save')
+    ]
 
-#     class Meta:
-#         unique_together = ['user', 'story']
+    story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='bookmarks')
+    bookmark_category = models.CharField(max_length=50, choices=BOOKMARK_CATEGORIES, default='Read Later')
+    note = models.TextField(null=True, blank=True)
 
-#     def __str__(self):
-#         return f"{self.user.username} - {'Interested' if self.is_interested else 'Not Interested'} in {self.story.title}"
+    @property
+    def title(self):
+        return self.story.title
 
-#     def delete(self, using=None, keep_parents=False):
-#         self.deleted_at = timezone.now()
-#         self.save()
+    @property
+    def url(self):
+        # Assuming you have a get_absolute_url method in the Story model
+        return self.story.get_absolute_url()
 
-#     def restore(self):
-#         self.deleted_at = None
-#         self.save()
+    @property
+    def thumbnail_url(self):
+        # Assuming the multimedia model has a method to get the thumbnail URL
+        multimedia = self.story.multimedia.first()
+        return multimedia.thumbnail.url if multimedia else None
+
+    @property
+    def story_published_at(self):
+        return self.story.created_at
+
+    def __str__(self):
+        return f"Bookmark of story: {self.story.title}"
+
 
 # stories/models.py
