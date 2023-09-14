@@ -38,3 +38,31 @@ class SoftDeletableModel(models.Model):
     @classmethod
     def deleted_objects(cls):
         return cls.objects.exclude(deleted_at__isnull=True)
+
+
+class TimestampedModel(models.Model):
+    """
+    An abstract base class model that provides self-updating
+    `created_at` and `updated_at` fields.
+    """
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class FlaggedContentMixin(models.Model):
+    is_flagged = models.BooleanField(default=False, help_text="Indicates whether the content has been flagged due to crossing the report threshold.")
+
+    class Meta:
+        abstract = True
+
+    def check_and_update_flag_status(self):
+        from feedback.models import Report  # Avoid circular imports
+        THRESHOLD = 5
+        related_reports = Report.objects.filter(content_type=models.ContentType.objects.get_for_model(self), object_id=self.id)
+        
+        if related_reports.count() >= THRESHOLD:
+            self.is_flagged = True
+            self.save()
