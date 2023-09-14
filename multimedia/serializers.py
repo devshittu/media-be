@@ -10,3 +10,5 @@ class MultimediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Multimedia
         fields = '__all__'
+
+# multimedia/serializers.py
