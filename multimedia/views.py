@@ -4,6 +4,7 @@ from .models import Multimedia
 from .serializers import MultimediaSerializer
 from rest_framework.exceptions import ValidationError
 from utils import permissions
+from utils.mixins import SoftDeleteMixin
 
 class MultimediaListCreateView(generics.ListCreateAPIView):
     """
@@ -26,7 +27,7 @@ class MultimediaListCreateView(generics.ListCreateAPIView):
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-class MultimediaRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class MultimediaRetrieveUpdateDestroyView(SoftDeleteMixin, generics.RetrieveUpdateDestroyAPIView):
     """
     API view to retrieve, update, or delete a multimedia.
     """
@@ -37,3 +38,14 @@ class MultimediaRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView)
     def handle_exception(self, exc):
         """Handle exceptions and return custom error response."""
         return Response({"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        hard_delete = request.query_params.get('hard', 'false').lower() == 'true'
+        instance = self.get_object()
+        
+        if hard_delete:
+            instance.hard_delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        return super().destroy(request, *args, **kwargs)
+# multimedia/views.py
