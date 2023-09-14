@@ -33,13 +33,13 @@ MEDIA_CHOICES = [
 
 class Multimedia(SoftDeletableModel, TimestampedModel):
     """
-    Multimedia model to store media associated with posts.
+    Multimedia model to store media associated with stories.
     """
     file = models.FileField(upload_to='media_files/', validators=[validate_file_size, validate_file_extension])
     thumbnail = models.ImageField(upload_to='thumbnails/', null=True, blank=True)
     media_type = models.CharField(max_length=10, choices=MEDIA_CHOICES)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    post = models.ForeignKey('posts.Post', related_name='multimedia', on_delete=models.CASCADE)
+    story = models.ForeignKey('stories.Story', related_name='multimedia', on_delete=models.CASCADE)
 
     def optimize_multimedia(self):
         """Optimize the multimedia file."""
@@ -86,6 +86,8 @@ class Multimedia(SoftDeletableModel, TimestampedModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.media_type} by {self.user.email} for post {self.post.id}"
+        return f"{self.media_type} by {self.user.email} for story {self.story.id}"
+
+
 
 # multimedia/models.py
