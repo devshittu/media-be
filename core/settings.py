@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-f8fzco37jytbzpl&kv6f(^fn^r*o4luzlttw7k@zfat)7#-q_0', cast=str)
+SECRET_KEY = config('DJANGO_SECRET_KEY', default='django-insecure-f8fzco37jytbzpl&kv6f(^fn^r*o4luzlttw7k@zfat)7#-q_0', cast=str)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -41,6 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+
+    'rest_framework',
+    'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    
     # App
     'authentication',
     'users',
@@ -49,12 +58,6 @@ INSTALLED_APPS = [
     'analytics',
     'stories',
 
-    'rest_framework',
-    'rest_framework.authtoken',  # Add this line
-    'dj_rest_auth',
-    'allauth',
-    'allauth.account',
-    'dj_rest_auth.registration',
 ]
 
 MIDDLEWARE = [
@@ -161,10 +164,10 @@ ANCESTORS_PER_PAGE = config('ANCESTORS_PER_PAGE', default=4, cast=int)
 DESCENDANTS_PER_PAGE = config('DESCENDANTS_PER_PAGE', default=5, cast=int)
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'dj_rest_auth.authentication.AllAuthJWTAuthentication',
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-    ),
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'dj_rest_auth.authentication.AllAuthJWTAuthentication',
+    #     'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    # ),
 
     'DEFAULT_PAGINATION_CLASS': 'utils.pagination.CustomPageNumberPagination',
     'PAGE_SIZE': DEFAULT_PAGE_SIZE,  # Adjust this number based on how many records you want per page

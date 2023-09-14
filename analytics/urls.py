@@ -23,3 +23,5 @@ urlpatterns = [
     path('accessibility-tools/', views.AccessibilityToolListCreateView.as_view(), name='accessibilitytool-list'),
     path('accessibility-tools/<int:pk>/', views.AccessibilityToolDetailView.as_view(), name='accessibilitytool-detail'),
 ]
+
+# analytics/urls.py

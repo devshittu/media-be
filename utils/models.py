@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from .managers import ActiveManager
+from .managers import SoftDeleteManager
 
 class SoftDeletableModel(models.Model):
     """
@@ -9,7 +9,7 @@ class SoftDeletableModel(models.Model):
     """
     deleted_at = models.DateTimeField(null=True, blank=True)
     
-    objects = ActiveManager()
+    objects = SoftDeleteManager()
 
     class Meta:
         abstract = True
