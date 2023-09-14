@@ -5,6 +5,7 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from authentication.models import CustomUser
+from utils.mixins import SoftDeleteMixin
 
 class CurrentUserView(APIView):
     """
@@ -27,7 +28,7 @@ class UserListCreateView(generics.ListCreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
-class UserRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class UserRetrieveUpdateDestroyView(SoftDeleteMixin, generics.RetrieveUpdateDestroyAPIView):
     """
     API view to retrieve, update, or delete a user.
     """
