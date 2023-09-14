@@ -4,7 +4,7 @@ from PIL import Image
 import imageio
 from pydub import AudioSegment
 from django.core.exceptions import ValidationError
-from utils.models import SoftDeletableModel
+from utils.models import SoftDeletableModel, TimestampedModel
 
 def validate_file_size(value):
     """Validate the size of the uploaded file."""
@@ -31,7 +31,7 @@ MEDIA_CHOICES = [
     ('photo', 'Photo'),
 ]
 
-class Multimedia(SoftDeletableModel):
+class Multimedia(SoftDeletableModel, TimestampedModel):
     """
     Multimedia model to store media associated with posts.
     """
@@ -40,8 +40,6 @@ class Multimedia(SoftDeletableModel):
     media_type = models.CharField(max_length=10, choices=MEDIA_CHOICES)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     post = models.ForeignKey('posts.Post', related_name='multimedia', on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def optimize_multimedia(self):
         """Optimize the multimedia file."""
@@ -89,3 +87,5 @@ class Multimedia(SoftDeletableModel):
 
     def __str__(self):
         return f"{self.media_type} by {self.user.email} for post {self.post.id}"
+
+# multimedia/models.py
