@@ -1,8 +1,9 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.postgres.fields import JSONField  # Assuming you're using PostgreSQL
+from utils.models import SoftDeletableModel, TimestampedModel
 
-class DeviceData(models.Model):
+class DeviceData(SoftDeletableModel, TimestampedModel):
     """
     Model to track device and technical data.
     """
@@ -16,7 +17,7 @@ class DeviceData(models.Model):
     def __str__(self):
         return f"Device data for interaction: {self.interaction.id}"
 
-class LocationData(models.Model):
+class LocationData(SoftDeletableModel, TimestampedModel):
     """
     Model to track user location data.
     """
@@ -28,7 +29,7 @@ class LocationData(models.Model):
     def __str__(self):
         return f"Location data for interaction: {self.interaction.id}"
 
-class ReferralData(models.Model):
+class ReferralData(SoftDeletableModel, TimestampedModel):
     """
     Model to track referral data.
     """
@@ -39,7 +40,7 @@ class ReferralData(models.Model):
     def __str__(self):
         return f"Referral data for interaction: {self.interaction.id}"
 
-class UserSession(models.Model):
+class UserSession(SoftDeletableModel, TimestampedModel):
     """
     Model to represent a user's session.
     """
@@ -52,7 +53,7 @@ class UserSession(models.Model):
     def __str__(self):
         return f"Session {self.session_id} for {self.user}"
 
-class StoryInteraction(models.Model):
+class StoryInteraction(SoftDeletableModel, TimestampedModel):
     """
     Generic model to track various interactions with stories.
     """
@@ -69,7 +70,6 @@ class StoryInteraction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='story_interactions')
     story = models.ForeignKey('stories.Story', on_delete=models.CASCADE, related_name='interactions')
     interaction_type = models.CharField(max_length=50, choices=INTERACTION_CHOICES)
-    timestamp = models.DateTimeField(auto_now_add=True)
     metadata = JSONField(blank=True, null=True)  # Additional data for the interaction
     session = models.ForeignKey(UserSession, on_delete=models.CASCADE, related_name='interactions')
     #     scroll_depth = models.PositiveIntegerField(null=True)  # Represented as a percentage
@@ -84,25 +84,24 @@ class StoryInteraction(models.Model):
     def __str__(self):
         return f"{self.user} {self.interaction_type} {self.story} on {self.timestamp}"
 
-class UserNotInterested(models.Model):
+class UserNotInterested(SoftDeletableModel, TimestampedModel):
     """
     Model to track stories users are not interested in.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='uninterested_stories')
     story = models.ForeignKey('stories.Story', on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
     reason = models.TextField(blank=True, null=True)  # Optional field if you want to capture why they're not interested
 
     class Meta:
         verbose_name = 'User Not Interested'
         verbose_name_plural = 'Users Not Interested'
-        ordering = ['-timestamp']
+        ordering = ['-created_at']
 
     def __str__(self):
         return f"{self.user} not interested in {self.story} on {self.timestamp}"
 
 
-class AccessibilityTool(models.Model):
+class AccessibilityTool(SoftDeletableModel, TimestampedModel):
     """
     Model to track accessibility tools used.
     """
@@ -114,7 +113,6 @@ class AccessibilityTool(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='accessibility_tools')
     tool_name = models.CharField(max_length=100, choices=TOOL_CHOICES)
-    timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'Accessibility Tool'
