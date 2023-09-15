@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from decouple import config
 from utils.constants import DEFAULT_PAGE_SIZE
+from datetime import timedelta
 import os
 
 
@@ -42,13 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-
     'rest_framework',
     'rest_framework.authtoken',
-    'allauth',
-    'allauth.account',
-    'dj_rest_auth',
-    'dj_rest_auth.registration',
+    # 'rest_auth'
+
+    # 'django.contrib.sites',
+    # 'allauth',
+    # 'allauth.account',
+    # 'rest_auth.registration',
+    'rest_framework_simplejwt',
     
     # App
     'authentication',
@@ -68,7 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware', 
+    # 'allauth.account.middleware.AccountMiddleware', 
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -169,6 +172,10 @@ REST_FRAMEWORK = {
     #     'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     # ),
 
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication',
+    ),
     'DEFAULT_PAGINATION_CLASS': 'utils.pagination.CustomPageNumberPagination',
     'PAGE_SIZE': DEFAULT_PAGE_SIZE,  # Adjust this number based on how many records you want per page
     'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.OrderingFilter'],
@@ -189,9 +196,13 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # For development, use the console backend to display sent emails
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-JWT_AUTH_COOKIE = 'jwt-auth'  # Name of the cookie
-JWT_AUTH_REFRESH_COOKIE = 'jwt-refresh-auth'  # Name of the refresh cookie
+# JWT_AUTH_COOKIE = 'jwt-auth'  # Name of the cookie
+# JWT_AUTH_REFRESH_COOKIE = 'jwt-refresh-auth'  # Name of the refresh cookie
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+}
 
 # environment variables
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
