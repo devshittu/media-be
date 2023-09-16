@@ -33,3 +33,21 @@ docker kill $(docker ps -aq) && docker rm $(docker ps -aq)
 # Free space
 docker system prune -af --volumes
 ```
+## Resetting commands
+
+```shell
+docker kill $(docker ps -aq) && docker rm $(docker ps -aq)
+
+docker system prune -af --volumes 
+
+docker network create my_network
+
+docker compose -f docker-compose.dev.yml up --build
+```
+
+## Django commands
+
+```shell
+python manage.py showmigrations
+
+```
