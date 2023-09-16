@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from django.contrib.postgres.fields import JSONField  # Assuming you're using PostgreSQL
+from django.db.models import JSONField
 from utils.models import SoftDeletableModel, TimestampedModel
 
 class DeviceData(SoftDeletableModel, TimestampedModel):
@@ -79,7 +79,6 @@ class StoryInteraction(SoftDeletableModel, TimestampedModel):
     class Meta:
         verbose_name = 'Story Interaction'
         verbose_name_plural = 'Story Interactions'
-        ordering = ['-timestamp']
 
     def __str__(self):
         return f"{self.user} {self.interaction_type} {self.story} on {self.timestamp}"
