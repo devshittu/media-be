@@ -49,5 +49,17 @@ docker compose -f docker-compose.dev.yml up --build
 
 ```shell
 python manage.py showmigrations
+python manage.py migrate
+python manage.py makemigrations
 
+```
+
+
+## Installing
+
+```shell
+docker compose -f docker-compose.dev.yml exec web python manage.py createsuperuser
+# Email: test@test.co
+# Password: test@test.co
+# Bypass password validation and create user anyway? [y/N]: y: 
 ```
