@@ -4,6 +4,8 @@ from django.utils import timezone
 from django.dispatch import receiver
 from django.contrib.postgres.fields import ArrayField
 from django.db.models.signals import post_save
+from utils.models import SoftDeletableModel, TimestampedModel, FlaggedContentMixin
+
 
 
 # Custom user manager for email-based authentication
@@ -33,7 +35,7 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
-class CustomUser(AbstractUser):
+class CustomUser(AbstractUser, SoftDeletableModel, TimestampedModel):
     """
     Custom user model that matches the provided data structure.
     """
@@ -41,10 +43,6 @@ class CustomUser(AbstractUser):
     # The 'username' and 'email' fields are already provided by AbstractUser.
     
     name = models.CharField(max_length=255)  # New field for the full name of the user.
-    
-    # 'created_at' and 'updated_at' can be handled by Django's built-in timestamp fields.
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     
     # 'last_login' is already provided by AbstractUser.
     
@@ -91,18 +89,8 @@ class CustomUser(AbstractUser):
         self.last_activity = timezone.now()
         self.save()
 
-
-
-
-class Role(models.Model):
-    """
-    Model to represent user roles.
-    """
-    name = models.CharField(max_length=255, unique=True)
-
-    def __str__(self):
-        return self.name
-
+    class Meta:
+        verbose_name_plural = "Users"
 
 
 @receiver(post_save, sender=CustomUser)

@@ -14,6 +14,10 @@ class DeviceData(SoftDeletableModel, TimestampedModel):
     screen_resolution = models.CharField(max_length=50)
     connection_type = models.CharField(max_length=50)
 
+    class Meta:
+        verbose_name = 'Device Data'
+        verbose_name_plural = 'Device Data'
+
     def __str__(self):
         return f"Device data for interaction: {self.interaction.id}"
 
@@ -26,6 +30,10 @@ class LocationData(SoftDeletableModel, TimestampedModel):
     geolocation = models.CharField(max_length=255)  # This could be further normalized if needed
     time_zone = models.CharField(max_length=50)
 
+    class Meta:
+        verbose_name = 'Location Data'
+        verbose_name_plural = 'Locations Data'
+
     def __str__(self):
         return f"Location data for interaction: {self.interaction.id}"
 
@@ -36,6 +44,10 @@ class ReferralData(SoftDeletableModel, TimestampedModel):
     interaction = models.OneToOneField('StoryInteraction', on_delete=models.CASCADE, related_name='referral_data')
     referrer_url = models.URLField()
     search_terms = models.TextField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Deferral Data'
+        verbose_name_plural = 'Deferrals Data'
 
     def __str__(self):
         return f"Referral data for interaction: {self.interaction.id}"
@@ -49,6 +61,10 @@ class UserSession(SoftDeletableModel, TimestampedModel):
     device_data = models.OneToOneField(DeviceData, on_delete=models.CASCADE, related_name='session')
     location_data = models.OneToOneField(LocationData, on_delete=models.CASCADE, related_name='session')
     start_timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'User Session'
+        verbose_name_plural = 'User Sessions'
 
     def __str__(self):
         return f"Session {self.session_id} for {self.user}"
@@ -78,7 +94,7 @@ class StoryInteraction(SoftDeletableModel, TimestampedModel):
 
     class Meta:
         verbose_name = 'Story Interaction'
-        verbose_name_plural = 'Story Interactions'
+        verbose_name_plural = 'Stories Interactions'
 
     def __str__(self):
         return f"{self.user} {self.interaction_type} {self.story} on {self.timestamp}"

@@ -16,6 +16,11 @@ class Category(SoftDeletableModel, TimestampedModel):
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+
 
 class Story(FlaggedContentMixin, SoftDeletableModel, TimestampedModel):
     """Model representing a user's story."""
@@ -24,10 +29,10 @@ class Story(FlaggedContentMixin, SoftDeletableModel, TimestampedModel):
     body = models.TextField(max_length=500)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='stories')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
-    parent_story = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='child_stories', db_index=True)
+    parent_story = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True, related_name='child_stories', db_index=True)
     source_link = models.URLField(blank=True, null=True, help_text="URL where the full story can be read.")
-    event_occurred_at = models.DateTimeField(db_index=True, help_text="Date and time when the event/incident occurred.")
-    event_reported_at = models.DateTimeField(db_index=True, auto_now_add=True, help_text="Date and time when the event/incident was reported to the system.")
+    event_occurred_at = models.DateTimeField(blank=True, null=True, db_index=True, help_text="Date and time when the event/incident occurred.")
+    event_reported_at = models.DateTimeField(blank=True, null=True, db_index=True, auto_now_add=True, help_text="Date and time when the event/incident was reported to the system.")
 
     objects = models.Manager()  # Default manager
     active_objects = SoftDeleteManager()  # For filtering soft-deleted items
@@ -46,6 +51,9 @@ class Story(FlaggedContentMixin, SoftDeletableModel, TimestampedModel):
     
     def __str__(self):
         return self.title
+    
+    class Meta:
+        verbose_name_plural = "Stories"
     
     # def get_all_parents(self):
     #     """Recursively retrieve all parent posts."""
@@ -101,6 +109,7 @@ class Dislike(SoftDeletableModel, TimestampedModel):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        verbose_name_plural = "Dislikes"
         unique_together = ['user', 'story']
 
 class Bookmark(SoftDeletableModel, TimestampedModel):
@@ -132,6 +141,10 @@ class Bookmark(SoftDeletableModel, TimestampedModel):
     @property
     def story_published_at(self):
         return self.story.created_at
+    class Meta:
+        # db_table = ''
+        verbose_name = 'Bookmark'
+        verbose_name_plural = 'Bookmarks'
 
     def __str__(self):
         return f"Bookmark of story: {self.story.title}"

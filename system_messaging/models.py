@@ -17,6 +17,9 @@ class MessageTemplate(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     variables = models.TextField(help_text="Comma separated list of expected variables")
 
+    class Meta:
+        verbose_name = "Message Template"
+        verbose_name_plural = "Message Templates"
     
     def replace_placeholders(self, context):
         """Render email body and subject using Jinja2 from database content with sandboxing."""
