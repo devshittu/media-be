@@ -1,4 +1,5 @@
-FROM python:3.10.4-slim-bullseye
+# FROM python:3.10.4-slim-bullseye
+FROM --platform=linux/amd64 python:3.10.4-slim-bullseye
 
 # Install system dependencies including ffmpeg
 RUN apt-get update && apt-get install -y ffmpeg && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -15,7 +16,7 @@ WORKDIR /code
 # Install dependencies
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
-RUN pip install gunicorn
+# RUN pip install gunicorn
 
 
 # Copy project
