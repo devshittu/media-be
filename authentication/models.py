@@ -63,6 +63,7 @@ class CustomUser(AbstractUser):
     )
     # roles = models.ManyToManyField('Role', related_name='users')
     
+    email = models.CharField(max_length=50, unique=True)
     username = models.CharField(max_length=30, unique=True)
     avatar_url = models.URLField(blank=True, null=True)  # URL for the user's avatar.
     display_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
