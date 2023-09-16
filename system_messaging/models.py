@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from jinja2.sandbox import SandboxedEnvironment
 
 
@@ -13,7 +14,7 @@ class MessageTemplate(models.Model):
     description = models.TextField(blank=True)
     subject = models.TextField(blank=True, null=True)  # SMS might not need a subject
     body = models.TextField()
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     variables = models.TextField(help_text="Comma separated list of expected variables")
 
     
