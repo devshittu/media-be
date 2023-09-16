@@ -2,16 +2,17 @@ from .models import MessageTemplate
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import MessageTemplate
-from twilio.rest import Client
+# from twilio.rest import Client
 
 def send_sms(recipient, message):
     """Send an SMS via Twilio."""
-    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-    client.messages.create(
-        to=recipient,
-        from_=settings.TWILIO_PHONE_NUMBER,
-        body=message
-    )
+    # client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+    # client.messages.create(
+    #     to=recipient,
+    #     from_=settings.TWILIO_PHONE_NUMBER,
+    #     body=message
+    # )
+    pass
 
 def send_message(template_code, context, recipient):
     try:
