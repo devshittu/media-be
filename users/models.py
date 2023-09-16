@@ -1,6 +1,6 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-from django.contrib.postgres.fields import JSONField
+from django.conf import settings
+from django.db.models import JSONField
 import time
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -28,7 +28,7 @@ def create_default_settings(user):
     return UserSetting.objects.create(user=user, **default_settings)
 
 class UserSetting(models.Model):
-    user = models.OneToOneField('User', on_delete=models.CASCADE, related_name='settings')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='settings')
     system_settings = JSONField()
     account_settings = JSONField()
     notification_settings = JSONField()
