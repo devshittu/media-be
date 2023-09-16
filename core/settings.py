@@ -52,6 +52,10 @@ INSTALLED_APPS = [
     # 'allauth.account',
     # 'rest_auth.registration',
     'rest_framework_simplejwt',
+
+    'ckeditor',
+    # 'ckeditor_uploader',  # If you want image uploading
+    
     
     # App
     'authentication',
@@ -152,9 +156,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-AUTHENTICATION_BACKENDS = (
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'allauth.account.auth_backends.AuthenticationBackend',
+# )
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
 
@@ -215,3 +219,14 @@ GS_PROJECT_ID = config('GS_PROJECT_ID')
 TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN')
 TWILIO_PHONE_NUMBER = config('TWILIO_PHONE_NUMBER')
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 800,
+    },
+}
+
+# If you're using ckeditor_uploader
+CKEDITOR_UPLOAD_PATH = 'uploads/'
