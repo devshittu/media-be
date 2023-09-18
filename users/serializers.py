@@ -1,15 +1,6 @@
 from rest_framework import serializers
 from .models import Follow
-from authentication.serializers import UserSerializer
-from authentication.models import CustomUser
-
-class UserSerializer(serializers.ModelSerializer):
-    """
-    Serializer for the User model.
-    """
-    class Meta:
-        model = CustomUser
-        fields = ('id', 'email', 'username', 'name', 'date_joined', 'preferred_categories', 'language', 'theme')
+from authentication.serializers import CustomUserSerializer
 
 class NotificationSettingsDataSerializer(serializers.Serializer):
     account = serializers.IntegerField()
@@ -48,8 +39,8 @@ class UserSettingSerializer(serializers.Serializer):
         return None
 
 class FollowSerializer(serializers.ModelSerializer):
-    follower = UserSerializer(read_only=True)
-    followed = UserSerializer(read_only=True)
+    follower = CustomUserSerializer(read_only=True)
+    followed = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = Follow
