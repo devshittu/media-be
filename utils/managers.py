@@ -11,3 +11,5 @@ class SoftDeleteManager(models.Manager):
 class ActiveUnflaggedManager(models.Manager):
     def active_and_unflagged(self):
         return self.filter(deleted_at__isnull=True, is_flagged=False)
+
+# utils/managers.py
