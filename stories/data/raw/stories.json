@@ -1,0 +1,4426 @@
+ [
+  {
+    "id": "1",
+    "title": "President Buhari Announces Infrastructure Project",
+    "body": "President Muhammadu Buhari announces a major infrastructure project to upgrade roads and transport across Nigeria, aiming to boost the economy and improve travel for citizens.",
+    "slug": "president-buhari-announces-infrastructure-project",
+    "category_id": "1",
+    "updated_at": 1691268703,
+    "parent_stories": [],
+    "children_stories": [
+      "2"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1609500000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1691268703
+  },
+  {
+    "id": "2",
+    "title": "Infrastructure Project Begins, Excites Local Communities",
+    "body": "Work commences on the infrastructure project announced by President Buhari. Local communities express excitement and high hopes for the improvements.",
+    "slug": "infrastructure-project-begins-excites-local-communities",
+    "category_id": "1",
+    "updated_at": 1691362303,
+    "parent_stories": [
+      "1"
+    ],
+    "children_stories": [
+      "3"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1609500000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1691362303
+  },
+  {
+    "id": "3",
+    "title": "Buhari Visits Infrastructure Project, Commends Progress",
+    "body": "President Buhari visits the ongoing infrastructure project and commends the rapid progress being made. He reiterates the government's commitment to national development.",
+    "slug": "buhari-visits-infrastructure-project-commends-progress",
+    "category_id": "1",
+    "updated_at": 1691423503,
+    "parent_stories": [
+      "2"
+    ],
+    "children_stories": [
+      "4"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1609500000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1691423503
+  },
+  {
+    "id": "4",
+    "title": "Infrastructure Project: Impact and Expectations",
+    "body": "A review of the impact of the infrastructure project led by President Buhari. Experts weigh in on expectations and potential benefits for the Nigerian economy.",
+    "slug": "infrastructure-project-impact-expectations",
+    "category_id": "1",
+    "updated_at": 1609718400,
+    "parent_stories": [
+      "3"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1609500000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1609718400
+  },
+  {
+    "id": "5",
+    "title": "Start of the Dry Season: Preparations and Challenges",
+    "body": "As the dry season sets in, local farmers discuss their preparations and the challenges they anticipate in the coming months.",
+    "slug": "start-dry-season-preparations-challenges",
+    "category_id": "1",
+    "updated_at": 1609804800,
+    "parent_stories": [],
+    "children_stories": [
+      "6"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1609500000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1609804800
+  },
+  {
+    "id": "6",
+    "title": "Farmers Innovate to Beat Dry Season Challenges",
+    "body": "Nigerian farmers are innovating to beat the challenges presented by the dry season. Find out how they are adapting and thriving in this special report.",
+    "slug": "farmers-innovate-beat-dry-season-challenges",
+    "category_id": "1",
+    "updated_at": 1609891200,
+    "parent_stories": [
+      "5"
+    ],
+    "children_stories": [
+      "7"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1609500000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1609891200
+  },
+  {
+    "id": "7",
+    "title": "Government Supports Farmers With Dry Season Subsidies",
+    "body": "The government announces subsidies to help farmers manage the challenges of the dry season, including support for innovative farming methods.",
+    "slug": "government-supports-farmers-dry-season-subsidies",
+    "category_id": "1",
+    "updated_at": 1609977600,
+    "parent_stories": [
+      "6"
+    ],
+    "children_stories": [
+      "8"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1609500000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1609977600
+  },
+  {
+    "id": "8",
+    "title": "Dry Season Farming: A Closer Look at Government Subsidies",
+    "body": "We take a closer look at the government's dry season subsidies. How will they impact farmers? And what does it mean for the future of farming in Nigeria?",
+    "slug": "dry-season-farming-closer-look-government-subsidies",
+    "category_id": "1",
+    "updated_at": 1610064000,
+    "parent_stories": [
+      "7"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1609500000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1610064000
+  },
+  {
+    "id": "10",
+    "title": "Nollywood Celebrates New Record-Breaking Film",
+    "body": "Nollywood is celebrating as a new film breaks box office records across the country. The film, 'The Rising Sun', has surpassed expectations and drawn international attention.",
+    "slug": "nollywood-celebrates-new-record-breaking-film",
+    "category_id": "2",
+    "updated_at": 1610146800,
+    "parent_stories": [],
+    "children_stories": [
+      "11"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1610146800
+  },
+  {
+    "id": "11",
+    "title": "'The Rising Sun': Behind the Scenes of the Record-Breaking Film",
+    "body": "A behind the scenes look at 'The Rising Sun', the record-breaking film that has taken Nollywood by storm. We speak with the director and cast about the making of the film.",
+    "slug": "rising-sun-behind-scenes-record-breaking-film",
+    "category_id": "2",
+    "updated_at": 1610233200,
+    "parent_stories": [
+      "10"
+    ],
+    "children_stories": [
+      "12"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1610233200
+  },
+  {
+    "id": "12",
+    "title": "Impact of 'The Rising Sun' on Nollywood",
+    "body": "An analysis of the impact of 'The Rising Sun' on the Nigerian film industry. Experts discuss how the film's success could change Nollywood for the better.",
+    "slug": "impact-rising-sun-nollywood",
+    "category_id": "2",
+    "updated_at": 1610319600,
+    "parent_stories": [
+      "11"
+    ],
+    "children_stories": [
+      "13"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1610319600
+  },
+  {
+    "id": "13",
+    "title": "'The Rising Sun' to be Screened at International Film Festivals",
+    "body": "The record-breaking Nollywood film, 'The Rising Sun', is set to be screened at several international film festivals, further establishing its global appeal.",
+    "slug": "rising-sun-screened-international-film-festivals",
+    "category_id": "2",
+    "updated_at": 1610406000,
+    "parent_stories": [
+      "12"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1610406000
+  },
+  {
+    "id": "14",
+    "title": "Nigeria Celebrates Independence Day",
+    "body": "Nigeria marks another year of independence with a grand ceremony attended by leaders and citizens alike. The day was filled with patriotic spirit and a recommitment to unity and progress.",
+    "slug": "nigeria-celebrates-independence-day",
+    "category_id": "2",
+    "updated_at": 1610492400,
+    "parent_stories": [],
+    "children_stories": [
+      "15"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1610492400
+  },
+  {
+    "id": "15",
+    "title": "A Look Back: Nigeria's Journey Since Independence",
+    "body": "A detailed look at Nigeria's journey since independence. We explore the achievements, challenges, and hopes for the future as the nation celebrates another year of freedom.",
+    "slug": "look-back-nigerias-journey-since-independence",
+    "category_id": "2",
+    "updated_at": 1610578800,
+    "parent_stories": [
+      "14"
+    ],
+    "children_stories": [
+      "16"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1610578800
+  },
+  {
+    "id": "16",
+    "title": "Independence Day: Nigerians Reflect on the Nation's Progress",
+    "body": "On Independence Day, Nigerians across the country share their thoughts on the nation's progress since independence and their hopes for the future.",
+    "slug": "independence-day-nigerians-reflect-nations-progress",
+    "category_id": "2",
+    "updated_at": 1610665200,
+    "parent_stories": [
+      "15"
+    ],
+    "children_stories": [
+      "17"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1610665200
+  },
+  {
+    "id": "17",
+    "title": "The Future of Nigeria: Independence Day Predictions",
+    "body": "Experts weigh in on the future of Nigeria as the nation celebrates another year of independence. Their predictions cover various aspects, from the economy to societal issues.",
+    "slug": "future-nigeria-independence-day-predictions",
+    "category_id": "2",
+    "updated_at": 1610751600,
+    "parent_stories": [
+      "16"
+    ],
+    "children_stories": [
+      "18"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1610751600
+  },
+  {
+    "id": "18",
+    "title": "Independence Day: A Celebration of Unity and Diversity",
+    "body": "As Nigeria celebrates Independence Day, we take a moment to celebrate the unity in diversity that defines this great nation. From culture to cuisine, Nigeria is a blend of many tribes and tongues, all working towards a common goal.",
+    "slug": "independence-day-celebration-unity-diversity",
+    "category_id": "2",
+    "updated_at": 1610838000,
+    "parent_stories": [
+      "17"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1610838000
+  },
+  {
+    "id": "29",
+    "title": "Nigeria Launches First Satellite into Space",
+    "body": "Nigeria made history today as it successfully launched its first satellite into space. The satellite, named NaijaSat-1, was launched from the international space station and is expected to revolutionize Nigeria's technology sector.",
+    "slug": "nigeria-launches-first-satellite-into-space",
+    "category_id": "4",
+    "updated_at": 1611615600,
+    "parent_stories": [],
+    "children_stories": [
+      "30"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1611615600
+  },
+  {
+    "id": "30",
+    "title": "How NaijaSat-1 Will Transform Nigeria's Tech Sector",
+    "body": "The launch of NaijaSat-1 is a game-changer for Nigeria's technology sector. The satellite will provide essential data for mapping, climate prediction, and communication technologies, paving the way for unprecedented innovation.",
+    "slug": "how-naijasat-1-will-transform-nigeria-tech-sector",
+    "category_id": "4",
+    "updated_at": 1611702000,
+    "parent_stories": [
+      "29"
+    ],
+    "children_stories": [
+      "31"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1611702000
+  },
+  {
+    "id": "31",
+    "title": "The Team Behind NaijaSat-1: A Closer Look",
+    "body": "The success of NaijaSat-1 can be attributed to a dedicated team of Nigerian engineers and scientists. Today, we take a closer look at the team's journey, from conception to the successful launch of NaijaSat-1.",
+    "slug": "the-team-behind-naijasat-1-closer-look",
+    "category_id": "4",
+    "updated_at": 1611788400,
+    "parent_stories": [
+      "30"
+    ],
+    "children_stories": [
+      "32"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1611788400
+  },
+  {
+    "id": "32",
+    "title": "NaijaSat-1 Sends First Images Back to Earth",
+    "body": "In an exciting development, NaijaSat-1 has sent its first images back to earth. The images, which were received early this morning, show a clear view of Nigeria from space.",
+    "slug": "naijasat-1-sends-first-images-back-earth",
+    "category_id": "4",
+    "updated_at": 1611874800,
+    "parent_stories": [
+      "31"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1611874800
+  },
+  {
+    "id": "33",
+    "title": "Lagos to Host First-Ever Tech Startup Summit",
+    "body": "Lagos is set to host its first-ever tech startup summit next month. The summit will bring together tech entrepreneurs, investors, and industry leaders to discuss the future of technology in Nigeria.",
+    "slug": "lagos-host-first-ever-tech-startup-summit",
+    "category_id": "4",
+    "updated_at": 1611961200,
+    "parent_stories": [],
+    "children_stories": [
+      "34"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1611961200
+  },
+  {
+    "id": "34",
+    "title": "What to Expect at the Lagos Tech Startup Summit",
+    "body": "With the Lagos Tech Startup Summit fast approaching, we delve into what participants can expect. From insightful panel discussions to networking opportunities, this event promises to be a pivotal moment for Nigeria's tech ecosystem.",
+    "slug": "what-expect-lagos-tech-startup-summit",
+    "category_id": "4",
+    "updated_at": 1612047600,
+    "parent_stories": [
+      "33"
+    ],
+    "children_stories": [
+      "35"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1612047600
+  },
+  {
+    "id": "35",
+    "title": "Lagos Tech Startup Summit: A Recap",
+    "body": "The Lagos Tech Startup Summit proved to be a successful event, with startups securing significant investments and industry leaders sharing invaluable insights. Here's a recap of the notable moments from the summit.",
+    "slug": "lagos-tech-startup-summit-recap",
+    "category_id": "4",
+    "updated_at": 1612134000,
+    "parent_stories": [
+      "34"
+    ],
+    "children_stories": [
+      "36"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1612134000
+  },
+  {
+    "id": "36",
+    "title": "Startup Summit Spurs Innovation in Lagos",
+    "body": "Following the Lagos Tech Startup Summit, the city has seen a surge in innovative startups. The summit not only facilitated funding for these startups, but it also created a supportive network for entrepreneurs to thrive.",
+    "slug": "startup-summit-spurs-innovation-lagos",
+    "category_id": "4",
+    "updated_at": 1612220400,
+    "parent_stories": [
+      "35"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1612220400
+  },
+  {
+    "id": "37",
+    "title": "Green Energy Initiatives Gaining Traction in Nigeria",
+    "body": "In an effort to reduce the country's carbon footprint, Nigeria has recently launched several green energy initiatives. These include solar panel installations and waste-to-energy projects.",
+    "slug": "green-energy-initiatives-gaining-traction-nigeria",
+    "category_id": "5",
+    "updated_at": 1612306800,
+    "parent_stories": [],
+    "children_stories": [
+      "38"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1612306800
+  },
+  {
+    "id": "38",
+    "title": "How Solar Energy is Lighting Up Rural Nigeria",
+    "body": "Many rural communities in Nigeria are benefiting from the government's new solar energy initiative. These solar panel installations are providing a much-needed solution to the persistent issue of power cuts.",
+    "slug": "how-solar-energy-lighting-up-rural-nigeria",
+    "category_id": "5",
+    "updated_at": 1612393200,
+    "parent_stories": [
+      "37"
+    ],
+    "children_stories": [
+      "39"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1612393200
+  },
+  {
+    "id": "39",
+    "title": "A Brighter Future: The Impact of Solar Energy on Education in Nigeria",
+    "body": "With schools in rural areas now powered by solar energy, students have more hours to study, and computer literacy is on the rise. This transformation shows the potential of renewable energy to improve education in Nigeria.",
+    "slug": "brighter-future-impact-solar-energy-education-nigeria",
+    "category_id": "5",
+    "updated_at": 1612479600,
+    "parent_stories": [
+      "38"
+    ],
+    "children_stories": [
+      "40"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1612479600
+  },
+  {
+    "id": "40",
+    "title": "The Environmental Benefits of Nigeria's Switch to Solar Energy",
+    "body": "The shift to solar energy in Nigeria is not only improving lives but also protecting the environment. By reducing the reliance on fossil fuels, the country is making significant strides towards reducing its carbon emissions.",
+    "slug": "environmental-benefits-nigeria-switch-solar-energy",
+    "category_id": "5",
+    "updated_at": 1612566000,
+    "parent_stories": [
+      "39"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1612566000
+  },
+  {
+    "id": "41",
+    "title": "Nigeria's New Waste-to-Energy Plant to Power Homes",
+    "body": "Nigeria's first waste-to-energy plant is set to start operations, converting the city's waste into electricity. This will not only solve the waste management issue but also provide a new energy source for homes.",
+    "slug": "nigeria-new-waste-energy-plant-power-homes",
+    "category_id": "5",
+    "updated_at": 1612652400,
+    "parent_stories": [],
+    "children_stories": [
+      "42"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1612652400
+  },
+  {
+    "id": "42",
+    "title": "From Waste to Power: The Journey of Nigeria's First Waste-to-Energy Plant",
+    "body": "With the imminent launch of the waste-to-energy plant, we take a look at the journey so far. From the conception of the idea to its implementation, it's been a journey filled with challenges and victories.",
+    "slug": "waste-power-journey-nigeria-first-waste-energy-plant",
+    "category_id": "5",
+    "updated_at": 1612738800,
+    "parent_stories": [
+      "41"
+    ],
+    "children_stories": [
+      "43"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1612738800
+  },
+  {
+    "id": "43",
+    "title": "A Step Towards Sustainability: The Impact of the Waste-to-Energy Plant on Nigeria's Economy",
+    "body": "The waste-to-energy plant is expected to provide numerous economic benefits. Besides creating jobs, the plant will also reduce expenditure on waste management and increase the supply of electricity, thereby spurring economic growth.",
+    "slug": "step-towards-sustainability-impact-waste-energy-plant-nigeria-economy",
+    "category_id": "5",
+    "updated_at": 1612825200,
+    "parent_stories": [
+      "42"
+    ],
+    "children_stories": [
+      "44"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1612825200
+  },
+  {
+    "id": "44",
+    "title": "The Future of Waste Management in Nigeria: A Look at the Potential of Waste-to-Energy",
+    "body": "With the successful launch of the waste-to-energy plant, we examine the potential of this technology in transforming waste management in Nigeria. Can this be the solution to the country's waste and energy problems?",
+    "slug": "future-waste-management-nigeria-look-potential-waste-energy",
+    "category_id": "5",
+    "updated_at": 1612911600,
+    "parent_stories": [
+      "43"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1612911600
+  },
+  {
+    "id": "45",
+    "title": "Unveiling the New Roadmap for Nigeria's Digital Economy",
+    "body": "The Nigerian government has unveiled a new strategy to bolster the country's digital economy. The plan includes initiatives to promote digital literacy, infrastructure development, and investment in tech startups.",
+    "slug": "unveiling-new-roadmap-nigeria-digital-economy",
+    "category_id": "6",
+    "updated_at": 1612998000,
+    "parent_stories": [],
+    "children_stories": [
+      "46"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1612998000
+  },
+  {
+    "id": "46",
+    "title": "The Role of Digital Literacy in Nigeria's Digital Economy",
+    "body": "Digital literacy plays a pivotal role in the development of a robust digital economy. As Nigeria unveils its new digital economy strategy, we look at how improving digital literacy can empower individuals and spur economic growth.",
+    "slug": "role-digital-literacy-nigeria-digital-economy",
+    "category_id": "6",
+    "updated_at": 1613084400,
+    "parent_stories": [
+      "45"
+    ],
+    "children_stories": [
+      "47"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1613084400
+  },
+  {
+    "id": "47",
+    "title": "Investing in the Future: The State of Tech Startups in Nigeria",
+    "body": "With the new digital economy roadmap, Nigeria is poised to become a hub for tech startups. We explore the current state of tech startups in the country and how the new plan will influence their growth.",
+    "slug": "investing-future-state-tech-startups-nigeria",
+    "category_id": "6",
+    "updated_at": 1613170800,
+    "parent_stories": [
+      "46"
+    ],
+    "children_stories": [
+      "48"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1613170800
+  },
+  {
+    "id": "48",
+    "title": "A Connected Nation: The Impact of Infrastructure Development on Nigeria's Digital Economy",
+    "body": "As part of its new digital economy plan, Nigeria is ramping up its infrastructure development efforts. This will not only improve connectivity but also create a conducive environment for the growth of tech startups.",
+    "slug": "connected-nation-impact-infrastructure-development-nigeria-digital-economy",
+    "category_id": "6",
+    "updated_at": 1613257200,
+    "parent_stories": [
+      "47"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1613257200
+  },
+  {
+    "id": "49",
+    "title": "The Digital Skills Gap in Nigeria: Challenges and Solutions",
+    "body": "Despite the growth of the digital economy, a significant digital skills gap exists in Nigeria. In this report, we examine the challenges in bridging this gap and propose potential solutions.",
+    "slug": "digital-skills-gap-nigeria-challenges-solutions",
+    "category_id": "6",
+    "updated_at": 1613343600,
+    "parent_stories": [],
+    "children_stories": [
+      "50"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1613343600
+  },
+  {
+    "id": "50",
+    "title": "Digital Inclusion: The Pathway to a Robust Digital Economy in Nigeria",
+    "body": "Digital inclusion is crucial for the success of the digital economy. This article explores how Nigeria can promote digital inclusion and ensure that everyone benefits from the digital revolution.",
+    "slug": "digital-inclusion-pathway-robust-digital-economy-nigeria",
+    "category_id": "6",
+    "updated_at": 1613430000,
+    "parent_stories": [
+      "49"
+    ],
+    "children_stories": [
+      "51"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1613430000
+  },
+  {
+    "id": "51",
+    "title": "Harnessing the Power of Digital Technologies for Education in Nigeria",
+    "body": "As Nigeria aims to become a leading digital economy, the role of digital technologies in education cannot be overstated. This article explores how these technologies can transform education and empower the next generation of digital leaders.",
+    "slug": "harnessing-power-digital-technologies-education-nigeria",
+    "category_id": "6",
+    "updated_at": 1613516400,
+    "parent_stories": [
+      "50"
+    ],
+    "children_stories": [
+      "52"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1613516400
+  },
+  {
+    "id": "52",
+    "title": "The Future is Digital: Preparing Nigeria for a Digital Economy",
+    "body": "With a burgeoning youth population and a new digital economy roadmap, Nigeria is poised to reap the benefits of the digital revolution. But how ready is the country for this transition? This article explores Nigeria's readiness for a digital economy.",
+    "slug": "future-digital-preparing-nigeria-digital-economy",
+    "category_id": "6",
+    "updated_at": 1613602800,
+    "parent_stories": [
+      "51"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1613602800
+  },
+  {
+    "id": "53",
+    "title": "Breaking Ground: The Start of Lagos-Badagry Expressway Reconstruction",
+    "body": "Lagos State government has commenced the reconstruction of the Lagos-Badagry Expressway. This major road project is expected to ease the daily commute for thousands of Lagos residents and enhance economic activities in the region.",
+    "slug": "breaking-ground-start-lagos-badagry-expressway-reconstruction",
+    "category_id": "7",
+    "updated_at": 1613689200,
+    "parent_stories": [],
+    "children_stories": [
+      "54"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1613689200
+  },
+  {
+    "id": "54",
+    "title": "Lagos-Badagry Expressway Reconstruction: Impact on Commuters",
+    "body": "The reconstruction of the Lagos-Badagry Expressway promises a better commuting experience for Lagosians. However, during the reconstruction phase, commuters have to deal with temporary inconveniences and longer travel times. This article explores the impact of the reconstruction on daily commuters.",
+    "slug": "lagos-badagry-expressway-reconstruction-impact-commuters",
+    "category_id": "7",
+    "updated_at": 1613775600,
+    "parent_stories": [
+      "53"
+    ],
+    "children_stories": [
+      "55"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1613775600
+  },
+  {
+    "id": "55",
+    "title": "Lagos-Badagry Expressway Reconstruction: Economic Prospects",
+    "body": "The reconstruction of the Lagos-Badagry Expressway is expected to unlock numerous economic benefits by improving connectivity, reducing travel time, and facilitating the movement of goods. This article delves into the economic prospects of this important infrastructure project.",
+    "slug": "lagos-badagry-expressway-reconstruction-economic-prospects",
+    "category_id": "7",
+    "updated_at": 1613862000,
+    "parent_stories": [
+      "54"
+    ],
+    "children_stories": [
+      "56"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1613862000
+  },
+  {
+    "id": "56",
+    "title": "Road Infrastructure and Urban Development: The Case of Lagos-Badagry Expressway",
+    "body": "The reconstruction of the Lagos-Badagry Expressway is not just about improving transportation; it's a key part of urban development. In this article, we explore how improved road infrastructure can catalyze urban development in Lagos State.",
+    "slug": "road-infrastructure-urban-development-case-lagos-badagry-expressway",
+    "category_id": "7",
+    "updated_at": 1613948400,
+    "parent_stories": [
+      "55"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1613948400
+  },
+  {
+    "id": "57",
+    "title": "Renewable Energy in Nigeria: The Dawn of a New Era",
+    "body": "With abundant sun and wind resources, Nigeria is positioned to harness renewable energy for its growing population. This report provides an overview of the current state of renewable energy in Nigeria and the opportunities it presents for the future.",
+    "slug": "renewable-energy-nigeria-dawn-new-era",
+    "category_id": "7",
+    "updated_at": 1614034800,
+    "parent_stories": [],
+    "children_stories": [
+      "58"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1614034800
+  },
+  {
+    "id": "58",
+    "title": "Renewable Energy and Rural Electrification in Nigeria",
+    "body": "Renewable energy holds great potential for rural electrification in Nigeria. This article explores the challenges and opportunities in harnessing renewable energy sources to light up rural communities in Nigeria.",
+    "slug": "renewable-energy-rural-electrification-nigeria",
+    "category_id": "7",
+    "updated_at": 1614121200,
+    "parent_stories": [
+      "57"
+    ],
+    "children_stories": [
+      "59"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1614121200
+  },
+  {
+    "id": "59",
+    "title": "Investing in Renewable Energy in Nigeria: Opportunities and Challenges",
+    "body": "Investing in renewable energy in Nigeria offers promising returns but also comes with challenges. This report dives into the investment landscape of Nigeria's renewable energy sector.",
+    "slug": "investing-renewable-energy-nigeria-opportunities-challenges",
+    "category_id": "7",
+    "updated_at": 1614207600,
+    "parent_stories": [
+      "58"
+    ],
+    "children_stories": [
+      "60"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1614207600
+  },
+  {
+    "id": "60",
+    "title": "The Future of Renewable Energy in Nigeria",
+    "body": "As the world gravitates towards cleaner energy sources, the future of renewable energy in Nigeria looks promising. This article looks into the future, highlighting the potential transformations in the country's energy landscape.",
+    "slug": "future-renewable-energy-nigeria",
+    "category_id": "7",
+    "updated_at": 1614294000,
+    "parent_stories": [
+      "59"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1614294000
+  },
+  {
+    "id": "61",
+    "title": "The Growth of eCommerce in Nigeria",
+    "body": "The rise of digital technology has catalyzed the growth of eCommerce in Nigeria. More people are embracing online shopping due to its convenience and the broad range of products available.",
+    "slug": "growth-ecommerce-nigeria",
+    "category_id": "8",
+    "updated_at": 1614546000,
+    "parent_stories": [],
+    "children_stories": [
+      "62"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1614546000
+  },
+  {
+    "id": "62",
+    "title": "Nigeria's Top eCommerce Platforms: A Comparative Analysis",
+    "body": "This article compares Nigeria's top eCommerce platforms, discussing their strengths, weaknesses, and the unique features they offer.",
+    "slug": "nigeria-top-ecommerce-platforms-comparative-analysis",
+    "category_id": "8",
+    "updated_at": 1614632400,
+    "parent_stories": [
+      "61"
+    ],
+    "children_stories": [
+      "63"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1614632400
+  },
+  {
+    "id": "63",
+    "title": "The Impact of eCommerce on Nigeria's Economy",
+    "body": "eCommerce has significantly influenced Nigeria's economy. This article examines how online shopping has boosted economic growth, created jobs, and enhanced customer convenience.",
+    "slug": "impact-ecommerce-nigeria-economy",
+    "category_id": "8",
+    "updated_at": 1614718800,
+    "parent_stories": [
+      "62"
+    ],
+    "children_stories": [
+      "64"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1614718800
+  },
+  {
+    "id": "64",
+    "title": "The Future of eCommerce in Nigeria: Trends and Predictions",
+    "body": "eCommerce in Nigeria is projected to grow exponentially in the coming years. This article presents key trends shaping the future of online shopping in the country.",
+    "slug": "future-ecommerce-nigeria-trends-predictions",
+    "category_id": "8",
+    "updated_at": 1614805200,
+    "parent_stories": [
+      "63"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1614805200
+  },
+  {
+    "id": "65",
+    "title": "Cybersecurity in Nigeria: A Growing Concern",
+    "body": "As digital technology advances, so do cyber threats. This article discusses the current state of cybersecurity in Nigeria and why it's a growing concern.",
+    "slug": "cybersecurity-nigeria-growing-concern",
+    "category_id": "8",
+    "updated_at": 1614891600,
+    "parent_stories": [],
+    "children_stories": [
+      "66"
+    ],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1614891600
+  },
+  {
+    "id": "66",
+    "title": "Nigeria's Cybersecurity Law: A Detailed Overview",
+    "body": "Nigeria has enacted a cybersecurity law to protect its digital space. This article provides a detailed overview of the law and its implications for Nigerians.",
+    "slug": "nigeria-cybersecurity-law-detailed-overview",
+    "category_id": "8",
+    "updated_at": 1614978000,
+    "parent_stories": [
+      "65"
+    ],
+    "children_stories": [
+      "67"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1614978000
+  },
+  {
+    "id": "67",
+    "title": "Understanding Cyber Threats and How to Protect Yourself Online",
+    "body": "Cyber threats pose a significant risk to individuals and organizations. This article explains different types of cyber threats and offers practical tips on how to protect yourself online.",
+    "slug": "understanding-cyber-threats-protect-yourself-online",
+    "category_id": "8",
+    "updated_at": 1615064400,
+    "parent_stories": [
+      "66"
+    ],
+    "children_stories": [
+      "68"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1615064400
+  },
+  {
+    "id": "68",
+    "title": "The Future of Cybersecurity in Nigeria: Challenges and Opportunities",
+    "body": "Cybersecurity in Nigeria faces several challenges but also presents opportunities for growth. This article explores these issues and the future of cybersecurity in the country.",
+    "slug": "future-cybersecurity-nigeria-challenges-opportunities",
+    "category_id": "8",
+    "updated_at": 1615150800,
+    "parent_stories": [
+      "67"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1615150800
+  },
+  {
+    "id": "69",
+    "title": "Digital Banking in Nigeria: An Overview",
+    "body": "Digital banking is revolutionizing the financial industry in Nigeria. This article gives an overview of its rise, benefits, and challenges.",
+    "slug": "digital-banking-nigeria-overview",
+    "category_id": "8",
+    "updated_at": 1615237200,
+    "parent_stories": [],
+    "children_stories": [
+      "70"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1615237200
+  },
+  {
+    "id": "70",
+    "title": "The Impact of Digital Banking on Nigeria's Economy",
+    "body": "Digital banking has had a profound impact on Nigeria's economy. This article discusses how it has contributed to economic growth, financial inclusion, and more efficient transactions.",
+    "slug": "impact-digital-banking-nigeria-economy",
+    "category_id": "8",
+    "updated_at": 1615323600,
+    "parent_stories": [
+      "69"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1615323600
+  },
+  {
+    "id": "71",
+    "title": "The Role of Mobile Technology in Healthcare",
+    "body": "Mobile technology has transformed healthcare delivery, improving access to services, enhancing patient engagement, and facilitating remote patient monitoring.",
+    "slug": "role-mobile-technology-healthcare",
+    "category_id": "9",
+    "updated_at": 1615401000,
+    "parent_stories": [],
+    "children_stories": [
+      "72"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1615401000
+  },
+  {
+    "id": "72",
+    "title": "mHealth in Nigeria: An Overview",
+    "body": "mHealth refers to the use of mobile devices for health services and information. This article provides an overview of mHealth in Nigeria, exploring its applications, benefits, and challenges.",
+    "slug": "mhealth-nigeria-overview",
+    "category_id": "9",
+    "updated_at": 1615487400,
+    "parent_stories": [
+      "71"
+    ],
+    "children_stories": [
+      "73"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1615487400
+  },
+  {
+    "id": "73",
+    "title": "The Impact of mHealth on Nigeria's Healthcare System",
+    "body": "mHealth has had a significant impact on Nigeria's healthcare system. It has improved healthcare delivery, increased health education, and enhanced disease surveillance.",
+    "slug": "impact-mhealth-nigeria-healthcare-system",
+    "category_id": "9",
+    "updated_at": 1615573800,
+    "parent_stories": [
+      "72"
+    ],
+    "children_stories": [
+      "74"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1615573800
+  },
+  {
+    "id": "74",
+    "title": "The Future of mHealth in Nigeria: Opportunities and Challenges",
+    "body": "mHealth in Nigeria has potential for significant growth. This article explores the opportunities it presents for healthcare delivery and the challenges that need to be addressed for its full potential to be realized.",
+    "slug": "future-mhealth-nigeria-opportunities-challenges",
+    "category_id": "9",
+    "updated_at": 1615660200,
+    "parent_stories": [
+      "73"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1615660200
+  },
+  {
+    "id": "75",
+    "title": "Telemedicine in Nigeria: An Overview",
+    "body": "Telemedicine involves the use of digital technologies to deliver healthcare services remotely. This article gives an overview of telemedicine in Nigeria, discussing its applications, benefits, and challenges.",
+    "slug": "telemedicine-nigeria-overview",
+    "category_id": "9",
+    "updated_at": 1615746600,
+    "parent_stories": [],
+    "children_stories": [
+      "76"
+    ],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1615746600
+  },
+  {
+    "id": "76",
+    "title": "The Impact of Telemedicine on Nigeria's Healthcare System",
+    "body": "Telemedicine has revolutionized healthcare delivery in Nigeria, providing access to quality healthcare services in remote and underserved areas, improving patient engagement, and enhancing health outcomes.",
+    "slug": "impact-telemedicine-nigeria-healthcare-system",
+    "category_id": "9",
+    "updated_at": 1615833000,
+    "parent_stories": [
+      "75"
+    ],
+    "children_stories": [
+      "77"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1615833000
+  },
+  {
+    "id": "77",
+    "title": "The Future of Telemedicine in Nigeria: Opportunities and Challenges",
+    "body": "Telemedicine in Nigeria presents significant opportunities for improving healthcare delivery. This article explores these opportunities and the challenges that need to be addressed to harness the full potential of telemedicine.",
+    "slug": "future-telemedicine-nigeria-opportunities-challenges",
+    "category_id": "9",
+    "updated_at": 1615919400,
+    "parent_stories": [
+      "76"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1615919400
+  },
+  {
+    "id": "78",
+    "title": "Electronic Health Records in Nigeria: An Overview",
+    "body": "Electronic health records (EHRs) are digital versions of patients' medical histories. This article provides an overview of EHRs in Nigeria, discussing their implementation, benefits, and challenges.",
+    "slug": "electronic-health-records-nigeria-overview",
+    "category_id": "9",
+    "updated_at": 1616005800,
+    "parent_stories": [],
+    "children_stories": [
+      "79"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1616005800
+  },
+  {
+    "id": "79",
+    "title": "The Impact of Electronic Health Records on Nigeria's Healthcare System",
+    "body": "Electronic health records (EHRs) have had a significant impact on Nigeria's healthcare system. They have improved the efficiency of healthcare delivery, enhanced patient safety, and facilitated research and data analysis.",
+    "slug": "impact-electronic-health-records-nigeria-healthcare-system",
+    "category_id": "9",
+    "updated_at": 1616092200,
+    "parent_stories": [
+      "78"
+    ],
+    "children_stories": [
+      "80"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1616092200
+  },
+  {
+    "id": "80",
+    "title": "The Future of Electronic Health Records in Nigeria: Opportunities and Challenges",
+    "body": "EHRs in Nigeria have significant potential for growth. This article explores the opportunities and challenges that need to be addressed to maximize the benefits of EHRs for healthcare delivery in Nigeria.",
+    "slug": "future-electronic-health-records-nigeria-opportunities-challenges",
+    "category_id": "9",
+    "updated_at": 1616178600,
+    "parent_stories": [
+      "79"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1616178600
+  },
+  {
+    "id": "81",
+    "title": "Nigerian Music Industry: An Overview",
+    "body": "The Nigerian music industry has experienced significant growth in recent years, becoming a beacon for African music on the global stage. This article provides an overview of the industry's evolution and its current state.",
+    "slug": "nigerian-music-industry-overview",
+    "category_id": "10",
+    "updated_at": 1616265000,
+    "parent_stories": [],
+    "children_stories": [
+      "82"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1616265000
+  },
+  {
+    "id": "82",
+    "title": "The Impact of Digital Streaming on the Nigerian Music Industry",
+    "body": "Digital streaming platforms have revolutionized the way music is consumed in Nigeria, offering artists greater visibility and fans more accessibility. This article explores the impact of these platforms on the Nigerian music industry.",
+    "slug": "impact-digital-streaming-nigerian-music-industry",
+    "category_id": "10",
+    "updated_at": 1616351400,
+    "parent_stories": [
+      "81"
+    ],
+    "children_stories": [
+      "83"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1616351400
+  },
+  {
+    "id": "83",
+    "title": "The Future of the Nigerian Music Industry: Opportunities and Challenges",
+    "body": "The Nigerian music industry has immense potential for growth. This article examines the opportunities and challenges that the industry faces as it strives to become a dominant player in the global music scene.",
+    "slug": "future-nigerian-music-industry-opportunities-challenges",
+    "category_id": "10",
+    "updated_at": 1616437800,
+    "parent_stories": [
+      "82"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1616437800
+  },
+  {
+    "id": "84",
+    "title": "Nigerian Movie Industry: An Overview",
+    "body": "Nigeria's movie industry, also known as Nollywood, is one of the largest in the world in terms of output. This article provides an overview of the industry, discussing its history, growth, and current trends.",
+    "slug": "nigerian-movie-industry-overview",
+    "category_id": "10",
+    "updated_at": 1616524200,
+    "parent_stories": [],
+    "children_stories": [
+      "85"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1616524200
+  },
+  {
+    "id": "85",
+    "title": "The Impact of Digital Streaming on the Nigerian Movie Industry",
+    "body": "Digital streaming platforms have significantly influenced Nollywood, enhancing global reach and transforming production standards. This article explores the impact of these platforms on the Nigerian movie industry.",
+    "slug": "impact-digital-streaming-nigerian-movie-industry",
+    "category_id": "10",
+    "updated_at": 1616610600,
+    "parent_stories": [
+      "84"
+    ],
+    "children_stories": [
+      "86"
+    ],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1616610600
+  },
+  {
+    "id": "86",
+    "title": "The Future of the Nigerian Movie Industry: Opportunities and Challenges",
+    "body": "Nollywood has a bright future, but it faces challenges that must be overcome to maximize its potential. This article explores the opportunities and challenges ahead for the Nigerian movie industry.",
+    "slug": "future-nigerian-movie-industry-opportunities-challenges",
+    "category_id": "10",
+    "updated_at": 1616697000,
+    "parent_stories": [
+      "85"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1616697000
+  },
+  {
+    "id": "87",
+    "title": "Nigeria's Football Scene: A Comprehensive Overview",
+    "body": "Nigeria's football scene has seen a surge in recent years, both locally and internationally. This article provides an overview of the growth, achievements, and current state of Nigerian football.",
+    "slug": "nigerian-football-scene-overview",
+    "category_id": "11",
+    "updated_at": 1616783400,
+    "parent_stories": [],
+    "children_stories": [
+      "88"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1616783400
+  },
+  {
+    "id": "88",
+    "title": "Impact of Youth Development Programs on Nigerian Football",
+    "body": "Youth development programs have been pivotal to the rise of many Nigerian football stars. This article explores how these initiatives have shaped Nigeria's football scene.",
+    "slug": "impact-youth-development-programs-nigerian-football",
+    "category_id": "11",
+    "updated_at": 1616869800,
+    "parent_stories": [
+      "87"
+    ],
+    "children_stories": [
+      "89"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1616869800
+  },
+  {
+    "id": "89",
+    "title": "The Future of Football in Nigeria: Opportunities and Challenges",
+    "body": "The future of Nigerian football looks promising with potential for growth, but several challenges need to be addressed. This article highlights the opportunities and challenges that lie ahead.",
+    "slug": "future-football-nigeria-opportunities-challenges",
+    "category_id": "11",
+    "updated_at": 1616956200,
+    "parent_stories": [
+      "88"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1616956200
+  },
+  {
+    "id": "90",
+    "title": "Overview of Athletics in Nigeria",
+    "body": "Athletics has been a significant part of Nigeria's sports culture. This article gives an overview of the history, growth, and current state of athletics in Nigeria.",
+    "slug": "overview-athletics-nigeria",
+    "category_id": "11",
+    "updated_at": 1617042600,
+    "parent_stories": [],
+    "children_stories": [
+      "91"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1617042600
+  },
+  {
+    "id": "91",
+    "title": "Impact of Training Programs on Nigerian Athletics",
+    "body": "Training programs play a critical role in the development of Nigerian athletes. This article discusses how these initiatives have influenced athletics in Nigeria.",
+    "slug": "impact-training-programs-nigerian-athletics",
+    "category_id": "11",
+    "updated_at": 1617129000,
+    "parent_stories": [
+      "90"
+    ],
+    "children_stories": [
+      "92"
+    ],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1617129000
+  },
+  {
+    "id": "92",
+    "title": "The Future of Athletics in Nigeria: Opportunities and Challenges",
+    "body": "The future of athletics in Nigeria holds significant potential. However, several challenges need to be addressed. This article provides an insight into the future of Nigerian athletics.",
+    "slug": "future-athletics-nigeria-opportunities-challenges",
+    "category_id": "11",
+    "updated_at": 1617215400,
+    "parent_stories": [
+      "91"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1617215400
+  },
+  {
+    "id": "93",
+    "title": "The Rise of E-commerce in Nigeria",
+    "body": "Over the past decade, e-commerce has seen a significant rise in Nigeria. This article explores the factors contributing to the sector's growth and its future prospects.",
+    "slug": "rise-e-commerce-nigeria",
+    "category_id": "12",
+    "updated_at": 1617301800,
+    "parent_stories": [],
+    "children_stories": [
+      "94"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1617301800
+  },
+  {
+    "id": "94",
+    "title": "The Role of Logistics in E-commerce Success in Nigeria",
+    "body": "Effective logistics are pivotal to the success of e-commerce in Nigeria. This article delves into the challenges and successes of logistics in the sector.",
+    "slug": "role-logistics-e-commerce-success-nigeria",
+    "category_id": "12",
+    "updated_at": 1617388200,
+    "parent_stories": [
+      "93"
+    ],
+    "children_stories": [
+      "95"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1617388200
+  },
+  {
+    "id": "95",
+    "title": "The Future of E-commerce in Nigeria: Prospects and Challenges",
+    "body": "While the future of e-commerce in Nigeria holds significant promise, there are also several challenges to overcome. This article provides an insight into what the future might hold for the sector.",
+    "slug": "future-e-commerce-nigeria",
+    "category_id": "12",
+    "updated_at": 1617474600,
+    "parent_stories": [
+      "94"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1617474600
+  },
+  {
+    "id": "96",
+    "title": "The Emergence of Fintech in Nigeria",
+    "body": "The fintech sector in Nigeria is experiencing exponential growth, transforming the way Nigerians access financial services. This article gives an overview of the emergence and growth of fintech in Nigeria.",
+    "slug": "emergence-fintech-nigeria",
+    "category_id": "12",
+    "updated_at": 1617561000,
+    "parent_stories": [],
+    "children_stories": [
+      "97"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1617561000
+  },
+  {
+    "id": "97",
+    "title": "Impact of Regulatory Policies on Fintech in Nigeria",
+    "body": "Regulatory policies play a critical role in shaping the fintech sector in Nigeria. This article discusses the impact of these policies and their implications for the future.",
+    "slug": "impact-regulatory-policies-fintech-nigeria",
+    "category_id": "12",
+    "updated_at": 1617647400,
+    "parent_stories": [
+      "96"
+    ],
+    "children_stories": [
+      "98"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1617647400
+  },
+  {
+    "id": "98",
+    "title": "The Future of Fintech in Nigeria: Opportunities and Challenges",
+    "body": "The future of fintech in Nigeria holds significant potential. However, several challenges need to be addressed. This article provides an insight into the future of Nigerian fintech.",
+    "slug": "future-fintech-nigeria",
+    "category_id": "12",
+    "updated_at": 1617733800,
+    "parent_stories": [
+      "97"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1617733800
+  },
+  {
+    "id": "99",
+    "title": "The State of Public Healthcare in Nigeria",
+    "body": "This article explores the current state of public healthcare in Nigeria, focusing on the strengths and challenges of the system.",
+    "slug": "state-public-healthcare-nigeria",
+    "category_id": "13",
+    "updated_at": 1617820200,
+    "parent_stories": [],
+    "children_stories": [
+      "100"
+    ],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1617820200
+  },
+  {
+    "id": "100",
+    "title": "Challenges Faced by Public Hospitals in Nigeria",
+    "body": "Public hospitals in Nigeria are battling several challenges. This article delves into these challenges and their implications on the health sector.",
+    "slug": "challenges-public-hospitals-nigeria",
+    "category_id": "13",
+    "updated_at": 1617906600,
+    "parent_stories": [
+      "99"
+    ],
+    "children_stories": [
+      "101"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1617906600
+  },
+  {
+    "id": "101",
+    "title": "The Impact of Government Policies on Public Healthcare in Nigeria",
+    "body": "Government policies have a significant impact on the state of public healthcare in Nigeria. This article examines these impacts and their implications.",
+    "slug": "impact-government-policies-public-healthcare-nigeria",
+    "category_id": "13",
+    "updated_at": 1617993000,
+    "parent_stories": [
+      "100"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1617993000
+  },
+  {
+    "id": "102",
+    "title": "The Rising Cases of Malaria in Nigeria",
+    "body": "Malaria cases are on the rise in Nigeria. This article examines the factors contributing to this rise and efforts being made to curb the trend.",
+    "slug": "rising-cases-malaria-nigeria",
+    "category_id": "13",
+    "updated_at": 1618079400,
+    "parent_stories": [],
+    "children_stories": [
+      "103"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1618079400
+  },
+  {
+    "id": "103",
+    "title": "The Impact of Malaria on the Nigerian Economy",
+    "body": "Malaria not only affects the health of individuals but also has a significant impact on the Nigerian economy. This article discusses these impacts.",
+    "slug": "impact-malaria-nigerian-economy",
+    "category_id": "13",
+    "updated_at": 1618165800,
+    "parent_stories": [
+      "102"
+    ],
+    "children_stories": [
+      "104"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1618165800
+  },
+  {
+    "id": "104",
+    "title": "Efforts to Combat Malaria in Nigeria",
+    "body": "Combating malaria is a priority in Nigeria. This article discusses the measures being taken to tackle the disease and their effectiveness.",
+    "slug": "efforts-combat-malaria-nigeria",
+    "category_id": "13",
+    "updated_at": 1618252200,
+    "parent_stories": [
+      "103"
+    ],
+    "children_stories": [
+      "105"
+    ],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1618252200
+  },
+  {
+    "id": "105",
+    "title": "Malaria Prevention Methods in Nigeria",
+    "body": "Prevention is a key component in the fight against malaria. This article outlines the most effective methods for preventing malaria in Nigeria.",
+    "slug": "malaria-prevention-methods-nigeria",
+    "category_id": "13",
+    "updated_at": 1618338600,
+    "parent_stories": [
+      "104"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1618338600
+  },
+  {
+    "id": "106",
+    "title": "Deforestation Crisis in Nigeria",
+    "body": "Nigeria faces a deforestation crisis, with thousands of acres of forest disappearing annually. The causes range from logging to urbanization. #Deforestation #Environment #Nigeria",
+    "slug": "deforestation-crisis-nigeria",
+    "category_id": "14",
+    "updated_at": 1618502400,
+    "parent_stories": [],
+    "children_stories": [
+      "107"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1618502400
+  },
+  {
+    "id": "107",
+    "title": "The Impact of Deforestation on Biodiversity",
+    "body": "Deforestation in Nigeria has led to the loss of numerous species. The dwindling biodiversity affects the ecosystem's balance. #Biodiversity #Deforestation #Ecosystem",
+    "slug": "impact-deforestation-biodiversity",
+    "category_id": "14",
+    "updated_at": 1618588800,
+    "parent_stories": [
+      "106"
+    ],
+    "children_stories": [
+      "108"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1618588800
+  },
+  {
+    "id": "108",
+    "title": "Community-based Solutions to Deforestation",
+    "body": "Communities in Nigeria are adopting sustainable practices to combat deforestation, promoting agroforestry and afforestation. #SustainableLiving #Agroforestry #Afforestation",
+    "slug": "community-solutions-deforestation",
+    "category_id": "14",
+    "updated_at": 1618675200,
+    "parent_stories": [
+      "107"
+    ],
+    "children_stories": [
+      "109"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1618675200
+  },
+  {
+    "id": "109",
+    "title": "The Rising Levels of Air Pollution in Lagos",
+    "body": "Air pollution in Lagos is reaching alarming levels, primarily due to vehicle emissions and industrial activities. #AirPollution #Lagos #IndustrialEmissions",
+    "slug": "rising-air-pollution-lagos",
+    "category_id": "14",
+    "updated_at": 1618761600,
+    "parent_stories": [
+      "108"
+    ],
+    "children_stories": [
+      "110"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1618761600
+  },
+  {
+    "id": "110",
+    "title": "Initiatives to Promote Clean Energy in Nigeria",
+    "body": "Several initiatives are pushing for the adoption of clean energy in Nigeria to reduce environmental pollution and combat climate change. #CleanEnergy #ClimateChange #GreenInitiatives",
+    "slug": "clean-energy-initiatives-nigeria",
+    "category_id": "14",
+    "updated_at": 1618848000,
+    "parent_stories": [
+      "109"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1618848000
+  },
+  {
+    "id": "111",
+    "title": "Government Increases Funding for Primary Education",
+    "body": "The Nigerian government announced a significant increase in the budget for primary education. This move is expected to enhance the quality of education in public schools. #EducationFunding #PrimaryEducation #NigeriaEducation",
+    "slug": "government-increases-funding-primary-education",
+    "category_id": "16",
+    "updated_at": 1622726400,
+    "parent_stories": [],
+    "children_stories": [
+      "112"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1622726400
+  },
+  {
+    "id": "112",
+    "title": "Teachers Celebrate Training Initiatives",
+    "body": "Teachers across Nigeria are praising the new training initiatives introduced to boost their skills and teaching methods. #TeacherTraining #EducationReform #TeachingMethods",
+    "slug": "teachers-celebrate-training-initiatives",
+    "category_id": "16",
+    "updated_at": 1622812800,
+    "parent_stories": [
+      "111"
+    ],
+    "children_stories": [
+      "113"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1622812800
+  },
+  {
+    "id": "113",
+    "title": "Rise in University Applications",
+    "body": "Universities in Nigeria have seen a significant rise in applications this year, especially in science and technology fields. #UniversityApplications #HigherEducation #STEM",
+    "slug": "rise-university-applications",
+    "category_id": "16",
+    "updated_at": 1622899200,
+    "parent_stories": [
+      "112"
+    ],
+    "children_stories": [
+      "114"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1622899200
+  },
+  {
+    "id": "114",
+    "title": "New E-learning Platforms Emerge Amidst Pandemic",
+    "body": "With the challenges of the pandemic, several e-learning platforms have emerged, providing students with more flexible learning options. #Elearning #DigitalEducation #NigeriaLearning",
+    "slug": "new-elearning-platforms-emerge",
+    "category_id": "16",
+    "updated_at": 1622985600,
+    "parent_stories": [
+      "113"
+    ],
+    "children_stories": [
+      "115"
+    ],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1622985600
+  },
+  {
+    "id": "115",
+    "title": "National Spelling Bee Attracts Thousands of Students",
+    "body": "The annual National Spelling Bee has attracted a record number of participants this year, showcasing the linguistic talents of Nigerian students. #SpellingBee #EducationEvents #StudentTalents",
+    "slug": "national-spelling-bee-attracts-thousands",
+    "category_id": "16",
+    "updated_at": 1623072000,
+    "parent_stories": [
+      "114"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1623072000
+  },
+  {
+    "id": "116",
+    "title": "Super Eagles Qualify for African Cup of Nations",
+    "body": "The Nigerian national team, Super Eagles, have successfully qualified for the upcoming African Cup of Nations after a thrilling match against South Africa. #SuperEagles #AfricanCup #NigeriaFootball",
+    "slug": "super-eagles-qualify-african-cup",
+    "category_id": "17",
+    "updated_at": 1623158400,
+    "parent_stories": [],
+    "children_stories": [
+      "117"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1623158400
+  },
+  {
+    "id": "117",
+    "title": "Victor Osimhen Wins Golden Boot in Europe",
+    "body": "Nigerian striker Victor Osimhen has secured the Golden Boot award in one of Europe's top leagues, marking another milestone for Nigerian athletes abroad. #Osimhen #GoldenBoot #NigerianTalents",
+    "slug": "osimhen-wins-golden-boot",
+    "category_id": "17",
+    "updated_at": 1623244800,
+    "parent_stories": [
+      "116"
+    ],
+    "children_stories": [
+      "118"
+    ],
+    "user": {
+      "id": "3",
+      "username": "linda",
+      "email": "linda@mail.com",
+      "name": "Linda Ikeji",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1623244800
+  },
+  {
+    "id": "118",
+    "title": "D'Tigers Prepare for Olympic Basketball Showdown",
+    "body": "Nigeria's national basketball team, D'Tigers, is gearing up for a promising performance in the upcoming Olympic Games. #DTigers #Olympics2022 #Basketball",
+    "slug": "dtigers-prepare-olympic-basketball",
+    "category_id": "17",
+    "updated_at": 1623331200,
+    "parent_stories": [
+      "117"
+    ],
+    "children_stories": [
+      "119"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "5",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1623331200
+  },
+  {
+    "id": "119",
+    "title": "Nigeria to Host West African Athletics Championship",
+    "body": "Nigeria has been selected as the host nation for the upcoming West African Athletics Championship, a significant recognition of the country's contributions to African sports. #Athletics #WestAfrica #SportsEvents",
+    "slug": "nigeria-host-west-african-athletics",
+    "category_id": "17",
+    "updated_at": 1623417600,
+    "parent_stories": [
+      "118"
+    ],
+    "children_stories": [
+      "120"
+    ],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1623417600
+  },
+  {
+    "id": "120",
+    "title": "Youth Football Talent Hunt Kicks off in Lagos",
+    "body": "A nationwide hunt for young football talents has started in Lagos, aimed at finding and nurturing the next generation of Nigerian football stars. #FootballTalent #YouthSports #LagosSports",
+    "slug": "youth-football-talent-hunt-lagos",
+    "category_id": "17",
+    "updated_at": 1623504000,
+    "parent_stories": [
+      "119"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1623504000
+  },
+  {
+    "id": "121",
+    "title": "Golden Eaglets Emerge Champions of U-17 World Cup",
+    "body": "Nigeria's U-17 team, the Golden Eaglets, have clinched the title at the FIFA U-17 World Cup, marking their sixth championship win. #GoldenEaglets #FIFA #U17WorldCup",
+    "slug": "golden-eaglets-champions-u17-world-cup",
+    "category_id": "17",
+    "updated_at": 1623158400,
+    "parent_stories": [],
+    "children_stories": [
+      "122"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1623158400
+  },
+  {
+    "id": "122",
+    "title": "Asisat Oshoala Named Best Female Footballer in Africa",
+    "body": "The talented Nigerian striker, Asisat Oshoala, has once again been named the best female footballer on the continent. #Oshoala #FemaleFootballer #AfricaAward",
+    "slug": "osisat-oshoala-best-footballer",
+    "category_id": "17",
+    "updated_at": 1623244800,
+    "parent_stories": [
+      "121"
+    ],
+    "children_stories": [
+      "123"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1623244800
+  },
+  {
+    "id": "123",
+    "title": "NPFL: Enyimba and Kano Pillars Face off in Top of the Table Clash",
+    "body": "Two of the biggest clubs in the Nigerian Professional Football League, Enyimba and Kano Pillars, will be going head-to-head this weekend in a match that could determine the league winner. #NPFL #Enyimba #KanoPillars",
+    "slug": "npfl-enyimba-kano-pillars-match",
+    "category_id": "17",
+    "updated_at": 1623331200,
+    "parent_stories": [
+      "122"
+    ],
+    "children_stories": [
+      "124"
+    ],
+    "user": {
+      "id": "5",
+      "username": "isaac",
+      "email": "isaac@mail.com",
+      "name": "Isaac Samuel",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "2",
+        "name": "Nigeria TV",
+        "feedUrl": "http://www.nigeriatv.com/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1623331200
+  },
+  {
+    "id": "124",
+    "title": "Nigeria's Table Tennis Team Secure Gold at Commonwealth Games",
+    "body": "The national table tennis team has brought honor to Nigeria by securing a gold medal at the ongoing Commonwealth Games. #TableTennis #CommonwealthGames #GoldMedal",
+    "slug": "nigeria-table-tennis-commonwealth",
+    "category_id": "17",
+    "updated_at": 1623417600,
+    "parent_stories": [
+      "123"
+    ],
+    "children_stories": [
+      "125"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1623417600
+  },
+  {
+    "id": "125",
+    "title": "Lagos City Marathon Sees Record Number of Participants",
+    "body": "The annual Lagos City Marathon has witnessed its highest ever turnout, with athletes from over 40 countries participating. #LagosMarathon #Athletics #InternationalEvent",
+    "slug": "lagos-marathon-record-participation",
+    "category_id": "17",
+    "updated_at": 1623504000,
+    "parent_stories": [
+      "124"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "3",
+      "username": "musab",
+      "email": "musab@mail.com",
+      "name": "Musab Abdullah",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "5",
+        "name": "Sahara TV",
+        "feedUrl": "http://www.saharatv.com/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1623504000
+  },
+  {
+    "id": "126",
+    "title": "Nigeria Hosts West African Tech Summit",
+    "body": "Lagos became the tech hub of West Africa as industry leaders, startups, and enthusiasts gathered for the annual West African Tech Summit. #TechSummit #WestAfrica #LagosTech",
+    "slug": "west-african-tech-summit",
+    "category_id": "18",
+    "updated_at": 1623830400,
+    "parent_stories": [],
+    "children_stories": [
+      "127"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1623830400
+  },
+  {
+    "id": "127",
+    "title": "New Data Center Inaugurated in Abuja",
+    "body": "In a move to boost technological infrastructure, a state-of-the-art data center was inaugurated in Abuja. #DataCenter #TechInfrastructure #Abuja",
+    "slug": "new-data-center-abuja",
+    "category_id": "18",
+    "updated_at": 1623916800,
+    "parent_stories": [
+      "126"
+    ],
+    "children_stories": [
+      "128"
+    ],
+    "user": {
+      "id": "3",
+      "username": "musab",
+      "email": "musab@mail.com",
+      "name": "Musab Abdullah",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "5",
+        "name": "Sahara TV",
+        "feedUrl": "http://www.saharatv.com/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1623916800
+  },
+  {
+    "id": "128",
+    "title": "Tech Startup 'NaijaSolutions' Raises $5M in Seed Funding",
+    "body": "Innovative tech startup, NaijaSolutions, announced that it has successfully raised $5M in its latest seed funding round. The startup aims to revolutionize e-commerce in the region. #NaijaSolutions #SeedFunding #Ecommerce",
+    "slug": "naijasolutions-raises-funding",
+    "category_id": "18",
+    "updated_at": 1624003200,
+    "parent_stories": [
+      "127"
+    ],
+    "children_stories": [
+      "129"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1624003200
+  },
+  {
+    "id": "129",
+    "title": "Government Announces Plans to Digitalize Public Services",
+    "body": "In an ambitious move, the Nigerian government has laid out plans to digitalize public services, aiming to make governance more efficient and accessible. #DigitalGovernance #TechPolicy #NigeriaDigital",
+    "slug": "government-digitalize-public-services",
+    "category_id": "18",
+    "updated_at": 1624089600,
+    "parent_stories": [
+      "128"
+    ],
+    "children_stories": [
+      "130"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1624089600
+  },
+  {
+    "id": "130",
+    "title": "Civic Tech Organizations Partner With Government",
+    "body": "Several civic tech organizations have stepped forward to partner with the government in its mission to digitalize public services, promising robust solutions and community engagement. #CivicTech #GovernmentPartnerships",
+    "slug": "civic-tech-partnership",
+    "category_id": "18",
+    "updated_at": 1624176000,
+    "parent_stories": [
+      "129"
+    ],
+    "children_stories": [
+      "131"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1624176000
+  },
+  {
+    "id": "131",
+    "title": "ICT Hubs in Ibadan Record Spike in Enrollments",
+    "body": "Tech hubs in Ibadan are witnessing an unprecedented spike in enrollments as more youths turn to technology to shape their future. #TechHubs #IbadanTech #ICT",
+    "slug": "ict-hubs-ibadan-spike",
+    "category_id": "18",
+    "updated_at": 1624262400,
+    "parent_stories": [
+      "130"
+    ],
+    "children_stories": [
+      "132"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608508800",
+      "updated_at": "1608508800",
+      "last_login": "1610286400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1624262400
+  },
+  {
+    "id": "132",
+    "title": "AI Startup 'BrainBox' Gets International Recognition",
+    "body": "BrainBox, an AI startup from Lagos, has been recognized at an international tech event for its groundbreaking innovations in machine learning. #BrainBox #AI #MachineLearning",
+    "slug": "brainbox-ai-international-recognition",
+    "category_id": "18",
+    "updated_at": 1624348800,
+    "parent_stories": [
+      "131"
+    ],
+    "children_stories": [
+      "133"
+    ],
+    "user": {
+      "id": "5",
+      "username": "solomon",
+      "email": "solomon@mail.com",
+      "name": "Solomon King",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610462400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "2",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1624348800
+  },
+  {
+    "id": "133",
+    "title": "E-Government Initiatives to Launch in Q3 2023",
+    "body": "The government's e-governance platforms, aimed at streamlining public services and enhancing transparency, are set to launch in the third quarter of 2023. #EGovernment #TechGovernance",
+    "slug": "e-government-initiatives-launch",
+    "category_id": "18",
+    "updated_at": 1624435200,
+    "parent_stories": [
+      "132"
+    ],
+    "children_stories": [
+      "134"
+    ],
+    "user": {
+      "id": "3",
+      "username": "musab",
+      "email": "musab@mail.com",
+      "name": "Musab Abdullah",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "5",
+        "name": "Sahara TV",
+        "feedUrl": "http://www.saharatv.com/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1624435200
+  },
+  {
+    "id": "134",
+    "title": "Tech Innovators to Represent Nigeria at Global Summit",
+    "body": "Top tech innovators from Nigeria have been chosen to represent the country at a global tech summit. Their startups focus on solving real-world problems using technology. #GlobalTechSummit #NigeriaRepresent",
+    "slug": "tech-innovators-global-summit",
+    "category_id": "18",
+    "updated_at": 1624521600,
+    "parent_stories": [
+      "133"
+    ],
+    "children_stories": [
+      "135"
+    ],
+    "user": {
+      "id": "2",
+      "username": "grace",
+      "email": "grace@mail.com",
+      "name": "Grace Isaac",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1624521600
+  },
+  {
+    "id": "135",
+    "title": "Digital Literacy Campaigns Gain Momentum in Rural Areas",
+    "body": "Efforts to increase digital literacy in rural areas of Nigeria are showing positive results. Communities are embracing technology for education, health, and commerce. #DigitalLiteracy #RuralTech",
+    "slug": "digital-literacy-rural-areas",
+    "category_id": "18",
+    "updated_at": 1624608000,
+    "parent_stories": [
+      "134"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1624608000
+  },
+  {
+    "id": "136",
+    "title": "Nollywood Film 'Legacy' Breaks Box Office Records",
+    "body": "The Nollywood film 'Legacy' has become the highest-grossing Nigerian movie of the year, showcasing the power of indigenous storytelling. The film revolves around a family's journey to protect their heritage. #Nollywood #Legacy #BoxOfficeHits",
+    "slug": "legacy-nollywood-hit",
+    "category_id": "19",
+    "updated_at": 1625263200,
+    "parent_stories": [],
+    "children_stories": [
+      "137"
+    ],
+    "user": {
+      "id": "5",
+      "username": "solomon",
+      "email": "solomon@mail.com",
+      "name": "Solomon King",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610462400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "2",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1625263200
+  },
+  {
+    "id": "137",
+    "title": "Lagos Hosts Annual Fashion Week with Global Stars",
+    "body": "Lagos Fashion Week has commenced, and this year it's bigger than ever. Global celebrities and fashion icons have flocked to the city to witness the unveiling of the latest trends by African designers. #LagosFashionWeek #FashionTrends #AfricanDesigners",
+    "slug": "lagos-fashion-week-annual",
+    "category_id": "19",
+    "updated_at": 1625349600,
+    "parent_stories": [
+      "136"
+    ],
+    "children_stories": [
+      "138"
+    ],
+    "user": {
+      "id": "3",
+      "username": "musab",
+      "email": "musab@mail.com",
+      "name": "Musab Abdullah",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "5",
+        "name": "Sahara TV",
+        "feedUrl": "http://www.saharatv.com/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1625349600
+  },
+  {
+    "id": "138",
+    "title": "Afrobeat Singer 'Femi Wave' Releases New Album",
+    "body": "Afrobeat sensation, 'Femi Wave', has dropped his much-anticipated album 'Echoes of the Heart'. Critics have already hailed it as a masterpiece that beautifully melds traditional beats with contemporary sounds. #Afrobeat #FemiWave #NewAlbumRelease",
+    "slug": "femi-wave-new-album",
+    "category_id": "19",
+    "updated_at": 1625436000,
+    "parent_stories": [
+      "137"
+    ],
+    "children_stories": [
+      "139"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1625436000
+  },
+  {
+    "id": "139",
+    "title": "Traditional Dance Festival Celebrates Nigeria's Rich Culture",
+    "body": "Nigeria's rich tapestry of dance forms was on display at the annual Traditional Dance Festival in Abuja. The event highlighted the importance of preserving cultural heritage in the modern age. #DanceFestival #NigerianCulture #TraditionalDance",
+    "slug": "traditional-dance-festival",
+    "category_id": "19",
+    "updated_at": 1625522400,
+    "parent_stories": [
+      "138"
+    ],
+    "children_stories": [
+      "140"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610462400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1625522400
+  },
+  {
+    "id": "140",
+    "title": "Pop Star 'Ada' Launches Fashion Line Inspired by Nigerian Roots",
+    "body": "Award-winning pop star 'Ada' has launched her own fashion line, drawing inspiration from her Nigerian heritage. The vibrant collection showcases traditional patterns in modern designs. #FashionLaunch #Ada #NigerianInspired",
+    "slug": "ada-fashion-line-launch",
+    "category_id": "19",
+    "updated_at": 1625608800,
+    "parent_stories": [
+      "139"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "2",
+      "username": "amina",
+      "email": "amina@mail.com",
+      "name": "Amina Yusuf",
+      "created_at": "1608513600",
+      "updated_at": "1608513600",
+      "last_login": "1610289600",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1625608800
+  },
+  {
+    "id": "141",
+    "title": "Breakthrough in Malaria Research by Nigerian Scientists",
+    "body": "A group of scientists from the University of Lagos have unveiled groundbreaking research into a potential cure for malaria. The team has identified a new compound that could revolutionize treatment methodologies. This discovery has received international recognition, shining a spotlight on the capabilities of Nigerian researchers. #MalariaResearch #HealthBreakthrough #NigerianScientists",
+    "slug": "breakthrough-malaria-research",
+    "category_id": "20",
+    "updated_at": 1625695200,
+    "parent_stories": [],
+    "children_stories": [
+      "142"
+    ],
+    "user": {
+      "id": "3",
+      "username": "musab",
+      "email": "musab@mail.com",
+      "name": "Musab Abdullah",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610372800",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar3.png",
+      "news_channel": {
+        "id": "5",
+        "name": "Sahara TV",
+        "feedUrl": "http://www.saharatv.com/feed/",
+        "logoUrl": "http://example.com/logo5.png"
+      }
+    },
+    "created_at": 1625695200
+  },
+  {
+    "id": "142",
+    "title": "National Fitness Campaign Launched to Combat Obesity",
+    "body": "The Nigerian Ministry of Health has launched a national fitness campaign to address rising cases of obesity and associated health risks. The campaign includes free community workouts, nutritional guidelines, and fitness challenges. #FitnessCampaign #HealthInitiative #CombatObesity",
+    "slug": "national-fitness-campaign",
+    "category_id": "20",
+    "updated_at": 1625781600,
+    "parent_stories": [
+      "141"
+    ],
+    "children_stories": [
+      "143"
+    ],
+    "user": {
+      "id": "4",
+      "username": "jane",
+      "email": "jane@mail.com",
+      "name": "Jane Adams",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610462400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar4.png",
+      "news_channel": {
+        "id": "4",
+        "name": "TV Continental",
+        "feedUrl": "http://www.tvcontinental.tv/feed/",
+        "logoUrl": "http://example.com/logo4.png"
+      }
+    },
+    "created_at": 1625781600
+  },
+  {
+    "id": "143",
+    "title": "Yoga and Mental Health: A New Approach in Nigerian Therapy",
+    "body": "A recent study has highlighted the benefits of incorporating yoga and meditation into mental health therapy in Nigeria. Traditional healing methods are being fused with these practices to offer a holistic approach. #YogaTherapy #MentalHealth #NigerianWellness",
+    "slug": "yoga-mental-health-approach",
+    "category_id": "20",
+    "updated_at": 1625868000,
+    "parent_stories": [
+      "142"
+    ],
+    "children_stories": [
+      "144"
+    ],
+    "user": {
+      "id": "5",
+      "username": "solomon",
+      "email": "solomon@mail.com",
+      "name": "Solomon King",
+      "created_at": "1608595200",
+      "updated_at": "1608595200",
+      "last_login": "1610462400",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar5.png",
+      "news_channel": {
+        "id": "2",
+        "name": "AIT",
+        "feedUrl": "http://www.aitonline.tv/feed/",
+        "logoUrl": "http://example.com/logo2.png"
+      }
+    },
+    "created_at": 1625868000
+  },
+  {
+    "id": "144",
+    "title": "Awareness Drive on Diabetes Management Gains Traction",
+    "body": "A nationwide campaign to promote awareness on diabetes management has been launched. Early detection and proper diet are emphasized, with healthcare professionals offering free screenings in rural areas. #DiabetesAwareness #HealthCampaign #DiseaseManagement",
+    "slug": "diabetes-awareness-drive",
+    "category_id": "20",
+    "updated_at": 1625954400,
+    "parent_stories": [
+      "143"
+    ],
+    "children_stories": [
+      "145"
+    ],
+    "user": {
+      "id": "1",
+      "username": "sule",
+      "email": "sule@mail.com",
+      "name": "Sule Mohammed",
+      "created_at": "1608422400",
+      "updated_at": "1608422400",
+      "last_login": "1610200000",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar1.png",
+      "news_channel": {
+        "id": "1",
+        "name": "Channels TV",
+        "feedUrl": "http://www.channelstv.com/feed/",
+        "logoUrl": "http://example.com/logo1.png"
+      }
+    },
+    "created_at": 1625954400
+  },
+  {
+    "id": "145",
+    "title": "Telemedicine Services Expand in Nigeria",
+    "body": "With the recent technological advancements and increased internet penetration, telemedicine services are expanding rapidly in Nigeria. These services promise to revolutionize healthcare, especially in rural areas where medical facilities are scarce. #Telemedicine #HealthcareRevolution #DigitalHealth",
+    "slug": "telemedicine-services-nigeria",
+    "category_id": "20",
+    "updated_at": 1626040800,
+    "parent_stories": [
+      "144"
+    ],
+    "children_stories": [],
+    "user": {
+      "id": "2",
+      "username": "amina",
+      "email": "amina@mail.com",
+      "name": "Amina Yusuf",
+      "created_at": "1608513600",
+      "updated_at": "1608513600",
+      "last_login": "1610289600",
+      "roles": [
+        "editor"
+      ],
+      "avatar_url": "http://example.com/avatar2.png",
+      "news_channel": {
+        "id": "3",
+        "name": "NTA",
+        "feedUrl": "http://www.nta.ng/feed/",
+        "logoUrl": "http://example.com/logo3.png"
+      }
+    },
+    "created_at": 1626040800
+  }
+]
