@@ -1,39 +1,38 @@
 from rest_framework import generics, filters
 from .models import UserSetting, Follow
-from .serializers import UserSerializer, UserSettingSerializer, FollowSerializer   
+from .serializers import UserSettingSerializer, FollowSerializer
+from authentication.serializers import CustomUserSerializer
 from rest_framework import permissions
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from authentication.models import CustomUser
 from utils.mixins import SoftDeleteMixin
-
-class CurrentUserView(APIView):
-    """
-    View to retrieve the authenticated user's profile.
-    """
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        """
-        Return the authenticated user's profile.
-        """
-        serializer = UserSerializer(request.user)
-        return Response(serializer.data)
-
 
 class UserListCreateView(generics.ListCreateAPIView):
     """
     API view to retrieve list of users or create a new user.
     """
+    # TODO: Must be admin to create a new user
     queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomUserSerializer
 
 class UserRetrieveUpdateDestroyView(SoftDeleteMixin, generics.RetrieveUpdateDestroyAPIView):
     """
     API view to retrieve, update, or delete a user.
     """
+    # TODO: Must be authenticated to update user information.
     queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomUserSerializer
+
+
+class UserSettingView(generics.RetrieveUpdateAPIView):
+    """
+    View to retrieve or update the authenticated user's settings.
+    """
+    serializer_class = UserSettingSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return UserSetting.objects.get(user=self.request.user)
+    
 
 class UserSettingListCreateView(generics.ListCreateAPIView):
     """
