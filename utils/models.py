@@ -67,3 +67,5 @@ class FlaggedContentMixin(models.Model):
         if related_reports.count() >= THRESHOLD:
             self.is_flagged = True
             self.save()
+
+# utils/models.py
