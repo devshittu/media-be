@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.db.models import JSONField
 from authentication.models import CustomUser
+# from stories.models import Story
 from utils.models import SoftDeletableModel, TimestampedModel
 
 class UserSetting(SoftDeletableModel, TimestampedModel):
@@ -17,6 +18,16 @@ class UserSetting(SoftDeletableModel, TimestampedModel):
 
     def __str__(self):
         return f"{self.user.email}'s Settings"
+
+class UserFeedPosition(TimestampedModel):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    last_story_read = models.ForeignKey('stories.Story', on_delete=models.SET_NULL, null=True)
+
+
+    def update_position(self, story):
+        self.last_story_read = story
+        self.save()
+
 
 # TODO: it needs to be only created at not updated at.
 class Follow(SoftDeletableModel, TimestampedModel):
