@@ -18,3 +18,5 @@ class CustomPageNumberPagination(PageNumberPagination):
             'current_page': self.page.number,
             'results': data
         })
+
+# utils/pagination.py
