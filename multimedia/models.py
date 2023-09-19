@@ -5,6 +5,7 @@ import imageio
 from pydub import AudioSegment
 from django.core.exceptions import ValidationError
 from utils.models import SoftDeletableModel, TimestampedModel
+from django.core.files.storage import default_storage
 
 def validate_file_size(value):
     """Validate the size of the uploaded file."""
@@ -44,12 +45,14 @@ class Multimedia(SoftDeletableModel, TimestampedModel):
     def optimize_multimedia(self):
         """Optimize the multimedia file."""
         if self.media_type == 'photo':
-            img = Image.open(self.file.path)
-            img = img.convert('RGB')
-            if img.height > 3000 or img.width > 3000:
-                output_size = (3000, 3000)
-                img.thumbnail(output_size)
-            img.save(self.file.path, 'JPEG')
+            with default_storage.open(self.file.name, 'rb') as f:
+                img = Image.open(f)
+                img = img.convert('RGB')
+                if img.height > 3000 or img.width > 3000:
+                    output_size = (3000, 3000)
+                    img.thumbnail(output_size)
+                img.save(self.file.path, 'JPEG')
+
 
         elif self.media_type == 'audio':
             audio = AudioSegment.from_file(self.file.path, format="mp3")
@@ -59,14 +62,15 @@ class Multimedia(SoftDeletableModel, TimestampedModel):
     def create_thumbnail(self):
         """Generate a thumbnail for the multimedia."""
         if self.media_type == 'photo':
-            img = Image.open(self.file.path)
-            img.thumbnail((300, 300))
-            thumbnail_path = self.file.path.replace("media_files", "thumbnails")
-            img.save(thumbnail_path, "JPEG")
-            self.thumbnail.save(
-                thumbnail_path.split('/')[-1], 
-                open(thumbnail_path, 'rb')
-            )
+            with default_storage.open(self.file.name, 'rb') as f:
+                img = Image.open(f)
+                img.thumbnail((300, 300))
+                thumbnail_path = self.file.name.replace("media_files", "thumbnails")
+                img.save(default_storage.path(thumbnail_path), "JPEG")
+                self.thumbnail.save(
+                    thumbnail_path.split('/')[-1], 
+                    default_storage.open(thumbnail_path, 'rb')
+                )
 
         elif self.media_type == 'video':
             reader = imageio.get_reader(self.file.path)
@@ -84,6 +88,10 @@ class Multimedia(SoftDeletableModel, TimestampedModel):
         self.optimize_multimedia()
         self.create_thumbnail()
         super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Story Multimedia'
+        verbose_name_plural = 'Stories Multimedia'
 
     def __str__(self):
         return f"{self.media_type} by {self.user.email} for story {self.story.id}"
