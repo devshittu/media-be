@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from autoslug import AutoSlugField
+from .managers import StoryManager
 from utils.managers import SoftDeleteManager, ActiveUnflaggedManager
 from feedback.managers import ReportManager
 from utils.models import SoftDeletableModel, TimestampedModel, FlaggedContentMixin
@@ -24,17 +25,18 @@ class Category(SoftDeletableModel, TimestampedModel):
 
 class Story(FlaggedContentMixin, SoftDeletableModel, TimestampedModel):
     """Model representing a user's story."""
-    title = models.CharField(max_length=70)
-    slug = AutoSlugField(populate_from='title', unique=True, always_update=True, db_index=True)
+    title = models.CharField(max_length=100)
+    slug = AutoSlugField(populate_from='title', unique=True, always_update=True, db_index=True, max_length=100)
     body = models.TextField(max_length=500)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='stories')
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, db_index=True)
     parent_story = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True, related_name='child_stories', db_index=True)
     source_link = models.URLField(blank=True, null=True, help_text="URL where the full story can be read.")
     event_occurred_at = models.DateTimeField(blank=True, null=True, db_index=True, help_text="Date and time when the event/incident occurred.")
     event_reported_at = models.DateTimeField(blank=True, null=True, db_index=True, auto_now_add=True, help_text="Date and time when the event/incident was reported to the system.")
 
-    objects = models.Manager()  # Default manager
+    # objects = models.Manager()  # Default manager
+    objects = StoryManager()
     active_objects = SoftDeleteManager()  # For filtering soft-deleted items
     report_objects = ReportManager()  # For filtering flagged items
     # active_unflagged_objects = StoryManager()  # For filtering both soft-deleted and flagged items
@@ -119,6 +121,7 @@ class Bookmark(SoftDeletableModel, TimestampedModel):
         ('Save', 'Save')
     ]
 
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='bookmarks')
     bookmark_category = models.CharField(max_length=50, choices=BOOKMARK_CATEGORIES, default='Read Later')
     note = models.TextField(null=True, blank=True)
