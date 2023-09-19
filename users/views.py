@@ -1,10 +1,17 @@
-from rest_framework import generics, filters
-from .models import UserSetting, Follow
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, filters, status
+from .models import UserSetting, Follow, UserFeedPosition
 from .serializers import UserSettingSerializer, FollowSerializer
 from authentication.serializers import CustomUserSerializer
 from rest_framework import permissions
 from authentication.models import CustomUser
 from utils.mixins import SoftDeleteMixin
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from stories.models import Story
+
+
 
 class UserListCreateView(generics.ListCreateAPIView):
     """
@@ -40,6 +47,18 @@ class UserSettingListCreateView(generics.ListCreateAPIView):
     """
     queryset = UserSetting.objects.all()
     serializer_class = UserSettingSerializer
+
+
+class UpdateFeedPositionView(APIView):
+    
+    def patch(self, request, *args, **kwargs):
+        story_id = request.data.get('story_id')
+        story = get_object_or_404(Story, id=story_id)
+
+        feed_position, created = UserFeedPosition.objects.get_or_create(user=request.user)
+        feed_position.update_position(story)
+
+        return Response({"message": "Position updated successfully."}, status=status.HTTP_200_OK)
 
 class UserFollowersListView(generics.ListAPIView):
     serializer_class = FollowSerializer
