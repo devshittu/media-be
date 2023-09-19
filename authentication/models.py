@@ -4,9 +4,7 @@ from django.utils import timezone
 from django.dispatch import receiver
 from django.contrib.postgres.fields import ArrayField
 from django.db.models.signals import post_save
-from utils.models import SoftDeletableModel, TimestampedModel, FlaggedContentMixin
-
-
+from utils.models import SoftDeletableModel, TimestampedModel
 
 # Custom user manager for email-based authentication
 class CustomUserManager(BaseUserManager):
@@ -35,7 +33,7 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
-class CustomUser(AbstractUser, SoftDeletableModel, TimestampedModel):
+class CustomUser(AbstractUser):
     """
     Custom user model that matches the provided data structure.
     """
@@ -44,9 +42,6 @@ class CustomUser(AbstractUser, SoftDeletableModel, TimestampedModel):
     
     name = models.CharField(max_length=255)  # New field for the full name of the user.
     
-    # 'last_login' is already provided by AbstractUser.
-    
-    # For roles, we can use a ManyToMany relationship with a Role model.
     ROLE_CHOICES = [
         ('reader', 'Reader'),
         ('writer', 'Writer'),
@@ -59,8 +54,6 @@ class CustomUser(AbstractUser, SoftDeletableModel, TimestampedModel):
         default=list,
         blank=True
     )
-    # roles = models.ManyToManyField('Role', related_name='users')
-    
     email = models.CharField(max_length=50, unique=True)
     username = models.CharField(max_length=30, unique=True)
     avatar_url = models.URLField(blank=True, null=True)  # URL for the user's avatar.
