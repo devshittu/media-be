@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserSetting, Follow
+from .models import UserSetting, Follow, UserFeedPosition
 import json
 
 class UserSettingAdmin(admin.ModelAdmin):
@@ -28,5 +28,13 @@ class FollowAdmin(admin.ModelAdmin):
     search_fields = ('follower__username', 'followed__username')
     list_filter = ('deleted_at', 'created_at')  # Filter by soft-deleted items and creation date
 
+class UserFeedPositionAdmin(admin.ModelAdmin):
+    list_display = ('user', 'last_story_read', 'created_at', 'updated_at')
+    search_fields = ('user__email', 'user__username')
+    list_filter = ('created_at', 'updated_at')
+
 admin.site.register(UserSetting, UserSettingAdmin)
 admin.site.register(Follow, FollowAdmin)
+admin.site.register(UserFeedPosition, UserFeedPositionAdmin)
+
+# users/admin.py
