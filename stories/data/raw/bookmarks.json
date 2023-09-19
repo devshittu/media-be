@@ -1,0 +1,902 @@
+[
+    {
+        "id": 1,
+        "user": 20,
+        "story": 49,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 1",
+        "created_at": "2023-09-19T15:34:17.515504+00:00",
+        "updated_at": "2023-09-19T15:34:17.515513+00:00"
+    },
+    {
+        "id": 2,
+        "user": 5,
+        "story": 96,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 2",
+        "created_at": "2023-09-19T15:34:17.515532+00:00",
+        "updated_at": "2023-09-19T15:34:17.515532+00:00"
+    },
+    {
+        "id": 3,
+        "user": 2,
+        "story": 73,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 3",
+        "created_at": "2023-09-19T15:34:17.515539+00:00",
+        "updated_at": "2023-09-19T15:34:17.515540+00:00"
+    },
+    {
+        "id": 4,
+        "user": 9,
+        "story": 56,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 4",
+        "created_at": "2023-09-19T15:34:17.515545+00:00",
+        "updated_at": "2023-09-19T15:34:17.515546+00:00"
+    },
+    {
+        "id": 5,
+        "user": 12,
+        "story": 98,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 5",
+        "created_at": "2023-09-19T15:34:17.515552+00:00",
+        "updated_at": "2023-09-19T15:34:17.515553+00:00"
+    },
+    {
+        "id": 6,
+        "user": 19,
+        "story": 125,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 6",
+        "created_at": "2023-09-19T15:34:17.515578+00:00",
+        "updated_at": "2023-09-19T15:34:17.515579+00:00"
+    },
+    {
+        "id": 7,
+        "user": 12,
+        "story": 36,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 7",
+        "created_at": "2023-09-19T15:34:17.515588+00:00",
+        "updated_at": "2023-09-19T15:34:17.515589+00:00"
+    },
+    {
+        "id": 8,
+        "user": 9,
+        "story": 87,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 8",
+        "created_at": "2023-09-19T15:34:17.515595+00:00",
+        "updated_at": "2023-09-19T15:34:17.515596+00:00"
+    },
+    {
+        "id": 9,
+        "user": 4,
+        "story": 135,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 9",
+        "created_at": "2023-09-19T15:34:17.515602+00:00",
+        "updated_at": "2023-09-19T15:34:17.515603+00:00"
+    },
+    {
+        "id": 10,
+        "user": 9,
+        "story": 139,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 10",
+        "created_at": "2023-09-19T15:34:17.515609+00:00",
+        "updated_at": "2023-09-19T15:34:17.515610+00:00"
+    },
+    {
+        "id": 11,
+        "user": 16,
+        "story": 18,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 11",
+        "created_at": "2023-09-19T15:34:17.515616+00:00",
+        "updated_at": "2023-09-19T15:34:17.515616+00:00"
+    },
+    {
+        "id": 12,
+        "user": 4,
+        "story": 75,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 12",
+        "created_at": "2023-09-19T15:34:17.515621+00:00",
+        "updated_at": "2023-09-19T15:34:17.515621+00:00"
+    },
+    {
+        "id": 13,
+        "user": 8,
+        "story": 10,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 13",
+        "created_at": "2023-09-19T15:34:17.515628+00:00",
+        "updated_at": "2023-09-19T15:34:17.515629+00:00"
+    },
+    {
+        "id": 14,
+        "user": 9,
+        "story": 100,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 14",
+        "created_at": "2023-09-19T15:34:17.515633+00:00",
+        "updated_at": "2023-09-19T15:34:17.515634+00:00"
+    },
+    {
+        "id": 15,
+        "user": 7,
+        "story": 44,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 15",
+        "created_at": "2023-09-19T15:34:17.515639+00:00",
+        "updated_at": "2023-09-19T15:34:17.515639+00:00"
+    },
+    {
+        "id": 16,
+        "user": 1,
+        "story": 101,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 16",
+        "created_at": "2023-09-19T15:34:17.515644+00:00",
+        "updated_at": "2023-09-19T15:34:17.515645+00:00"
+    },
+    {
+        "id": 17,
+        "user": 14,
+        "story": 56,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 17",
+        "created_at": "2023-09-19T15:34:17.515649+00:00",
+        "updated_at": "2023-09-19T15:34:17.515650+00:00"
+    },
+    {
+        "id": 18,
+        "user": 19,
+        "story": 115,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 18",
+        "created_at": "2023-09-19T15:34:17.515655+00:00",
+        "updated_at": "2023-09-19T15:34:17.515655+00:00"
+    },
+    {
+        "id": 19,
+        "user": 1,
+        "story": 32,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 19",
+        "created_at": "2023-09-19T15:34:17.515660+00:00",
+        "updated_at": "2023-09-19T15:34:17.515661+00:00"
+    },
+    {
+        "id": 20,
+        "user": 8,
+        "story": 51,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 20",
+        "created_at": "2023-09-19T15:34:17.515665+00:00",
+        "updated_at": "2023-09-19T15:34:17.515666+00:00"
+    },
+    {
+        "id": 21,
+        "user": 5,
+        "story": 145,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 21",
+        "created_at": "2023-09-19T15:34:17.515671+00:00",
+        "updated_at": "2023-09-19T15:34:17.515671+00:00"
+    },
+    {
+        "id": 22,
+        "user": 15,
+        "story": 145,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 22",
+        "created_at": "2023-09-19T15:34:17.515676+00:00",
+        "updated_at": "2023-09-19T15:34:17.515677+00:00"
+    },
+    {
+        "id": 23,
+        "user": 12,
+        "story": 114,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 23",
+        "created_at": "2023-09-19T15:34:17.515682+00:00",
+        "updated_at": "2023-09-19T15:34:17.515683+00:00"
+    },
+    {
+        "id": 24,
+        "user": 15,
+        "story": 75,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 24",
+        "created_at": "2023-09-19T15:34:17.515688+00:00",
+        "updated_at": "2023-09-19T15:34:17.515688+00:00"
+    },
+    {
+        "id": 25,
+        "user": 11,
+        "story": 116,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 25",
+        "created_at": "2023-09-19T15:34:17.515693+00:00",
+        "updated_at": "2023-09-19T15:34:17.515694+00:00"
+    },
+    {
+        "id": 26,
+        "user": 6,
+        "story": 51,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 26",
+        "created_at": "2023-09-19T15:34:17.515701+00:00",
+        "updated_at": "2023-09-19T15:34:17.515701+00:00"
+    },
+    {
+        "id": 27,
+        "user": 18,
+        "story": 44,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 27",
+        "created_at": "2023-09-19T15:34:17.515706+00:00",
+        "updated_at": "2023-09-19T15:34:17.515706+00:00"
+    },
+    {
+        "id": 28,
+        "user": 8,
+        "story": 62,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 28",
+        "created_at": "2023-09-19T15:34:17.515713+00:00",
+        "updated_at": "2023-09-19T15:34:17.515713+00:00"
+    },
+    {
+        "id": 29,
+        "user": 5,
+        "story": 4,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 29",
+        "created_at": "2023-09-19T15:34:17.515719+00:00",
+        "updated_at": "2023-09-19T15:34:17.515720+00:00"
+    },
+    {
+        "id": 30,
+        "user": 4,
+        "story": 54,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 30",
+        "created_at": "2023-09-19T15:34:17.515725+00:00",
+        "updated_at": "2023-09-19T15:34:17.515726+00:00"
+    },
+    {
+        "id": 31,
+        "user": 5,
+        "story": 78,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 31",
+        "created_at": "2023-09-19T15:34:17.515730+00:00",
+        "updated_at": "2023-09-19T15:34:17.515731+00:00"
+    },
+    {
+        "id": 32,
+        "user": 20,
+        "story": 55,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 32",
+        "created_at": "2023-09-19T15:34:17.515735+00:00",
+        "updated_at": "2023-09-19T15:34:17.515736+00:00"
+    },
+    {
+        "id": 33,
+        "user": 3,
+        "story": 55,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 33",
+        "created_at": "2023-09-19T15:34:17.515741+00:00",
+        "updated_at": "2023-09-19T15:34:17.515741+00:00"
+    },
+    {
+        "id": 34,
+        "user": 12,
+        "story": 111,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 34",
+        "created_at": "2023-09-19T15:34:17.515746+00:00",
+        "updated_at": "2023-09-19T15:34:17.515747+00:00"
+    },
+    {
+        "id": 35,
+        "user": 3,
+        "story": 68,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 35",
+        "created_at": "2023-09-19T15:34:17.515751+00:00",
+        "updated_at": "2023-09-19T15:34:17.515752+00:00"
+    },
+    {
+        "id": 36,
+        "user": 8,
+        "story": 102,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 36",
+        "created_at": "2023-09-19T15:34:17.515756+00:00",
+        "updated_at": "2023-09-19T15:34:17.515757+00:00"
+    },
+    {
+        "id": 37,
+        "user": 14,
+        "story": 89,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 37",
+        "created_at": "2023-09-19T15:34:17.515766+00:00",
+        "updated_at": "2023-09-19T15:34:17.515825+00:00"
+    },
+    {
+        "id": 38,
+        "user": 10,
+        "story": 16,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 38",
+        "created_at": "2023-09-19T15:34:17.515832+00:00",
+        "updated_at": "2023-09-19T15:34:17.515832+00:00"
+    },
+    {
+        "id": 39,
+        "user": 11,
+        "story": 103,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 39",
+        "created_at": "2023-09-19T15:34:17.515842+00:00",
+        "updated_at": "2023-09-19T15:34:17.515842+00:00"
+    },
+    {
+        "id": 40,
+        "user": 16,
+        "story": 134,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 40",
+        "created_at": "2023-09-19T15:34:17.515847+00:00",
+        "updated_at": "2023-09-19T15:34:17.515847+00:00"
+    },
+    {
+        "id": 41,
+        "user": 6,
+        "story": 79,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 41",
+        "created_at": "2023-09-19T15:34:17.515852+00:00",
+        "updated_at": "2023-09-19T15:34:17.515853+00:00"
+    },
+    {
+        "id": 42,
+        "user": 7,
+        "story": 12,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 42",
+        "created_at": "2023-09-19T15:34:17.515858+00:00",
+        "updated_at": "2023-09-19T15:34:17.515858+00:00"
+    },
+    {
+        "id": 43,
+        "user": 5,
+        "story": 65,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 43",
+        "created_at": "2023-09-19T15:34:17.515864+00:00",
+        "updated_at": "2023-09-19T15:34:17.515865+00:00"
+    },
+    {
+        "id": 44,
+        "user": 12,
+        "story": 74,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 44",
+        "created_at": "2023-09-19T15:34:17.515869+00:00",
+        "updated_at": "2023-09-19T15:34:17.515870+00:00"
+    },
+    {
+        "id": 45,
+        "user": 11,
+        "story": 73,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 45",
+        "created_at": "2023-09-19T15:34:17.515875+00:00",
+        "updated_at": "2023-09-19T15:34:17.515875+00:00"
+    },
+    {
+        "id": 46,
+        "user": 1,
+        "story": 68,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 46",
+        "created_at": "2023-09-19T15:34:17.515880+00:00",
+        "updated_at": "2023-09-19T15:34:17.515880+00:00"
+    },
+    {
+        "id": 47,
+        "user": 3,
+        "story": 36,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 47",
+        "created_at": "2023-09-19T15:34:17.515885+00:00",
+        "updated_at": "2023-09-19T15:34:17.515886+00:00"
+    },
+    {
+        "id": 48,
+        "user": 4,
+        "story": 80,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 48",
+        "created_at": "2023-09-19T15:34:17.515890+00:00",
+        "updated_at": "2023-09-19T15:34:17.515891+00:00"
+    },
+    {
+        "id": 49,
+        "user": 16,
+        "story": 133,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 49",
+        "created_at": "2023-09-19T15:34:17.515895+00:00",
+        "updated_at": "2023-09-19T15:34:17.515896+00:00"
+    },
+    {
+        "id": 50,
+        "user": 4,
+        "story": 65,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 50",
+        "created_at": "2023-09-19T15:34:17.515903+00:00",
+        "updated_at": "2023-09-19T15:34:17.515903+00:00"
+    },
+    {
+        "id": 51,
+        "user": 17,
+        "story": 51,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 51",
+        "created_at": "2023-09-19T15:34:17.515909+00:00",
+        "updated_at": "2023-09-19T15:34:17.515910+00:00"
+    },
+    {
+        "id": 52,
+        "user": 9,
+        "story": 99,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 52",
+        "created_at": "2023-09-19T15:34:17.515915+00:00",
+        "updated_at": "2023-09-19T15:34:17.515916+00:00"
+    },
+    {
+        "id": 53,
+        "user": 1,
+        "story": 76,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 53",
+        "created_at": "2023-09-19T15:34:17.515922+00:00",
+        "updated_at": "2023-09-19T15:34:17.515923+00:00"
+    },
+    {
+        "id": 54,
+        "user": 17,
+        "story": 82,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 54",
+        "created_at": "2023-09-19T15:34:17.515928+00:00",
+        "updated_at": "2023-09-19T15:34:17.515929+00:00"
+    },
+    {
+        "id": 55,
+        "user": 5,
+        "story": 15,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 55",
+        "created_at": "2023-09-19T15:34:17.515934+00:00",
+        "updated_at": "2023-09-19T15:34:17.515934+00:00"
+    },
+    {
+        "id": 56,
+        "user": 1,
+        "story": 74,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 56",
+        "created_at": "2023-09-19T15:34:17.515939+00:00",
+        "updated_at": "2023-09-19T15:34:17.515940+00:00"
+    },
+    {
+        "id": 57,
+        "user": 20,
+        "story": 85,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 57",
+        "created_at": "2023-09-19T15:34:17.515944+00:00",
+        "updated_at": "2023-09-19T15:34:17.515945+00:00"
+    },
+    {
+        "id": 58,
+        "user": 13,
+        "story": 97,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 58",
+        "created_at": "2023-09-19T15:34:17.515949+00:00",
+        "updated_at": "2023-09-19T15:34:17.515950+00:00"
+    },
+    {
+        "id": 59,
+        "user": 16,
+        "story": 98,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 59",
+        "created_at": "2023-09-19T15:34:17.515954+00:00",
+        "updated_at": "2023-09-19T15:34:17.515955+00:00"
+    },
+    {
+        "id": 60,
+        "user": 17,
+        "story": 77,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 60",
+        "created_at": "2023-09-19T15:34:17.515960+00:00",
+        "updated_at": "2023-09-19T15:34:17.515960+00:00"
+    },
+    {
+        "id": 61,
+        "user": 13,
+        "story": 84,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 61",
+        "created_at": "2023-09-19T15:34:17.515965+00:00",
+        "updated_at": "2023-09-19T15:34:17.515966+00:00"
+    },
+    {
+        "id": 62,
+        "user": 18,
+        "story": 68,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 62",
+        "created_at": "2023-09-19T15:34:17.515971+00:00",
+        "updated_at": "2023-09-19T15:34:17.515971+00:00"
+    },
+    {
+        "id": 63,
+        "user": 4,
+        "story": 16,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 63",
+        "created_at": "2023-09-19T15:34:17.515976+00:00",
+        "updated_at": "2023-09-19T15:34:17.515976+00:00"
+    },
+    {
+        "id": 64,
+        "user": 4,
+        "story": 143,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 64",
+        "created_at": "2023-09-19T15:34:17.515982+00:00",
+        "updated_at": "2023-09-19T15:34:17.515983+00:00"
+    },
+    {
+        "id": 65,
+        "user": 6,
+        "story": 118,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 65",
+        "created_at": "2023-09-19T15:34:17.515988+00:00",
+        "updated_at": "2023-09-19T15:34:17.515989+00:00"
+    },
+    {
+        "id": 66,
+        "user": 19,
+        "story": 94,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 66",
+        "created_at": "2023-09-19T15:34:17.515995+00:00",
+        "updated_at": "2023-09-19T15:34:17.515996+00:00"
+    },
+    {
+        "id": 67,
+        "user": 19,
+        "story": 106,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 67",
+        "created_at": "2023-09-19T15:34:17.516001+00:00",
+        "updated_at": "2023-09-19T15:34:17.516001+00:00"
+    },
+    {
+        "id": 68,
+        "user": 8,
+        "story": 16,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 68",
+        "created_at": "2023-09-19T15:34:17.516006+00:00",
+        "updated_at": "2023-09-19T15:34:17.516006+00:00"
+    },
+    {
+        "id": 69,
+        "user": 13,
+        "story": 44,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 69",
+        "created_at": "2023-09-19T15:34:17.516011+00:00",
+        "updated_at": "2023-09-19T15:34:17.516011+00:00"
+    },
+    {
+        "id": 70,
+        "user": 18,
+        "story": 113,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 70",
+        "created_at": "2023-09-19T15:34:17.516016+00:00",
+        "updated_at": "2023-09-19T15:34:17.516017+00:00"
+    },
+    {
+        "id": 71,
+        "user": 10,
+        "story": 91,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 71",
+        "created_at": "2023-09-19T15:34:17.516026+00:00",
+        "updated_at": "2023-09-19T15:34:17.516026+00:00"
+    },
+    {
+        "id": 72,
+        "user": 14,
+        "story": 144,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 72",
+        "created_at": "2023-09-19T15:34:17.516031+00:00",
+        "updated_at": "2023-09-19T15:34:17.516032+00:00"
+    },
+    {
+        "id": 73,
+        "user": 20,
+        "story": 68,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 73",
+        "created_at": "2023-09-19T15:34:17.516037+00:00",
+        "updated_at": "2023-09-19T15:34:17.516037+00:00"
+    },
+    {
+        "id": 74,
+        "user": 10,
+        "story": 32,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 74",
+        "created_at": "2023-09-19T15:34:17.516042+00:00",
+        "updated_at": "2023-09-19T15:34:17.516043+00:00"
+    },
+    {
+        "id": 75,
+        "user": 12,
+        "story": 64,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 75",
+        "created_at": "2023-09-19T15:34:17.516047+00:00",
+        "updated_at": "2023-09-19T15:34:17.516048+00:00"
+    },
+    {
+        "id": 76,
+        "user": 14,
+        "story": 60,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 76",
+        "created_at": "2023-09-19T15:34:17.516053+00:00",
+        "updated_at": "2023-09-19T15:34:17.516053+00:00"
+    },
+    {
+        "id": 77,
+        "user": 7,
+        "story": 81,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 77",
+        "created_at": "2023-09-19T15:34:17.516058+00:00",
+        "updated_at": "2023-09-19T15:34:17.516058+00:00"
+    },
+    {
+        "id": 78,
+        "user": 9,
+        "story": 93,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 78",
+        "created_at": "2023-09-19T15:34:17.516064+00:00",
+        "updated_at": "2023-09-19T15:34:17.516065+00:00"
+    },
+    {
+        "id": 79,
+        "user": 15,
+        "story": 17,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 79",
+        "created_at": "2023-09-19T15:34:17.516072+00:00",
+        "updated_at": "2023-09-19T15:34:17.516073+00:00"
+    },
+    {
+        "id": 80,
+        "user": 18,
+        "story": 45,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 80",
+        "created_at": "2023-09-19T15:34:17.516078+00:00",
+        "updated_at": "2023-09-19T15:34:17.516079+00:00"
+    },
+    {
+        "id": 81,
+        "user": 9,
+        "story": 110,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 81",
+        "created_at": "2023-09-19T15:34:17.516084+00:00",
+        "updated_at": "2023-09-19T15:34:17.516084+00:00"
+    },
+    {
+        "id": 82,
+        "user": 19,
+        "story": 102,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 82",
+        "created_at": "2023-09-19T15:34:17.516088+00:00",
+        "updated_at": "2023-09-19T15:34:17.516089+00:00"
+    },
+    {
+        "id": 83,
+        "user": 1,
+        "story": 47,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 83",
+        "created_at": "2023-09-19T15:34:17.516094+00:00",
+        "updated_at": "2023-09-19T15:34:17.516094+00:00"
+    },
+    {
+        "id": 84,
+        "user": 1,
+        "story": 110,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 84",
+        "created_at": "2023-09-19T15:34:17.516099+00:00",
+        "updated_at": "2023-09-19T15:34:17.516099+00:00"
+    },
+    {
+        "id": 85,
+        "user": 14,
+        "story": 80,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 85",
+        "created_at": "2023-09-19T15:34:17.516104+00:00",
+        "updated_at": "2023-09-19T15:34:17.516104+00:00"
+    },
+    {
+        "id": 86,
+        "user": 20,
+        "story": 29,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 86",
+        "created_at": "2023-09-19T15:34:17.516109+00:00",
+        "updated_at": "2023-09-19T15:34:17.516110+00:00"
+    },
+    {
+        "id": 87,
+        "user": 19,
+        "story": 6,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 87",
+        "created_at": "2023-09-19T15:34:17.516114+00:00",
+        "updated_at": "2023-09-19T15:34:17.516115+00:00"
+    },
+    {
+        "id": 88,
+        "user": 11,
+        "story": 32,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 88",
+        "created_at": "2023-09-19T15:34:17.516119+00:00",
+        "updated_at": "2023-09-19T15:34:17.516120+00:00"
+    },
+    {
+        "id": 89,
+        "user": 18,
+        "story": 41,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 89",
+        "created_at": "2023-09-19T15:34:17.516124+00:00",
+        "updated_at": "2023-09-19T15:34:17.516125+00:00"
+    },
+    {
+        "id": 90,
+        "user": 1,
+        "story": 18,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 90",
+        "created_at": "2023-09-19T15:34:17.516129+00:00",
+        "updated_at": "2023-09-19T15:34:17.516130+00:00"
+    },
+    {
+        "id": 91,
+        "user": 19,
+        "story": 61,
+        "bookmark_category": "Read Later",
+        "note": "Some note about the story 91",
+        "created_at": "2023-09-19T15:34:17.516134+00:00",
+        "updated_at": "2023-09-19T15:34:17.516135+00:00"
+    },
+    {
+        "id": 92,
+        "user": 10,
+        "story": 29,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 92",
+        "created_at": "2023-09-19T15:34:17.516144+00:00",
+        "updated_at": "2023-09-19T15:34:17.516145+00:00"
+    },
+    {
+        "id": 93,
+        "user": 15,
+        "story": 109,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 93",
+        "created_at": "2023-09-19T15:34:17.516150+00:00",
+        "updated_at": "2023-09-19T15:34:17.516151+00:00"
+    },
+    {
+        "id": 94,
+        "user": 12,
+        "story": 6,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 94",
+        "created_at": "2023-09-19T15:34:17.516156+00:00",
+        "updated_at": "2023-09-19T15:34:17.516156+00:00"
+    },
+    {
+        "id": 95,
+        "user": 9,
+        "story": 117,
+        "bookmark_category": "Favorites",
+        "note": "Some note about the story 95",
+        "created_at": "2023-09-19T15:34:17.516161+00:00",
+        "updated_at": "2023-09-19T15:34:17.516161+00:00"
+    },
+    {
+        "id": 96,
+        "user": 17,
+        "story": 135,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 96",
+        "created_at": "2023-09-19T15:34:17.516166+00:00",
+        "updated_at": "2023-09-19T15:34:17.516167+00:00"
+    },
+    {
+        "id": 97,
+        "user": 16,
+        "story": 100,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 97",
+        "created_at": "2023-09-19T15:34:17.516171+00:00",
+        "updated_at": "2023-09-19T15:34:17.516172+00:00"
+    },
+    {
+        "id": 98,
+        "user": 10,
+        "story": 18,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 98",
+        "created_at": "2023-09-19T15:34:17.516182+00:00",
+        "updated_at": "2023-09-19T15:34:17.516183+00:00"
+    },
+    {
+        "id": 99,
+        "user": 18,
+        "story": 8,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 99",
+        "created_at": "2023-09-19T15:34:17.516188+00:00",
+        "updated_at": "2023-09-19T15:34:17.516188+00:00"
+    },
+    {
+        "id": 100,
+        "user": 13,
+        "story": 108,
+        "bookmark_category": "Save",
+        "note": "Some note about the story 100",
+        "created_at": "2023-09-19T15:34:17.516193+00:00",
+        "updated_at": "2023-09-19T15:34:17.516193+00:00"
+    }
+]
