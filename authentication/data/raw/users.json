@@ -1,0 +1,402 @@
+[
+  {
+    "id": "1",
+    "username": "testuser1",
+    "email": "user1@test.com",
+    "password": "user1@test.com",
+    "name": "User One",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "2",
+    "username": "testuser2",
+    "email": "testuser2@test.com",
+    "password": "testuser2@test.com",
+    "name": "User Two",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "3",
+    "username": "testuser3",
+    "email": "testuser3@test.com",
+    "password": "testuser3@test.com",
+    "name": "User Three",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "4",
+    "username": "testuser4",
+    "email": "testuser4@test.com",
+    "password": "testuser4@test.com",
+    "name": "User Four",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "5",
+    "username": "testuser5",
+    "email": "testuser5@test.com",
+    "password": "testuser5@test.com",
+    "name": "User Five",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "6",
+    "username": "testuser6",
+    "email": "testuser6@test.com",
+    "password": "testuser6@test.com",
+    "name": "User Six",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "7",
+    "username": "testuser7",
+    "email": "testuser7@test.com",
+    "password": "testuser7@test.com",
+    "name": "User Seven",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "8",
+    "username": "testuser8",
+    "email": "testuser8@test.com",
+    "password": "testuser8@test.com",
+    "name": "User Eight",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "9",
+    "username": "testuser9",
+    "email": "testuser9@test.com",
+    "password": "testuser9@test.com",
+    "name": "User Nine",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "10",
+    "username": "testuser10",
+    "email": "testuser10@test.com",
+    "password": "testuser10@test.com",
+    "name": "User Ten",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "11",
+    "username": "testuser11",
+    "email": "testuser11@test.com",
+    "password": "testuser11@test.com",
+    "name": "User Eleven",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "12",
+    "username": "testuser12",
+    "email": "testuser12@test.com",
+    "password": "testuser12@test.com",
+    "name": "User Twelve",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "13",
+    "username": "testuser13",
+    "email": "testuser13@test.com",
+    "password": "testuser13@test.com",
+    "name": "User Thirteen",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "14",
+    "username": "testuser14",
+    "email": "testuser14@test.com",
+    "password": "testuser14@test.com",
+    "name": "User Fourteen",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "15",
+    "username": "testuser15",
+    "email": "testuser15@test.com",
+    "password": "testuser15@test.com",
+    "name": "User Fifteen",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "16",
+    "username": "testuser16",
+    "email": "testuser16@test.com",
+    "password": "testuser16@test.com",
+    "name": "User Sixteen",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "17",
+    "username": "testuser17",
+    "email": "testuser17@test.com",
+    "password": "testuser17@test.com",
+    "name": "User Seventeen",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "18",
+    "username": "testuser18",
+    "email": "testuser18@test.com",
+    "password": "testuser18@test.com",
+    "name": "User Eighteen",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "19",
+    "username": "testuser19",
+    "email": "testuser19@test.com",
+    "password": "testuser19@test.com",
+    "name": "User Nineteen",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  },
+  {
+    "id": "20",
+    "username": "testuser20",
+    "email": "testuser20@test.com",
+    "password": "testuser20@test.com",
+    "name": "User Twenty",
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
+  }
+]
