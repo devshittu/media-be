@@ -1,0 +1,102 @@
+[
+  {
+    "id": "1",
+    "user": 1,
+    "last_story_read": 45
+  },
+  {
+    "id": "2",
+    "user": 2,
+    "last_story_read": 35
+  },
+  {
+    "id": "3",
+    "user": 3,
+    "last_story_read": 15
+  },
+  {
+    "id": "4",
+    "user": 4,
+    "last_story_read": 123
+  },
+  {
+    "id": "5",
+    "user": 5,
+    "last_story_read": 95
+  },
+  {
+    "id": "6",
+    "user": 6,
+    "last_story_read": 85
+  },
+  {
+    "id": "7",
+    "user": 7,
+    "last_story_read": 75
+  },
+  {
+    "id": "8",
+    "user": 8,
+    "last_story_read": 65
+  },
+  {
+    "id": "9",
+    "user": 9,
+    "last_story_read": 55
+  },
+  {
+    "id": "10",
+    "user": 10,
+    "last_story_read": 45
+  },
+  {
+    "id": "11",
+    "user": 11,
+    "last_story_read": 33
+  },
+  {
+    "id": "12",
+    "user": 12,
+    "last_story_read": 125
+  },
+  {
+    "id": "13",
+    "user": 13,
+    "last_story_read": 85
+  },
+  {
+    "id": "14",
+    "user": 14,
+    "last_story_read": 95
+  },
+  {
+    "id": "15",
+    "user": 15,
+    "last_story_read": 45
+  },
+  {
+    "id": "16",
+    "user": 16,
+    "last_story_read": 55
+  },
+  {
+    "id": "17",
+    "user": 17,
+    "last_story_read": 45
+  },
+  {
+    "id": "18",
+    "user": 18,
+    "last_story_read": 65
+  },
+  {
+    "id": "19",
+    "user": 19,
+    "last_story_read": 125
+  },
+  {
+    "id": "20",
+    "user": 20,
+    "last_story_read": 15
+  }
+]
