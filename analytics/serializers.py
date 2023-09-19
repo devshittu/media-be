@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from utils.serializers import UnixTimestampDateTimeField
 from .models import (
     StoryInteraction, DeviceData, LocationData, 
     ReferralData, AccessibilityTool, UserNotInterested, UserSession
@@ -22,18 +23,7 @@ class ViewTimelineMetadataSerializer(serializers.Serializer):
 # ... add more metadata serializers as needed ...
 
 
-# class DeviceDataSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = DeviceData
-#         fields = '__all__'
-
-# class LocationDataSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = LocationData
-#         fields = '__all__'
-
-
-class DeviceDataSerializer(serializers.ModelSerializer):
+class DeviceDataSerializer(UnixTimestampDateTimeField):
     """
     Serializer for the DeviceData model.
     This serializer provides a representation of the device data associated with a user's session.
@@ -43,7 +33,7 @@ class DeviceDataSerializer(serializers.ModelSerializer):
         fields = ['device_type', 'operating_system', 'browser', 'screen_resolution', 'connection_type']
 
 
-class LocationDataSerializer(serializers.ModelSerializer):
+class LocationDataSerializer(UnixTimestampDateTimeField):
     """
     Serializer for the LocationData model.
     This serializer provides a representation of the location data associated with a user's session.
@@ -53,17 +43,17 @@ class LocationDataSerializer(serializers.ModelSerializer):
         fields = ['ip_address', 'geolocation', 'time_zone']
 
 
-class ReferralDataSerializer(serializers.ModelSerializer):
+class ReferralDataSerializer(UnixTimestampDateTimeField):
     class Meta:
         model = ReferralData
         fields = '__all__'
 
-class AccessibilityToolSerializer(serializers.ModelSerializer):
+class AccessibilityToolSerializer(UnixTimestampDateTimeField):
     class Meta:
         model = AccessibilityTool
         fields = '__all__'
 
-class StoryInteractionSerializer(serializers.ModelSerializer):
+class StoryInteractionSerializer(UnixTimestampDateTimeField):
     device_data = DeviceDataSerializer()
     location_data = LocationDataSerializer()
     referral_data = ReferralDataSerializer()
@@ -99,7 +89,7 @@ class StoryInteractionSerializer(serializers.ModelSerializer):
     
 
 
-class UserNotInterestedSerializer(serializers.ModelSerializer):
+class UserNotInterestedSerializer(UnixTimestampDateTimeField):
     """
     Serializer for the UserNotInterested model.
     This serializer provides a representation of the data for stories users are not interested in.
@@ -121,7 +111,7 @@ class UserNotInterestedSerializer(serializers.ModelSerializer):
 
 
 
-class UserSessionSerializer(serializers.ModelSerializer):
+class UserSessionSerializer(UnixTimestampDateTimeField):
     """
     Serializer for the UserSession model.
     This serializer provides a representation of a user's session, including associated device and location data.
