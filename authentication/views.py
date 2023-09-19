@@ -1,39 +1,37 @@
 from django.contrib.auth import get_user_model
-from .serializers import UserSerializer
-from rest_framework import generics, permissions
-from rest_framework.response import Response
 from .models import CustomUser
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def set_online_status(request):
-#     """
-#     API endpoint to set the user's status to online.
-#     """
-#     request.user.set_online()
-#     return Response({"status": "User is now online."})
+from rest_framework import generics, status, permissions
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .serializers import CustomUserSerializer, CustomUserRegistrationSerializer
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def set_offline_status(request):
-#     """
-#     API endpoint to set the user's status to offline.
-#     """
-#     request.user.set_offline()
-#     return Response({"status": "User is now offline."})
+class RegisterView(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserRegistrationSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        return serializer.save()
 
 class UserListView(generics.ListCreateAPIView):
     """
     API endpoint that allows users to be viewed or created.
     """
     queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomUserSerializer
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     API endpoint that allows a single user to be viewed, edited, or deleted.
     """
     queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomUserSerializer
 
 
 
@@ -42,7 +40,7 @@ class CompleteSetupView(generics.UpdateAPIView):
     API endpoint to mark the user's setup as complete.
     """
     queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomUserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def update(self, request, *args, **kwargs):
@@ -50,3 +48,15 @@ class CompleteSetupView(generics.UpdateAPIView):
         user.has_completed_setup = True
         user.save()
         return Response({"status": "Account setup marked as complete."})
+
+class MeView(generics.RetrieveUpdateAPIView):
+    """
+    View to retrieve or update the authenticated user's information.
+    """
+    serializer_class = CustomUserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+    
+# authentication/views.py
