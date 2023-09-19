@@ -32,19 +32,19 @@ restore_stories.short_description = "Restore soft-deleted stories"
 
 # @admin.register(Story)
 class StoryAdmin(admin.ModelAdmin):
-    list_display = ['title', 'user', 'category', 'event_occurred_at', 'event_reported_at', 'likes_count', 'dislikes_count', 'is_flagged', 'deleted_at']
+    list_display = ['title', 'user', 'slug', 'category', 'event_occurred_at', 'event_reported_at', 'likes_count', 'dislikes_count', 'is_flagged', 'deleted_at']
     list_filter = [ActiveUnflaggedFilter, 'user', 'category', 'event_occurred_at', 'event_reported_at']
     actions = [unflag_stories, restore_stories]
     search_fields = ('title', 'body')
     # list_filter = ('user', 'category', 'event_occurred_at', 'event_reported_at')
-    prepopulated_fields = {'slug': ('title',)}
+    # prepopulated_fields = {'slug': ('title',)}
 
 
 # @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['title', 'description', 'slug']
     search_fields = ('title', 'description')
-    prepopulated_fields = {'slug': ('title',)}
+    # prepopulated_fields = {'slug': ('title',)}
 
 class LikeInline(admin.TabularInline):
     model = Like
