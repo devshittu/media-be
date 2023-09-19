@@ -45,26 +45,19 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
-    # 'rest_auth'
-
-    # 'django.contrib.sites',
-    # 'allauth',
-    # 'allauth.account',
-    # 'rest_auth.registration',
     'rest_framework_simplejwt',
 
     'ckeditor',
     # 'ckeditor_uploader',  # If you want image uploading
-    
-    
+
     # App
     'authentication',
-    'users',
+    'users.apps.UsersConfig',
     'system_messaging',
     'multimedia',
     'analytics',
     'stories',
-
+    'autoseed',
 ]
 
 MIDDLEWARE = [
@@ -171,11 +164,6 @@ ANCESTORS_PER_PAGE = config('ANCESTORS_PER_PAGE', default=4, cast=int)
 DESCENDANTS_PER_PAGE = config('DESCENDANTS_PER_PAGE', default=5, cast=int)
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     'dj_rest_auth.authentication.AllAuthJWTAuthentication',
-    #     'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-    # ),
-
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         # 'rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication',
@@ -184,7 +172,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': DEFAULT_PAGE_SIZE,  # Adjust this number based on how many records you want per page
     'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.OrderingFilter'],
     'EXCEPTION_HANDLER': 'utils.handlers.custom_exception_handler',
-    
 }
 
 
@@ -206,6 +193,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+    'ROTATE_REFRESH_TOKENS': False,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
 }
 
 # environment variables
@@ -230,3 +226,13 @@ CKEDITOR_CONFIGS = {
 
 # If you're using ckeditor_uploader
 CKEDITOR_UPLOAD_PATH = 'uploads/'
+
+
+# media roots
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'
+# Test runner
+TEST_RUNNER = 'pytest_django.runner.DjangoTestSuiteRunner'
+
+
+# core/settings.py
