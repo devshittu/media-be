@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import Follow
+from .models import Follow, UserSetting
 from authentication.serializers import CustomUserSerializer
+from utils.serializers import UnixTimestampModelSerializer
 
 class NotificationSettingsDataSerializer(serializers.Serializer):
     account = serializers.IntegerField()
@@ -21,16 +22,16 @@ class SystemSettingsDataSerializer(serializers.Serializer):
 class PersonalSettingsDataSerializer(serializers.Serializer):
     favorite_categories = serializers.ListField(child=serializers.CharField())
 
-class UserSettingSerializer(serializers.Serializer):
+class UserSettingSerializer(UnixTimestampModelSerializer):
     user_id = serializers.UUIDField()
     system_settings = SystemSettingsDataSerializer()
     account_settings = AccountSettingsDataSerializer()
     notification_settings = SettingNotificationSerializer()
     personal_settings = PersonalSettingsDataSerializer()
-    last_updated = serializers.IntegerField()
-    created_at = serializers.IntegerField()
-    updated_at = serializers.IntegerField()
 
+    class Meta:
+        model = UserSetting
+        fields = '__all__'
 
     def validate_settings_data(data):
         serializer = UserSettingSerializer(data=data)
