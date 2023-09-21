@@ -1,14 +1,33 @@
 from django.apps import apps
 from django.core.management import call_command 
+from django.core.management.base import CommandError
 from django.core.management.base import BaseCommand
 from autoseed.utils.base_seed import BaseSeed
 import importlib
 import os
 
+
+class UnmigratedMigrationsError(CommandError):
+    pass
+
+def check_for_unmigrated_migrations():
+    # Capture the output of the showmigrations command
+    output = []
+    call_command('showmigrations', stdout=output.append, stderr=output.append)
+    output = "\n".join(output)
+
+    # Check for any lines that don't start with "[X]", which indicates an unmigrated migration
+    for line in output.splitlines():
+        if not line.startswith("[X]"):
+            raise UnmigratedMigrationsError("There are unmigrated migrations. Please run 'python manage.py migrate' before using autoseed.")
+
 class Command(BaseCommand):
     help = 'Automatically convert and seed data for all apps'
 
     def handle(self, *args, **kwargs):
+        # Check for unmigrated migrations
+        check_for_unmigrated_migrations()
+        
         retry_queue = []  # This will store BaseSeed subclasses that need to be retried
 
         def process_seed(app, seed_class):
