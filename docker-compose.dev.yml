@@ -30,9 +30,22 @@ services:
       - "POSTGRES_DB=mediabedb"
       - "POSTGRES_USER=mediabeuser"
       - "POSTGRES_PASSWORD=mediabepassword"
+  
+  neo4j:
+    image: neo4j:latest
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    environment:
+      - NEO4J_AUTH=neo4j/password
 
 volumes:
   postgres_data:
   media_volume: 
+  neo4j_data:
+  neo4j_logs:
 
 # docker-compose.dev.yml
