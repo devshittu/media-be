@@ -9,56 +9,62 @@ class Command(BaseCommand):
     help = 'Automatically convert and seed data for all apps'
 
     def handle(self, *args, **kwargs):
-        try:
-            # Log the start of the command
-            self.stdout.write(self.style.SUCCESS('Starting autoseed...'))
+        retry_queue = []  # This will store BaseSeed subclasses that need to be retried
 
-            for app in apps.get_app_configs():
-                # Log the current app being processed
-                self.stdout.write(self.style.SUCCESS(f'Checking app: {app.name}'))
+        def process_seed(app, seed_class):
+            self.stdout.write(self.style.SUCCESS(f'Processing model: {seed_class.__name__.replace("Seed", "")}'))
+            
+            # Create an instance of the seed class
+            seed_instance = seed_class()
+            
+            # Process the data
+            seed_instance.process_data(app.name, seed_class.__name__.replace("Seed", "").lower(), app.path)
+            self.stdout.write(self.style.SUCCESS(f"Processed data for {app.name}.{seed_class.__name__.replace('Seed', '')}"))
 
-                if os.path.exists(os.path.join(app.path, 'data')):
-                    # Log if data directory is found
-                    self.stdout.write(self.style.SUCCESS(f"Found 'data' directory in {app.name}"))
+            # Load the processed data into the database
+            try:
+                fixture_file = seed_instance.get_output_path(app.path)
+                call_command('loaddata', fixture_file)
+                self.stdout.write(self.style.SUCCESS(f"Loaded data from {fixture_file} into the database"))
+            except Exception as e:
+                # If there's an error, add the seed_class to the retry queue
+                retry_queue.append((app, seed_class))
+                self.stdout.write(self.style.WARNING(f"Error loading data for {app.name}.{seed_class.__name__}. Will retry later."))
 
-                    seed_module = importlib.import_module(f"{app.name}.seeds")
-                    for attr_name in dir(seed_module):
-                        attr = getattr(seed_module, attr_name)
-                        if isinstance(attr, type) and issubclass(attr, BaseSeed) and attr is not BaseSeed:
-                            # Log the current model being processed
-                            self.stdout.write(self.style.SUCCESS(f'Processing model: {attr_name.replace("Seed", "")}'))
-                            
-                            # Create an instance of the seed class
-                            seed_instance = attr()
-                            
-                            # Process the data
-                            seed_instance.process_data(app.name, attr_name.replace("Seed", "").lower(), app.path)
-                            self.stdout.write(self.style.SUCCESS(f"Processed data for {app.name}.{attr_name.replace('Seed', '')}"))
+        # Process all apps and their seeds
+        for app in apps.get_app_configs():
+            self.stdout.write(self.style.SUCCESS(f'Checking app: {app.name}'))
+            if os.path.exists(os.path.join(app.path, 'data')):
+                self.stdout.write(self.style.SUCCESS(f"Found 'data' directory in {app.name}"))
+                seed_module = importlib.import_module(f"{app.name}.seeds")
+                for attr_name in dir(seed_module):
+                    attr = getattr(seed_module, attr_name)
+                    if isinstance(attr, type) and issubclass(attr, BaseSeed) and attr is not BaseSeed:
+                        process_seed(app, attr)
+            else:
+                self.stdout.write(self.style.WARNING(f"No 'data' directory found in {app.name}"))
 
-                            # Load the processed data into the database
-                            fixture_file = seed_instance.get_output_path(app.path)
-                            call_command('loaddata', fixture_file)
-                            self.stdout.write(self.style.SUCCESS(f"Loaded data from {fixture_file} into the database"))
+        # Retry for seeds in the retry queue
+        max_retries = 3  # You can adjust this number based on your needs
+        for _ in range(max_retries):
+            if not retry_queue:
+                break  # If the retry queue is empty, we're done
 
-                            # attr.process_data(app.name, attr_name.replace("Seed", "").lower(), app.path)
-                            # self.stdout.write(self.style.SUCCESS(f"Processed data for {app.name}.{attr_name.replace('Seed', '')}"))
+            self.stdout.write(self.style.SUCCESS(f"Retrying for {len(retry_queue)} seeds..."))
+            seeds_to_retry = retry_queue.copy()
+            retry_queue.clear()  # Clear the retry queue for this iteration
 
+            for app, seed_class in seeds_to_retry:
+                process_seed(app, seed_class)
 
-                            # # Load the processed data into the database
-                            # fixture_file = attr.get_output_path(app.path)
-                            # call_command('loaddata', fixture_file)
-                            # self.stdout.write(self.style.SUCCESS(f"Loaded data from {fixture_file} into the database"))
+        if retry_queue:
+            # If there are still seeds left in the retry queue after all retries, log an error
+            failed_seeds = ', '.join([f"{app.name}.{seed_class.__name__}" for app, seed_class in retry_queue])
+            self.stdout.write(self.style.ERROR(f"Failed to load data for {failed_seeds} after {max_retries} retries."))
 
-                else:
-                    # Log if data directory is not found
-                    self.stdout.write(self.style.WARNING(f"No 'data' directory found in {app.name}"))
-
-            # Log the end of the command
-            self.stdout.write(self.style.SUCCESS('Autoseed completed!'))
-
-        except Exception as e:
-            # Log any exception that occurs
-            self.stdout.write(self.style.ERROR(f"An error occurred: {str(e)}"))
+        # Log the end of the command
+        self.stdout.write(self.style.SUCCESS('Autoseed completed!'))
 
 
-# autoseed/management/commands/autoseed.py
+
+# # autoseed/management/commands/autoseed.py
