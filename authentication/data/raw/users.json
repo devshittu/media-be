@@ -398,5 +398,26 @@
       "feed_url": "https://technologynews.com/feed",
       "logo_url": "https://technologynews.com/logo.png"
     }
+  },
+  {
+    "id": "21",
+    "username": "testuser21",
+    "email": "testuser21@test.com",
+    "password": "testuser21@test.com",
+    "name": "User Twenty-One",
+    "is_staff": true,
+    "created_at": 1679003634,
+    "updated_at": 1679003634,
+    "last_login": 1679003634,
+    "roles": [
+      "editor"
+    ],
+    "avatar_url": "https://example.com/user1.png",
+    "news_channel": {
+      "id": "4",
+      "name": "Technology News Channel",
+      "feed_url": "https://technologynews.com/feed",
+      "logo_url": "https://technologynews.com/logo.png"
+    }
   }
 ]

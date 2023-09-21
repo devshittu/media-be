@@ -39,6 +39,9 @@ class CustomUserSeed(BaseSeed):
         # Random has_completed_setup
         random_setup = random.choice([True, False])
 
+        # Check if is_staff is present in the item, default to False if not
+        is_staff_value = item.get('is_staff', False)
+
         return {
             'name': item['name'],
             'username': item['username'],
@@ -49,6 +52,7 @@ class CustomUserSeed(BaseSeed):
             'bio': random_bio,
             'has_completed_setup': random_setup,
             'last_activity': last_login_time.isoformat() if last_login_time else None,
+            'is_staff': is_staff_value  # Add the is_staff field here
         }
 
 # authentication/seeds.py
