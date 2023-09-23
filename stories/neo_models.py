@@ -7,7 +7,7 @@ from neomodel import (UniqueIdProperty, DateTimeProperty,
 
 class StoryNode(DjangoNode):
     node_id = UniqueIdProperty()
-    story_id = IntegerProperty()
+    story_id = IntegerProperty(unique_index=True)
     event_occurred_at = DateTimeProperty()
     belongs_to_storyline = RelationshipTo('Storyline', 'PART_OF')
     next_story = RelationshipTo('StoryNode', 'FOLLOWS')
@@ -20,3 +20,7 @@ class Storyline(DjangoNode):
     subject = StringProperty()
     hashtags = StringProperty()
     stories = RelationshipFrom('StoryNode', 'PART_OF')
+
+    @property
+    def total_stories(self):
+        return len(self.stories.all())
