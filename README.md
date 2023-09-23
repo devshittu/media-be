@@ -1,22 +1,10 @@
-```shell
-
-python manage.py showmigrations
-python manage.py migrate
-python manage.py makemigrations
-```
+## Default docker commands
 ```shell
 docker compose -f docker-compose.dev.yml up 
 
 docker compose -f docker-compose.dev.yml build
 
 docker compose -f docker-compose.dev.yml up --build
-```
-```shell
-docker compose -f docker-compose.dev.yml exec web python manage.py makemigrations
-
-docker compose -f docker-compose.dev.yml exec web python manage.py migrate
-
-
 ```
 
 Open [http://localhost:8000](http://localhost:8000).
@@ -25,9 +13,6 @@ Open [http://localhost:8000](http://localhost:8000).
 
 
 ```bash
-# Create a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
-docker network create my_network
 
 # Stop all running containers
 docker kill $(docker ps -aq) && docker rm $(docker ps -aq)
@@ -49,25 +34,32 @@ docker compose -f docker-compose.dev.yml up --build
 
 ```
 
-## Django commands
-
+## Available commands
+### Non-docker.
 ```shell
 python manage.py showmigrations
 python manage.py makemigrations
 python manage.py migrate
+python manage.py show_urls --format=json #> app-urls.json
 python manage.py autoseed
+python manage.py importstories #load existing stories ids to create story nodes in the neo4j database
+python manage.py deleteallneo # deletes any existing stories ids used to create story nodes in the neo4j database
 python manage.py createsuperuser
 # Email: test@test.co
 # Password: test@test.co
 # Bypass password validation and create user anyway? [y/N] y
 
 ```
-
-
-## Installing
-
+### Docker
+combine any of the available commands with the following
 ```shell
-docker compose -f docker-compose.dev.yml exec web python manage.py 
+docker compose -f docker-compose.dev.yml exec web python manage.py *  #append any of the available commands
+
+```
+## Installing
+To install and perform migration the database, it includes creating all migrations, migrating them, and add test data in the Docker, you can follow these steps:
+```shell
+docker compose -f docker-compose.dev.yml exec web python manage.py  #append any of the available commands
 
 ```
 ## Resetting
@@ -81,7 +73,7 @@ To reset the database, remove all migrations, and data in Docker, you can follow
 2. **Remove the Database Volume**:
    This will delete all the data in your PostgreSQL database.
    ```bash
-   docker volume rm your_project_name_postgres_data
+   docker volume rm media-be_postgres_data media-be_neo4j_data media-be_neo4j_logs
    ```
 
 3. **Remove Migrations**:
