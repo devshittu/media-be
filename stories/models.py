@@ -57,43 +57,6 @@ class Story(FlaggedContentMixin, SoftDeletableModel, TimestampedModel):
     class Meta:
         verbose_name_plural = "Stories"
     
-    # def get_all_parents(self):
-    #     """Recursively retrieve all parent posts."""
-    #     parents = []
-    #     current = self.parent_story
-    #     while current:
-    #         parents.insert(0, current)
-    #         current = current.parent_story
-    #     return parents
-
-    # def get_all_children(self):
-    #     """Recursively retrieve all child posts."""
-    #     children = list(self.child_posts.all())
-    #     for child in children:
-    #         children.extend(child.get_all_children())
-    #     return children
-
-    def get_all_parents(self):
-        """Retrieve all parent stories without recursive queries."""
-        all_stories = {story.id: story for story in Story.objects.all()}
-        parents = []
-        current = self.parent_story
-        while current:
-            parents.insert(0, current)
-            current = all_stories.get(current.parent_story_id)
-        return parents
-    
-    def get_all_children(self):
-        """Retrieve all child stories without recursive queries."""
-        all_stories = {story.id: story for story in Story.objects.all()}
-        children = list(self.child_stories.all())
-        i = 0
-        while i < len(children):
-            child = children[i]
-            children.extend(child.child_stories.all())
-            i += 1
-        return children
-    
     def get_absolute_url(self):
         return reverse('story-retrieve-update-destroy', kwargs={'story_slug': self.slug})
 
