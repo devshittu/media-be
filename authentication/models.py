@@ -33,6 +33,14 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+    def not_followed_by(self, user):
+        # Get all user IDs that the given user is following
+        followed_ids = user.following.values_list('followed_id', flat=True)
+        
+        # Exclude those users from the main user queryset
+        return self.exclude(id__in=followed_ids).exclude(id=user.id)
+    
+
 class CustomUser(AbstractUser):
     """
     Custom user model that matches the provided data structure.
