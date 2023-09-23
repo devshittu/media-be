@@ -71,19 +71,31 @@ class UserFollowersListView(generics.ListAPIView):
         user_id = self.kwargs['user_id']
         return Follow.objects.filter(followed__id=user_id)
     
-
 class FollowUserView(generics.CreateAPIView):
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        followed_user = CustomUser.objects.get(pk=self.kwargs['user_id'])
+        try:
+            followed_user = CustomUser.objects.get(pk=self.kwargs.get('user_id', None))
+        except (CustomUser.DoesNotExist, ValueError):
+            followed_user = get_object_or_404(CustomUser, username=self.kwargs.get('username', ''))
         serializer.save(follower=self.request.user, followed=followed_user)
-
 class UnfollowUserView(generics.DestroyAPIView):
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
-        # Fetch only the relevant record
-        return Follow.objects.get(follower=self.request.user, followed__pk=self.kwargs['user_id'])
+        try:
+            return Follow.objects.get(follower=self.request.user, followed__pk=self.kwargs.get('user_id', None))
+        except (Follow.DoesNotExist, ValueError):
+            followed_user = get_object_or_404(CustomUser, username=self.kwargs.get('username', ''))
+            return get_object_or_404(Follow, follower=self.request.user, followed=followed_user)
+
+
+class UnfollowedUsersView(generics.ListAPIView):
+    serializer_class = CustomUserSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return CustomUser.objects.not_followed_by(user)
