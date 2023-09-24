@@ -42,6 +42,8 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py show_urls --format=json #> app-urls.json
 python manage.py autoseed
+python manage.py install_labels
+
 python manage.py importstories #load existing stories ids to create story nodes in the neo4j database
 python manage.py deleteallneo # deletes any existing stories ids used to create story nodes in the neo4j database
 python manage.py createsuperuser
@@ -56,6 +58,10 @@ combine any of the available commands with the following
 docker compose -f docker-compose.dev.yml exec web python manage.py *  #append any of the available commands
 
 ```
+Go to [http://localhost:7474/browser/manage](http://localhost:7474/browser/)
+
+Go to [http://localhost:8000/admin/](http://localhost:8000/admin)
+
 ## Installing
 To install and perform migration the database, it includes creating all migrations, migrating them, and add test data in the Docker, you can follow these steps:
 ```shell
