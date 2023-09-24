@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "user": 1,
+        "session_token": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "device_type": "Mobile",
+    "operating_system": "Windows XP",
+    "browser": "Chrome",
+    "screen_resolution": "1125x2436",
+    "connection_type": "Vodafone",
+    "ip_address": "192.168.1.1",
+    "geolocation": "San Francisco, CA, USA",
+    "time_zone": "PST",
+    "start_timestamp": "2023-09-24T10:50:28.704Z"
+    },
+
+    {
+        "user": 1,
+        "session_token": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        "ip_address": "192.168.1.1",
+        "geolocation": "San Francisco, CA, USA",
+        "time_zone": "PST",
+        "device_type": "Mobile",
+        "operating_system": "Windows XP",
+        "browser": "Chrome",
+        "screen_resolution": "1125x2436",
+        "connection_type": "Vodafone"
+    }
+]

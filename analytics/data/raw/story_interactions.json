@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "user": 1,
+        "story": 1,
+        "interaction_type": "view",
+        "metadata": {
+            "version": "1.0",
+            "event": "storyViewed",
+            "timestamp": 1695538001815,
+            "story_id": 1,
+            "time_in_view": 298
+        },
+        "session_token":  "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    }
+]

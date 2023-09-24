@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "interaction_type": "view",
+        "version": "1.0",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "event": {
+                    "type": "string",
+                    "enum": ["storyViewed", "storyViewing"]
+                },
+                "timestamp": {
+                    "type": "integer"
+                },
+                "story_id": {
+                    "type": "string"
+                },
+                "time_in_view": {
+                    "type": "integer"
+                }
+            },
+            "required": ["event", "timestamp", "story_id", "time_in_view"]
+        }
+    }
+]
