@@ -1,39 +1,13 @@
-from rest_framework import generics, permissions, viewsets
+from rest_framework import generics, status, permissions
 from .models import (
-    StoryInteraction, DeviceData, LocationData, 
-    ReferralData, UserSession, UserNotInterested, AccessibilityTool
+    StoryInteraction, UserSession, UserNotInterested, 
+    AccessibilityTool
 )
 from .serializers import (
-    StoryInteractionSerializer, DeviceDataSerializer, LocationDataSerializer, 
-    ReferralDataSerializer, AccessibilityToolSerializer, UserNotInterestedSerializer, UserSessionSerializer
+    StoryInteractionSerializer, AccessibilityToolSerializer, 
+    UserNotInterestedSerializer, UserSessionSerializer
 )
-
-# DeviceData views
-class DeviceDataListCreateView(generics.ListCreateAPIView):
-    queryset = DeviceData.objects.all()
-    serializer_class = DeviceDataSerializer
-
-class DeviceDataDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = DeviceData.objects.all()
-    serializer_class = DeviceDataSerializer
-
-# LocationData views
-class LocationDataListCreateView(generics.ListCreateAPIView):
-    queryset = LocationData.objects.all()
-    serializer_class = LocationDataSerializer
-
-class LocationDataDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = LocationData.objects.all()
-    serializer_class = LocationDataSerializer
-
-# ReferralData views
-class ReferralDataListCreateView(generics.ListCreateAPIView):
-    queryset = ReferralData.objects.all()
-    serializer_class = ReferralDataSerializer
-
-class ReferralDataDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ReferralData.objects.all()
-    serializer_class = ReferralDataSerializer
+from rest_framework.response import Response
 
 # UserSession views
 class UserSessionListCreateView(generics.ListCreateAPIView):
@@ -48,6 +22,27 @@ class UserSessionDetailView(generics.RetrieveUpdateDestroyAPIView):
 class StoryInteractionListCreateView(generics.ListCreateAPIView):
     queryset = StoryInteraction.objects.all()
     serializer_class = StoryInteractionSerializer
+
+class StoryInteractionBatchCreateView(generics.CreateAPIView):
+    queryset = StoryInteraction.objects.all()
+    serializer_class = StoryInteractionSerializer
+
+    def create(self, request, *args, **kwargs):
+        # Check if the incoming request is a list
+        if not isinstance(request.data, list):
+            return Response({'detail': 'Expected a list of items but got type "dict".'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Serialize the data
+        serializer = self.get_serializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+
+        # Bulk create
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        serializer.save()
 
 class StoryInteractionDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = StoryInteraction.objects.all()
