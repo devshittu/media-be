@@ -12,11 +12,14 @@ from django.contrib.auth.hashers import make_password
 class CustomUserSeed(BaseSeed):
     raw_file = 'users'
     model = CustomUser
+    COMMON_PASSWORD_HASH = make_password("common_password")
 
     @classmethod
     def get_fields(cls, item):
 
-        hashed_password = make_password(item['password'])
+        # Use the class variable for the password
+        hashed_password = cls.COMMON_PASSWORD_HASH
+        # hashed_password = make_password(item['password'])
 
         # Convert Unix timestamp to timezone-aware datetime
         print(f"Converting last_login: {item.get('last_login')}")
