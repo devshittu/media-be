@@ -3,7 +3,7 @@ from .models import Story, Category, Like, Dislike, Bookmark
 from .neo_models import StoryNode
 from utils.serializers import UnixTimestampModelSerializer
 from multimedia.serializers import MultimediaSerializer
-from authentication.serializers import CustomUserSerializer
+from common.serializers import CustomUserSerializer
 
 class CategorySerializer(UnixTimestampModelSerializer):
     slug = serializers.SlugField(read_only=True)
