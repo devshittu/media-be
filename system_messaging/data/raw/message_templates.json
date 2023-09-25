@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "message_type": "email",
+        "code": "welcome_email",
+        "description": "Email sent to new users when they register",
+        "subject": "Welcome to {{ PlatformName }}!",
+        "body": "Dear {{ UserName }},\n\nThank you for signing up to {{ PlatformName }}! Dive in and explore the latest news from around the world. Happy reading!\n\nBest,\nThe {{ PlatformName }} Team",
+        "user": "1",
+        "variables": "PlatformName,UserName"
+    },
+    {
+        "id": 2,
+        "message_type": "email",
+        "code": "password_reset",
+        "description": "Email sent to users when they need to reset their password",
+        "subject": "Password Reset Request",
+        "body": "Hello {{ UserName }},\n\nWe received a request to reset your password. Click the link below to set a new password:\n\n{{ ResetLink }}\n\nIf you did not request a password reset, please ignore this email.\n\nBest,\nThe {{ PlatformName }} Team",
+        "user": "1",
+        "variables": "UserName,ResetLink"
+    },
+    {
+        "id": 3,
+        "message_type": "email",
+        "code": "otp_verification_email",
+        "description": "Email sent to new users when they verify their email via otp email",
+        "subject": "Verify Your Account!",
+        "body": "Dear {{ UserName }},\n\nPlease enter the following OTP to verify your email: {{ OTP_CODE }}. This ensures the security of your account. Thank you!\n\nBest,\nThe {{ PlatformName }} Team",
+        "user": "1",
+        "variables": "UserName,OTP_CODE,PlatformName"
+    },
+    {
+        "id": 4,
+        "message_type": "email",
+        "code": "link_verification_email",
+        "description": "Email sent to new users when they verify their email via link verification method",
+        "subject": "Verify Your Account!",
+        "body": "Dear {{ UserName }},\n\nPlease click the following link to verify your email: \n\n{{ VerificationLink }}\n\n. This ensures the security of your account. \n\n If you did not request a password reset, please ignore this email.\n\n Thank you!\n\nBest,\nThe {{ PlatformName }} Team",
+        "user": "1",
+        "variables": "UserName,VerificationLink,PlatformName"
+    }
+]
