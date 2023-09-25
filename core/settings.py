@@ -20,6 +20,13 @@ SECRET_KEY = config('DJANGO_SECRET_KEY', default='django-insecure-f8fzco37jytbzp
 DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = []
 
+# Cross Origin Resource
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = [
+    "http://0.0.0.0:3000",  # Replace with your frontend domain
+    "http://127.0.0.1:3000",
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +46,7 @@ INSTALLED_APPS = [
     'ckeditor',
     # 'ckeditor_uploader',  # If you want image uploading
     'django_neomodel',
+    'corsheaders',
 
     # Custom Apps
     'authentication',
@@ -58,6 +66,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 TEMPLATES = [
@@ -147,6 +157,12 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 
+AUTHENTICATION_BACKENDS = [
+    'authentication.authentication_backends.EmailOrUsernameModelBackend',
+]
+
+# Possible values: 'VERIFICATION_LINK', 'OTP'
+ACCOUNT_VERIFICATION_METHOD = 'OTP'  # or 'VERIFICATION_LINK'
 
 # Email Configuration
 # Require email confirmation before allowing login
@@ -214,4 +230,14 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 # Test runner
 TEST_RUNNER = 'pytest_django.runner.DjangoTestSuiteRunner'
 
+
+
+
+# Celery configurations
+CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://redis:6379/0', cast=str)
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default='redis://redis:6379/0', cast=str)
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
 # core/settings.py
