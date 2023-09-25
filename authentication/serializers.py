@@ -1,8 +1,6 @@
-from django.contrib.auth import get_user_model
-from utils.serializers import UnixTimestampDateTimeField
-from .models import CustomUser
+from .models import CustomUser, VerificationToken
 from rest_framework import serializers
-
+# from common.serializers import CustomUserSerializer
 
 class CustomUserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,14 +21,19 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
-# class CustomUserSerializer(UnixTimestampDateTimeField):
-class CustomUserSerializer(serializers.ModelSerializer):
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    token = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+
+
+class VerificationTokenSerializer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model()
-        fields = [
-            'id', 'name', 'email', 'username', 'avatar_url', 'display_picture',
-            'date_of_birth', 'bio', 'phone_number', 'last_activity', 'roles',
-            'is_active', 'is_staff', 'has_completed_setup'
-        ]
+        model = VerificationToken
+        fields = ('token',)
+
 
 # authentication/serializers.py
