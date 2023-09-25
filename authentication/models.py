@@ -4,7 +4,15 @@ from django.utils import timezone
 from django.dispatch import receiver
 from django.contrib.postgres.fields import ArrayField
 from django.db.models.signals import post_save
-from utils.models import SoftDeletableModel, TimestampedModel
+from utils.models import TimestampedModel
+from datetime import timedelta
+from system_messaging.utils import send_message
+from decouple import config
+from datetime import timedelta
+from django.utils import timezone
+
+# Third-party Imports
+from decouple import config
 
 # Custom user manager for email-based authentication
 class CustomUserManager(BaseUserManager):
@@ -93,18 +101,33 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name_plural = "Users"
 
+class PasswordResetToken( TimestampedModel):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    token = models.CharField(max_length=255, unique=True)
 
-@receiver(post_save, sender=CustomUser)
-def create_or_update_user_profile(sender, instance, created, **kwargs):
-    """
-    Signal to handle tasks after a user is created or updated.
-    For instance, sending a welcome email, or updating related models.
-    """
-    if created:
-        # Send a welcome email or perform other tasks when a new user is created.
-        pass
-    else:
-        # Handle tasks when a user's details are updated.
-        pass
+    def is_valid(self):
+        return timezone.now() < self.created_at + timedelta(hours=24)  # Token is valid for 24 hours
+
+
+class OTP(TimestampedModel):  # Assuming TimestampedModel is a base model with created_at and updated_at fields
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='otps')
+    otp = models.CharField(max_length=8)
+    expires_at = models.DateTimeField()
+    is_used = models.BooleanField(default=False)
+
+    def is_valid(self):
+        # return not self.is_used and datetime.now() < self.expires_at
+        return not self.is_used and timezone.now() < self.expires_at
+
+
+class VerificationToken(TimestampedModel):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    token = models.CharField(max_length=255, unique=True)
+    expires_at = models.DateTimeField()
+
+    def is_valid(self):
+        return timezone.now() < self.expires_at
+
+
 
 # authentication/models.py
