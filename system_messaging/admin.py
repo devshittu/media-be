@@ -28,6 +28,9 @@ class MessageTemplateAdmin(admin.ModelAdmin):
     # Fields to be displayed in the form view in a specific order
     fields = ('message_type', 'code', 'description', 'subject', 'body', 'user', 'variables')
     
+    ordering = ('-created_at',)
+    date_hierarchy = 'created_at'
+    exclude = ('deleted_at',)  # if you don't want 'deleted_at' to be displayed in the form
     # Add a rich text editor for the body (optional, requires a package like django-ckeditor)
     # formfield_overrides = {
     #     models.TextField: {'widget': RichTextEditorWidget},
