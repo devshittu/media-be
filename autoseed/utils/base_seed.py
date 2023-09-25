@@ -2,20 +2,17 @@ import json
 import os
 from django.core.exceptions import FieldDoesNotExist
 
-import json
-import os
-from django.core.exceptions import FieldDoesNotExist
-
 class BaseSeed:
     raw_file = None  # Can still be overridden at the class level if needed
     output_file = None
     model = None  # This should be set to the actual Django model
     fields = ['__all__']  # Default behavior: use all fields
+    pk_field = 'id'  # Default primary key field
 
     def get_fields(self, item):
         """Fetch fields from the raw data based on the 'fields' attribute."""
         if self.fields == ['__all__']:
-            return {key: value for key, value in item.items() if key != "id"}
+            return {key: value for key, value in item.items() if key != self.pk_field}
         else:
             return {field: item[field] for field in self.fields if field in item}
 
@@ -50,7 +47,7 @@ class BaseSeed:
             self.validate_fields(fields.keys())
             processed_item = {
                 "model": f"{app_name}.{model_name}",
-                "pk": int(item["id"]),
+                "pk": int(item[self.pk_field]),
                 "fields": fields
             }
             processed_data.append(processed_item)
@@ -64,6 +61,4 @@ class BaseSeed:
         with open(self.get_output_path(app_path), 'w') as outfile:
             json.dump(processed_data, outfile, indent=4)
 
-
 # autoseed/utils/base_seed.py
-
