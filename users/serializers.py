@@ -1,26 +1,32 @@
 from rest_framework import serializers
-from .models import Follow, UserSetting
-from authentication.serializers import CustomUserSerializer
+from .models import Follow, UserSetting, UserFeedPosition
 from utils.serializers import UnixTimestampModelSerializer
+from common.serializers import CustomUserSerializer
+
 
 class NotificationSettingsDataSerializer(serializers.Serializer):
     account = serializers.IntegerField()
     marketing = serializers.IntegerField()
     updates = serializers.IntegerField()
 
+
 class SettingNotificationSerializer(serializers.Serializer):
     email = NotificationSettingsDataSerializer()
+
 
 class AccountSettingsDataSerializer(serializers.Serializer):
     display_name = serializers.CharField()
     email = serializers.EmailField()
 
+
 class SystemSettingsDataSerializer(serializers.Serializer):
     theme = serializers.CharField()
     language = serializers.CharField()
 
+
 class PersonalSettingsDataSerializer(serializers.Serializer):
     favorite_categories = serializers.ListField(child=serializers.CharField())
+
 
 class UserSettingSerializer(UnixTimestampModelSerializer):
     user_id = serializers.UUIDField()
@@ -31,7 +37,7 @@ class UserSettingSerializer(UnixTimestampModelSerializer):
 
     class Meta:
         model = UserSetting
-        fields = '__all__'
+        fields = "__all__"
 
     def validate_settings_data(data):
         serializer = UserSettingSerializer(data=data)
@@ -39,12 +45,20 @@ class UserSettingSerializer(UnixTimestampModelSerializer):
             return serializer.validated_data
         return None
 
+
 class FollowSerializer(serializers.ModelSerializer):
     follower = CustomUserSerializer(read_only=True)
     followed = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = Follow
-        fields = ('id', 'follower', 'followed', 'timestamp')
+        fields = ("id", "follower", "followed", "timestamp")
+
+
+class UserFeedPositionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFeedPosition
+        fields = ["last_story_read"]
+
 
 # users/serializers.py
