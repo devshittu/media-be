@@ -12,7 +12,7 @@ from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import CustomUserRegistrationSerializer
-from common.serializers import CustomUserSerializer
+from common.serializers import CustomUserSerializer, AuthUserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError, AccessToken
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.views import APIView
@@ -149,6 +149,7 @@ class PasswordResetConfirmView(APIView):
         reset_token.delete()
 
         return Response({"detail": "Password reset successful"})
+
 
 class OTPVerificationWithTokenView(APIView):
     def post(self, request):
@@ -352,28 +353,30 @@ class CompleteSetupView(generics.UpdateAPIView):
         return Response({"status": "Account setup marked as complete."})
 
 
-class MeView(generics.RetrieveUpdateAPIView):
-    """
-    View to retrieve or update the authenticated user's information.
-    """
-
-    serializer_class = CustomUserSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_object(self):
-        return self.request.user
-
-
-# class AuthUserView(generics.RetrieveAPIView):
+# class MeView(generics.RetrieveUpdateAPIView):
 #     """
-#     View to retrieve the authenticated user's information and settings.
+#     View to retrieve or update the authenticated user's information.
 #     """
-#     serializer_class = AuthUserSerializer
+
+#     serializer_class = CustomUserSerializer
 #     permission_classes = [IsAuthenticated]
 
 #     def get_object(self):
-#         # Ensure the user's settings exist
-#         UserSetting.objects.get_or_create(user=self.request.user)
 #         return self.request.user
+
+
+class AuthUserView(generics.RetrieveAPIView):
+    """
+    View to retrieve the authenticated user's information and settings.
+    """
+
+    serializer_class = AuthUserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        # Ensure the user's settings exist
+        # UserSetting.objects.get_or_create(user=self.request.user)
+        return self.request.user
+
 
 # authentication/views.py
