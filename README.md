@@ -51,6 +51,7 @@ python manage.py createsuperuser
 # Password: test@test.co
 # Bypass password validation and create user anyway? [y/N] y
 
+python manage.py export_uri_constants --lang=[ts,java,php] 
 ```
 ### Docker
 combine any of the available commands with the following
