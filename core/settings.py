@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'multimedia',
     'analytics',
     'stories',
-    'autoseed',
+    'managekit',
 ]
 
 MIDDLEWARE = [
