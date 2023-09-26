@@ -1,4 +1,4 @@
-from autoseed.utils.base_seed import BaseSeed
+from managekit.utils.base_seed import BaseSeed
 from .models import CustomUser
 from django.utils import timezone
 from utils.helpers import unix_to_datetime

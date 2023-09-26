@@ -1,6 +1,6 @@
 # UserFeedPosition
 from django.utils import timezone
-from autoseed.utils.base_seed import BaseSeed
+from managekit.utils.base_seed import BaseSeed
 from .models import UserFeedPosition
 
 
