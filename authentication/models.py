@@ -128,6 +128,9 @@ class VerificationToken(TimestampedModel):
     def is_valid(self):
         return timezone.now() < self.expires_at
 
+class BlacklistedToken(models.Model):
+    token = models.CharField(max_length=500)
+    blacklisted_at = models.DateTimeField(auto_now_add=True)
 
 
 # authentication/models.py

@@ -16,6 +16,7 @@ from .views import (
     ResendOTPView,
     ResendVerificationLinkView,
     OTPVerificationOnlyView,
+    LogoutView,
 )
 
 
@@ -25,6 +26,7 @@ urlpatterns = [
     path("complete_setup/", CompleteSetupView.as_view(), name="complete-setup"),
     path("me/", AuthUserView.as_view(), name="me"),
     path("me/settings/", UserSettingView.as_view(), name="user-settings"),
+    path("logout/", LogoutView.as_view(), name="logout"),
     path("token/", ObtainTokensView.as_view(), name="token_obtain"),
     path("token/refresh/", RefreshTokenView.as_view(), name="token_refresh"),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),

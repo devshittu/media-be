@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
-from .models import CustomUser, PasswordResetToken, OTP, VerificationToken
+from .models import CustomUser, PasswordResetToken, OTP, VerificationToken, BlacklistedToken
 from .serializers import (
     PasswordResetRequestSerializer,
     PasswordResetConfirmSerializer,
@@ -85,6 +85,10 @@ class RefreshTokenView(APIView):
         if not refresh_token:
             raise AuthenticationFailed("Refresh token not provided")
 
+        # Check if the token is blacklisted
+        if BlacklistedToken.objects.filter(token=refresh_token).exists():
+            raise AuthenticationFailed("Token has been blacklisted")
+        
         try:
             refresh = RefreshToken(refresh_token)
             access_token = str(refresh.access_token)
@@ -353,18 +357,6 @@ class CompleteSetupView(generics.UpdateAPIView):
         return Response({"status": "Account setup marked as complete."})
 
 
-# class MeView(generics.RetrieveUpdateAPIView):
-#     """
-#     View to retrieve or update the authenticated user's information.
-#     """
-
-#     serializer_class = CustomUserSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def get_object(self):
-#         return self.request.user
-
-
 class AuthUserView(generics.RetrieveAPIView):
     """
     View to retrieve the authenticated user's information and settings.
@@ -378,5 +370,20 @@ class AuthUserView(generics.RetrieveAPIView):
         # UserSetting.objects.get_or_create(user=self.request.user)
         return self.request.user
 
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        # Get the refresh token from the request's cookies
+        refresh_token = request.COOKIES.get('refresh_token')
+
+        # Blacklist the token
+        BlacklistedToken.objects.create(token=refresh_token)
+
+        # Clear the refresh token cookie
+        response = Response({"detail": "Successfully logged out."})
+        response.delete_cookie('refresh_token')
+
+        return response
 
 # authentication/views.py
