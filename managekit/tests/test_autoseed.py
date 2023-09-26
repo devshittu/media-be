@@ -1,7 +1,7 @@
 import pytest
 from django.core.management import call_command
 from authentication.models import CustomUser
-from autoseed.utils.base_seed import BaseSeed
+from managekit.utils.base_seed import BaseSeed
 import os
 import json
 

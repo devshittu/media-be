@@ -1,7 +1,7 @@
 from django.apps import apps
 from django.core.management import call_command
 from django.core.management.base import CommandError, BaseCommand
-from autoseed.utils.base_seed import BaseSeed
+from managekit.utils.base_seed import BaseSeed
 import importlib
 import os
 
