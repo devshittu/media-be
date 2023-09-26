@@ -1,9 +1,11 @@
 from django.core.management.base import BaseCommand
 import json
-from stories.neo_models import StoryNode, Storyline
+from stories.neo_models import StoryNode, Storyline, Hashtag
 import os
 from datetime import datetime
 from neomodel.exceptions import DoesNotExist
+from stories.utils import extract_hashtags
+from neomodel.exceptions import DoesNotExist as HashtagDoesNotExist
 
 
 class Command(BaseCommand):
@@ -71,6 +73,24 @@ class Command(BaseCommand):
                 story_node.previous_story.connect(parent_node)
 
 
+
+        # Populate hashtags
+        for story_data in data:
+            story_id = story_data["pk"]
+            hashtags = extract_hashtags(story_data["fields"]["body"])
+            story_node = StoryNode.nodes.get(story_id=story_id)
+            for hashtag_name in hashtags:
+                try:
+                    hashtag_node = Hashtag.nodes.get(name=hashtag_name)
+                except HashtagDoesNotExist:
+                    hashtag_node = Hashtag(name=hashtag_name).save()
+
+                story_node.hashtags.connect(hashtag_node)
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f'Connected hashtag "{hashtag_name}" to story "{story_data["fields"]["title"]}"'
+                    )
+                )
         self.stdout.write(self.style.SUCCESS("Successfully imported stories to Neo4j"))
 
 # stories/management/commands/importstories.py
