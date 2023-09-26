@@ -10,7 +10,8 @@ class CategorySerializer(UnixTimestampModelSerializer):
 
     class Meta:
         model = Category
-        fields = '__all__'
+        # fields = '__all__'
+        fields = ['id', 'slug', 'title', 'description']
 
     def validate_title(self, value):
         if Category.objects.filter(title=value).exists():
