@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .neo_models import Storyline
 
+
 class StorylineSerializer(serializers.Serializer):
     id = serializers.CharField()
     description = serializers.CharField()
@@ -11,6 +12,19 @@ class StorylineSerializer(serializers.Serializer):
 
     class Meta:
         model = Storyline
-        fields = ['id', 'description', 'summary', 'subject', 'hashtags', 'total_stories']
+        fields = [
+            "id",
+            "description",
+            "summary",
+            "subject",
+            "hashtags",
+            "total_stories",
+        ]
+
+
+class HashtagSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    stories_count = serializers.IntegerField()
+
 
 # stories/neo_serializers.py
