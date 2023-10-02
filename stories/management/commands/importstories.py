@@ -6,6 +6,7 @@ from datetime import datetime
 from neomodel.exceptions import DoesNotExist
 from stories.utils import extract_hashtags
 from neomodel.exceptions import DoesNotExist as HashtagDoesNotExist
+from neomodel import db
 
 
 class Command(BaseCommand):
@@ -39,7 +40,7 @@ class Command(BaseCommand):
                 pass  # Node doesn't exist, so we'll create it
 
             # Convert ISO format to datetime
-            event_date = datetime.fromisoformat(story['created_at'])
+            event_date = datetime.fromisoformat(story["created_at"])
             story_node = StoryNode(story_id=story_id, event_occurred_at=event_date)
             story_node.save()
 
@@ -50,8 +51,13 @@ class Command(BaseCommand):
                 summary = story["title"]
                 subject = story["slug"]
                 hashtags = "#".join(story["slug"].split("-"))
-                
-                storyline = Storyline(description=description, summary=summary, subject=subject, hashtags=hashtags)
+
+                storyline = Storyline(
+                    description=description,
+                    summary=summary,
+                    subject=subject,
+                    hashtags=hashtags,
+                )
                 storyline.save()
                 story_node.belongs_to_storyline.connect(storyline)
             else:
@@ -72,8 +78,6 @@ class Command(BaseCommand):
                 parent_node = StoryNode.nodes.get(story_id=story["parent_story"])
                 story_node.previous_story.connect(parent_node)
 
-
-
         # Populate hashtags
         for story_data in data:
             story_id = story_data["pk"]
@@ -92,5 +96,6 @@ class Command(BaseCommand):
                     )
                 )
         self.stdout.write(self.style.SUCCESS("Successfully imported stories to Neo4j"))
+
 
 # stories/management/commands/importstories.py
