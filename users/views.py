@@ -19,8 +19,8 @@ class UserListCreateView(generics.ListCreateAPIView):
     """
 
     # Must be admin to create a new user
-    permission_classes = [IsAuthenticated, IsStaffUser]
-    queryset = CustomUser.objects.all()
+    # permission_classes = [IsAuthenticated, IsStaffUser]
+    queryset = CustomUser.objects.all().order_by("-id")
     serializer_class = CustomUserSerializer
 
 
@@ -33,7 +33,7 @@ class UserRetrieveUpdateDestroyView(
 
     # Must be authenticated to update user information.
     permission_classes = [IsAuthenticated]
-    queryset = CustomUser.objects.all()
+    queryset = CustomUser.objects.all().order_by("-id")
     serializer_class = CustomUserSerializer
 
 
@@ -123,7 +123,7 @@ class UnfollowedUsersView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return CustomUser.objects.not_followed_by(user)
+        return CustomUser.objects.not_followed_by(user).order_by("id")
 
 
 # users/views.py
