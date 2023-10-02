@@ -27,7 +27,7 @@ docker kill $(docker ps -aq) && docker rm $(docker ps -aq)
 
 docker system prune -af --volumes 
 
-docker network create my_network
+docker network create my_media_network
 
 docker compose -f docker-compose.dev.yml up --build
 
@@ -42,8 +42,8 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py show_urls --format=json #> app-urls.json
 python manage.py autoseed
-python manage.py install_labels
 
+python manage.py install_labels
 python manage.py importstories #load existing stories ids to create story nodes in the neo4j database
 python manage.py deleteallneo # deletes any existing stories ids used to create story nodes in the neo4j database
 python manage.py createsuperuser
