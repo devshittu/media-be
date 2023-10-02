@@ -2,7 +2,7 @@
     {
         "id": 1,
         "user": 1,
-        "session_token": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        "session_token": "2",
     "device_type": "Mobile",
     "operating_system": "Windows XP",
     "browser": "Chrome",
@@ -15,8 +15,9 @@
     },
 
     {
+        "id": 2,
         "user": 1,
-        "session_token": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        "session_token": "1",
         "ip_address": "192.168.1.1",
         "geolocation": "San Francisco, CA, USA",
         "time_zone": "PST",
