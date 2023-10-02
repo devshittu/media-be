@@ -44,7 +44,8 @@ class StoryListCreateView(generics.ListCreateAPIView):
                 total_likes=Count('likes_set'),
                 total_dislikes=Count('dislikes_set')
             )\
-            .prefetch_related('multimedia')
+            .prefetch_related('multimedia')\
+            .order_by('-created_at')
 
 class StoryRetrieveUpdateDestroyView(SoftDeleteMixin, generics.RetrieveUpdateDestroyAPIView):
     """View to retrieve, update, or delete a story."""
