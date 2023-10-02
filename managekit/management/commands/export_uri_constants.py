@@ -82,3 +82,5 @@ class Command(BaseCommand):
                         written_constants.add(constant_declaration)
 
         os.remove(json_file)
+
+# managekit/management/commands/export_uri_constants.py
