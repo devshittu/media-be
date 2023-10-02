@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   web:
@@ -7,26 +7,31 @@ services:
     command: python /code/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
-      - media_volume:/code/media  # Add this line
+      - media_volume:/code/media # Add this line
     ports:
       - 8000:8000
     depends_on:
       - db
       - neo4j
+    networks:
+      - my_media_network
+
     # environment:
     #   - "DJANGO_SECRET_KEY=django-insecure-hv1(e0r@v4n4m6gqdz%dn(60o=dsy8&@0_lbs8p-v3u^bs4)xl"
     #   - "DJANGO_DEBUG=True"
-      # - "DJANGO_SECURE_SSL_REDIRECT=False"  # new
-      # - "DJANGO_SECURE_HSTS_SECONDS=0"  # new
-      # - "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS=False"  # new
-      # - "DJANGO_SECURE_HSTS_PRELOAD=False"  # new
-      # - "DJANGO_SESSION_COOKIE_SECURE=False"  # new
-      # - "DJANGO_CSRF_COOKIE_SECURE=False"  # new
-  
+    # - "DJANGO_SECURE_SSL_REDIRECT=False"  # new
+    # - "DJANGO_SECURE_HSTS_SECONDS=0"  # new
+    # - "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS=False"  # new
+    # - "DJANGO_SECURE_HSTS_PRELOAD=False"  # new
+    # - "DJANGO_SESSION_COOKIE_SECURE=False"  # new
+    # - "DJANGO_CSRF_COOKIE_SECURE=False"  # new
+
   redis:
     image: "redis:alpine"
     ports:
       - "6379:6379"
+    networks:
+      - my_media_network
 
   celery:
     build: .
@@ -36,6 +41,8 @@ services:
     depends_on:
       - db
       - redis
+    networks:
+      - my_media_network
 
   db:
     image: postgres:13
@@ -46,7 +53,9 @@ services:
       - "POSTGRES_DB=mediabedb"
       - "POSTGRES_USER=mediabeuser"
       - "POSTGRES_PASSWORD=mediabepassword"
-  
+    networks:
+      - my_media_network
+
   neo4j:
     image: neo4j:latest
     ports:
@@ -57,11 +66,25 @@ services:
       - neo4j_logs:/logs
     environment:
       - NEO4J_AUTH=neo4j/password
+    networks:
+      - my_media_network
 
+  # nginx:
+  #   image: nginx:latest
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx-conf/default.conf:/etc/nginx/conf.d/default.conf
+  #   depends_on:
+  #     - web
 volumes:
   postgres_data:
-  media_volume: 
+  media_volume:
   neo4j_data:
   neo4j_logs:
+
+networks:
+  my_media_network:
+    external: true
 
 # docker-compose.dev.yml
