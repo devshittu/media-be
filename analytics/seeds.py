@@ -7,6 +7,8 @@ from .models import (
     AccessibilityTool,
     UserSession,
 )
+from authentication.seeds import CustomUserSeed
+from stories.seeds import StorySeed
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -30,6 +32,9 @@ class StoryInteractionMetadataSchemaSeed(BaseSeed):
 class UserSessionSeed(BaseSeed):
     raw_file = "user_sessions"
     model = UserSession
+    dependencies = [
+        CustomUserSeed,
+    ]
     pk_field = "session_token"  # Set session_token as the primary key field
 
     @classmethod
@@ -57,6 +62,10 @@ class UserSessionSeed(BaseSeed):
 class StoryInteractionSeed(BaseSeed):
     raw_file = "story_interactions"
     model = StoryInteraction
+    dependencies = [
+        CustomUserSeed,
+        StorySeed,
+    ]
 
     @classmethod
     def get_fields(cls, item):
@@ -69,11 +78,11 @@ class StoryInteractionSeed(BaseSeed):
             return None
 
         return {
-            "user_id": item["user"],
-            "story_id": item["story"],
+            "user": item["user"],
+            "story": item["story"],
             "interaction_type": item["interaction_type"],
             "metadata": item["metadata"],
-            "session": session,
+            "user_session": session,
             "created_at": current_time,
             "updated_at": current_time,
         }
@@ -82,6 +91,10 @@ class StoryInteractionSeed(BaseSeed):
 class UserNotInterestedSeed(BaseSeed):
     raw_file = "users_not_interested"
     model = UserNotInterested
+    dependencies = [
+        CustomUserSeed,
+        StorySeed,
+    ]
 
     @classmethod
     def get_fields(cls, item):
@@ -98,6 +111,9 @@ class UserNotInterestedSeed(BaseSeed):
 class AccessibilityToolSeed(BaseSeed):
     raw_file = "accessibility_tools"
     model = AccessibilityTool
+    dependencies = [
+        CustomUserSeed,
+    ]
 
     @classmethod
     def get_fields(cls, item):
@@ -108,5 +124,6 @@ class AccessibilityToolSeed(BaseSeed):
             "created_at": current_time,
             "updated_at": current_time,
         }
+
 
 # analytics/seeds.py
