@@ -14,11 +14,13 @@ from .views import (
     BookmarkRetrieveUpdateDestroyView,
 )
 from .neo_views import (
-    StorylineView,
     StorylineListView,
     StorylinesForStoryView,
     StoriesByHashtagsView,
-    TrendingHashtagsListView
+    TrendingHashtagsListView,
+    StorylineDetailView,
+    StorylineStoriesView,
+    SpecificStorylineHashtagsView,
 )
 
 
@@ -36,11 +38,20 @@ urlpatterns = [
         name="stories-by-category",
     ),
     path("user-feed/", UserFeedView.as_view(), name="user-feed"),
-    path("stories/hashtag/<slug:hashtag_name>/", StoriesByHashtagsView.as_view(), name="trending-hashtags"),
+    path(
+        "stories/hashtag/<slug:hashtag_name>/",
+        StoriesByHashtagsView.as_view(),
+        name="trending-hashtags",
+    ),
     path(
         "stories/trending/",
         TrendingHashtagsListView.as_view(),
         name="trending-hashtags-list",
+    ),
+    path(
+        "storylines/<str:storyline_id>/hashtags/",
+        SpecificStorylineHashtagsView.as_view(),
+        name="storyline-hashtags",
     ),
     path(
         "stories/<slug:story_slug>/",
@@ -69,8 +80,13 @@ urlpatterns = [
     path("storylines/", StorylineListView.as_view(), name="storyline-list"),
     path(
         "storylines/<str:storyline_id>/",
-        StorylineView.as_view(),
+        StorylineDetailView.as_view(),
         name="storyline-detail",
+    ),
+    path(
+        "storylines/<str:storyline_id>/stories/",
+        StorylineStoriesView.as_view(),
+        name="storyline-stories",
     ),
     # Add URLs for Media, Category, and UserInterest views.
     path("bookmarks/", BookmarkCreateListView.as_view(), name="bookmark-list-create"),
