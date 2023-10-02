@@ -8,7 +8,7 @@ class StorylineSerializer(serializers.Serializer):
     summary = serializers.CharField()
     subject = serializers.CharField()
     hashtags = serializers.CharField()
-    total_stories = serializers.IntegerField(read_only=True)
+    stories_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Storyline
@@ -18,7 +18,7 @@ class StorylineSerializer(serializers.Serializer):
             "summary",
             "subject",
             "hashtags",
-            "total_stories",
+            "stories_count",
         ]
 
 
