@@ -29,7 +29,9 @@ build/
 develop-eggs/
 dist/
 downloads/
-nginx-conf/*
+# nginx-conf/*
+
+nginx-conf/default.conf
 eggs/
 .eggs/
 lib/
