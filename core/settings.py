@@ -27,18 +27,37 @@ ALLOWED_HOSTS = [
     "api.media-app-be.com",
     "127.0.0.1",
     "localhost",
+    "*.mediaapp.local",
+    "api.mediaapp.local",
+    "app.mediaapp.local",
+    # "api.mediaapp.local"
 ]
 
 # Cross Origin Resource
-# CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = [
-    "http://media-fe:3000",  # Docker service name for the frontend
-    "http://localhost:3000",  # For local development
-    "http://127.0.0.1:3000",  # Also for local development
-    "http://0.0.0.0:3000",  # Replace with your frontend domain
-    "http://api.media-app-fe.com:3000",
+CORS_ORIGIN_ALLOW_ALL = True
+
+# CORS_ALLOWED_ORIGINS = [
+# #     "http://media-fe:3000",  # Docker service name for the frontend
+# #     "http://localhost:3000",  # For local development
+# #     "http://127.0.0.1:3000",  # Also for local development
+# #     "http://0.0.0.0:3000",  # Replace with your frontend domain
+#     # "http://api.media-app-fe.com:3000",
+#     "http://app.mediaapp.local",
+#     "https://app.mediaapp.local",
+#     "http://api.mediaapp.local",
+#     "https://api.mediaapp.local",
+# ]
+CORS_ALLOW_HTTPS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://api.mediaapp.local",
+    "https://api.mediaapp.local",
+    "http://app.mediaapp.local",
+    "https://app.mediaapp.local",
 ]
+
 CORS_ALLOW_CREDENTIALS = True
+
 
 # Application definition
 
@@ -82,12 +101,12 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
 ]
 
 TEMPLATES = [
