@@ -28,6 +28,7 @@ from .utils import (
     generate_jwt_tokens,
     set_jwt_cookie,
 )
+from utils.exceptions import CustomBadRequest
 
 # from users.models import UserSetting
 
@@ -37,12 +38,10 @@ class ObtainTokensView(APIView):
         # Extract username (or email) and password from the request data
         username_or_email = request.data.get("username_or_email")
         password = request.data.get("password")
-        print(f"{username_or_email} {password}")
 
         # Use the custom backend to authenticate the user
         user = authenticate(request, username=username_or_email, password=password)
 
-        print(f"user: {user}")
         # If authentication fails, raise an error
         if user is None:
             raise AuthenticationFailed("Invalid login credentials")
@@ -177,7 +176,7 @@ class OTPVerificationWithTokenView(APIView):
             return response
 
         except ValueError as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            raise CustomBadRequest(detail={"otp": [str(e)]})
 
 
 class OTPVerificationOnlyView(APIView):
@@ -376,6 +375,10 @@ class LogoutView(APIView):
     def post(self, request):
         # Get the refresh token from the request's cookies
         refresh_token = request.COOKIES.get('refresh_token')
+
+        # Check if the refresh_token exists
+        if not refresh_token:
+            return Response({"detail": "Refresh token not found."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Blacklist the token
         BlacklistedToken.objects.create(token=refresh_token)
