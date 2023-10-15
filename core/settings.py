@@ -23,6 +23,7 @@ SECRET_KEY = config(
 )
 DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = [
+    'web',
     "api.media-app-fe.com",
     "api.media-app-be.com",
     "127.0.0.1",
@@ -54,6 +55,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://api.mediaapp.local",
     "http://app.mediaapp.local",
     "https://app.mediaapp.local",
+    "http://web:8000",
+    "https://web:8000",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
