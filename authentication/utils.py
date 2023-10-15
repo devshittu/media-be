@@ -1,18 +1,33 @@
 from django.utils import timezone
 from .models import CustomUser, OTP
 from rest_framework_simplejwt.tokens import RefreshToken
+from decouple import config
 
 def set_refresh_token_cookie(response, refresh):
     max_age = 3600 * 24 * 14  # 2 weeks
+    
+    # Get DJANGO_DEBUG from .env file
+    debug_mode = config("DJANGO_DEBUG", default=True, cast=bool)
+    
+    # If DJANGO_DEBUG is True, secure_cookie should be False and vice-versa
+    secure_cookie = not debug_mode
+
+    # Set samesite and domain attributes based on debug_mode
+    samesite_attr = 'Lax' if debug_mode else 'Strict'
+    domain_attr = None if debug_mode else '127.0.0.1'  # Set to None in debug mode to use default domain
+
     response.set_cookie(
         'refresh_token', 
         str(refresh), 
         max_age=max_age, 
-        secure=True, 
+        secure=secure_cookie, 
         httponly=True, 
-        samesite='Strict'
+        samesite=samesite_attr,
+        domain=domain_attr,  # Explicitly set the domain based on debug_mode
+        path='/'  # Make it available for all paths
     )
     return response
+
 
 def get_valid_user(email):
     user = CustomUser.objects.filter(email=email).first()
