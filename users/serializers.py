@@ -5,27 +5,27 @@ from common.serializers import CustomUserSerializer
 
 
 class NotificationSettingsDataSerializer(serializers.Serializer):
-    account = serializers.IntegerField()
-    marketing = serializers.IntegerField()
-    updates = serializers.IntegerField()
+    account = serializers.IntegerField(required=False)
+    marketing = serializers.IntegerField(required=False)
+    updates = serializers.IntegerField(required=False)
 
 
 class SettingNotificationSerializer(serializers.Serializer):
-    email = NotificationSettingsDataSerializer()
+    email = NotificationSettingsDataSerializer(required=False)
 
 
 class AccountSettingsDataSerializer(serializers.Serializer):
-    display_name = serializers.CharField()
-    email = serializers.EmailField()
+    display_name = serializers.CharField(required=False)
+    email = serializers.EmailField(required=False)
 
 
 class SystemSettingsDataSerializer(serializers.Serializer):
-    theme = serializers.CharField()
-    language = serializers.CharField()
+    theme = serializers.CharField(required=False)
+    language = serializers.CharField(required=False)
 
 
 class PersonalSettingsDataSerializer(serializers.Serializer):
-    favorite_categories = serializers.ListField(child=serializers.CharField())
+    favorite_categories = serializers.ListField(child=serializers.CharField(), required=False)
 
 
 class UserSettingSerializer(UnixTimestampModelSerializer):
@@ -45,6 +45,48 @@ class UserSettingSerializer(UnixTimestampModelSerializer):
             return serializer.validated_data
         return None
 
+    def update(self, instance, validated_data):
+        # Extract nested settings data
+        personal_settings_data = validated_data.get('personal_settings', {})
+        
+        print("Current personal_settings:", instance.personal_settings)
+        print("Incoming personal_settings_data:", personal_settings_data)
+
+        # Merge old and new data for personal settings
+        instance.personal_settings = {**instance.personal_settings, **personal_settings_data}
+        
+        print("Merged personal_settings:", instance.personal_settings)
+
+        # Extract nested settings data
+        # personal_settings_data = validated_data.get('personal_settings', {})
+        system_settings_data = validated_data.get('system_settings', {})
+        account_settings_data = validated_data.get('account_settings', {})
+        notification_settings_data = validated_data.get('notification_settings', {})
+
+        print("Current notification_settings:", instance.notification_settings)
+        print("Incoming notification_settings_data:", notification_settings_data)
+
+        # Merge old and new data for each setting
+        # instance.personal_settings = {**instance.personal_settings, **personal_settings_data}
+        instance.system_settings = {**instance.system_settings, **system_settings_data}
+        instance.account_settings = {**instance.account_settings, **account_settings_data}
+        # instance.notification_settings = {**instance.notification_settings, **notification_settings_data}
+
+
+        # Special handling for nested dictionary in notification settings
+        email_settings_data = notification_settings_data.get('email', {})
+        if 'email' in instance.notification_settings:
+            instance.notification_settings['email'] = {**instance.notification_settings['email'], **email_settings_data}
+        else:
+            instance.notification_settings['email'] = email_settings_data
+
+        print("Merged notification_settings:", instance.notification_settings)
+
+        instance.save()
+
+        return instance
+
+
 
 class FollowSerializer(serializers.ModelSerializer):
     follower = CustomUserSerializer(read_only=True)
@@ -52,7 +94,7 @@ class FollowSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Follow
-        fields = ("id", "follower", "followed", "timestamp")
+        fields = ("id", "follower", "followed")
 
 
 class UserFeedPositionSerializer(serializers.ModelSerializer):
