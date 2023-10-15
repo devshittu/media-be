@@ -4,10 +4,10 @@ from .views import (UserListCreateView, UserRetrieveUpdateDestroyView, UserSetti
                     UpdateFeedPositionView, UnfollowedUsersView)
 
 urlpatterns = [
-    path('users/', UserListCreateView.as_view(), name='user-list-create'),
-    path('users/<int:pk>/', UserRetrieveUpdateDestroyView.as_view(), name='user-retrieve-update-destroy'),
+    path('', UserListCreateView.as_view(), name='user-list-create'),
+    path('<int:pk>/', UserRetrieveUpdateDestroyView.as_view(), name='user-retrieve-update-destroy'),
 
-    path('users/unfollowed/', UnfollowedUsersView.as_view(), name='unfollowed-users'),
+    path('unfollowed/', UnfollowedUsersView.as_view(), name='unfollowed-users'),
     
     path('settings/', UserSettingListCreateView.as_view(), name='user-settings-list-create'),
 

@@ -21,7 +21,7 @@ urlpatterns = [
     path('api/', include([
         path('auth/', include('authentication.urls')),  # Include the authentication app's URLs
         path('', include('stories.urls')),
-        path('', include('users.urls')),
+        path('users/', include('users.urls')),
         path('analytics/', include('analytics.urls')),
     ])),
     # path('auth/', include('rest_auth.urls')),  # URLs for dj-rest-auth
