@@ -1,14 +1,15 @@
-# signals.py
-
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+from django.conf import settings
 from .models import Story
 from .neo_models import StoryNode, Hashtag
 from .utils import extract_hashtags
 
-
 @receiver(post_save, sender=Story)
 def create_or_update_story_node(sender, instance, created, **kwargs):
+    if settings.SEEDING:
+        return
+    
     hashtags = extract_hashtags(instance.body)
 
     if created:
