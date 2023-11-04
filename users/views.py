@@ -1,16 +1,17 @@
 from django.shortcuts import get_object_or_404
+from django.db import IntegrityError
 from rest_framework import generics, filters, status
 from .models import UserSetting, Follow, UserFeedPosition
 from .serializers import UserSettingSerializer, FollowSerializer
 from common.serializers import CustomUserSerializer
 from authentication.models import CustomUser
 from utils.mixins import SoftDeleteMixin
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from stories.models import Story
 from rest_framework.permissions import IsAuthenticated
 from authentication.permissions import IsActiveUser, IsStaffUser, HasRoleReader
+from rest_framework import serializers
 
 
 class UserListCreateView(generics.ListCreateAPIView):
@@ -96,8 +97,27 @@ class FollowUserView(generics.CreateAPIView):
             followed_user = get_object_or_404(
                 CustomUser, username=self.kwargs.get("username", "")
             )
-        serializer.save(follower=self.request.user, followed=followed_user)
+        
+        # Prevent user from following themselves
+        if self.request.user == followed_user:
+            raise serializers.ValidationError({"detail": "You cannot follow yourself."})
 
+        try:
+            serializer.save(follower=self.request.user, followed=followed_user)
+        except IntegrityError:
+            raise serializers.ValidationError({"detail": "You are already following this user."})
+
+    def create(self, request, *args, **kwargs):
+        response = super(FollowUserView, self).create(request, *args, **kwargs)
+        
+        # Check if creation was successful
+        if response.status_code == status.HTTP_201_CREATED:
+            response.data = {
+                "status": "success",
+                "data": response.data
+            }
+        # Note: If there are other status codes you want to handle, you can add more conditions.
+        return response
 
 class UnfollowUserView(generics.DestroyAPIView):
     serializer_class = FollowSerializer
