@@ -29,7 +29,7 @@ class PersonalSettingsDataSerializer(serializers.Serializer):
 
 
 class UserSettingSerializer(UnixTimestampModelSerializer):
-    user_id = serializers.UUIDField()
+    user_id = serializers.UUIDField(read_only=True)
     system_settings = SystemSettingsDataSerializer()
     account_settings = AccountSettingsDataSerializer()
     notification_settings = SettingNotificationSerializer()
