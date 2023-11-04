@@ -20,6 +20,10 @@ class Storyline(DjangoNode):
     hashtags = StringProperty()
     stories = RelationshipFrom('StoryNode', 'PART_OF')
 
+    created_at = DateTimeProperty(default_now=True)
+    updated_at = DateTimeProperty(default_now=True, on_update=True)
+    prefetched_hashtags = None  # Temporary attribute for caching
+
     @property
     def stories_count(self):
         return len(self.stories.all())
