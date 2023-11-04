@@ -14,6 +14,7 @@ def custom_exception_handler(exc, context):
             response.data = {'detail': [error_detail]}
         
         custom_response_data = {
+            'status': 'failed',
             'status_code': response.status_code,
             'error': response.data
         }
