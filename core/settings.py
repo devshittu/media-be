@@ -24,14 +24,11 @@ SECRET_KEY = config(
 DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = [
     'web',
-    "api.media-app-fe.com",
-    "api.media-app-be.com",
     "127.0.0.1",
     "localhost",
     "*.mediaapp.local",
     "api.mediaapp.local",
     "app.mediaapp.local",
-    # "api.mediaapp.local"
 ]
 
 # Cross Origin Resource
@@ -57,6 +54,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://app.mediaapp.local",
     "http://web:8000",
     "https://web:8000",
+    "http://localhost:3001",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -99,6 +97,7 @@ INSTALLED_APPS = [
     "analytics",
     "stories",
     "managekit",
+    'feedback',
 ]
 
 MIDDLEWARE = [
@@ -294,3 +293,6 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "UTC"
 # core/settings.py
+
+
+SEEDING = False 
