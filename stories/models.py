@@ -35,6 +35,8 @@ class Story(FlaggedContentMixin, SoftDeletableModel, TimestampedModel):
     event_occurred_at = models.DateTimeField(blank=True, null=True, db_index=True, help_text="Date and time when the event/incident occurred.")
     event_reported_at = models.DateTimeField(blank=True, null=True, db_index=True, auto_now_add=True, help_text="Date and time when the event/incident was reported to the system.")
 
+    story_node = None  # Temporary attribute for caching
+
     # objects = models.Manager()  # Default manager
     objects = StoryManager()
     active_objects = SoftDeleteManager()  # For filtering soft-deleted items
