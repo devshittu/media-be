@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 from .managers import SoftDeleteManager
 
@@ -62,7 +63,7 @@ class FlaggedContentMixin(models.Model):
     def check_and_update_flag_status(self):
         from feedback.models import Report  # Avoid circular imports
         THRESHOLD = 5
-        related_reports = Report.objects.filter(content_type=models.ContentType.objects.get_for_model(self), object_id=self.id)
+        related_reports = Report.objects.filter(content_type=ContentType.objects.get_for_model(self), object_id=self.id)
         
         if related_reports.count() >= THRESHOLD:
             self.is_flagged = True
