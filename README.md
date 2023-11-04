@@ -48,7 +48,7 @@ python manage.py importstories #load existing stories ids to create story nodes 
 python manage.py deleteallneo # deletes any existing stories ids used to create story nodes in the neo4j database
 python manage.py createsuperuser
 # Email: test@test.co
-# Password: test@test.co
+# Password: commonPassword=1
 # Bypass password validation and create user anyway? [y/N] y
 
 python manage.py export_uri_constants --lang=[ts,java,php] 
