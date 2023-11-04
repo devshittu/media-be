@@ -89,6 +89,8 @@ class Command(BaseCommand):
             )
 
     def handle(self, *args, **kwargs):
+
+        settings.SEEDING = True
         self.retry_queue = (
             []
         )  # This will store BaseSeed subclasses that need to be retried
@@ -131,6 +133,7 @@ class Command(BaseCommand):
 
         # Log the end of the command
         self.stdout.write(self.style.SUCCESS("Autoseed completed!"))
+        settings.SEEDING = False
 
 
 # managekit/management/commands/autoseed.py
