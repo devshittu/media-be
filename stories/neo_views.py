@@ -16,7 +16,20 @@ class StorylineListView(generics.ListAPIView):
     serializer_class = StorylineSerializer
 
     def get_queryset(self):
-        return Storyline.nodes.all()
+        storylines = Storyline.nodes.all()
+
+        # Prefetch related Hashtag objects from Neo4j for all storylines
+        for storyline in storylines:
+            storyline.prefetched_hashtags = storyline.get_hashtags()
+        
+        # Sort by updated_at and then by the number of hashtags
+        sorted_storylines = sorted(
+            storylines,
+            key=lambda x: (x.updated_at, len(x.prefetched_hashtags)), 
+            reverse=True
+        )
+
+        return sorted_storylines
 
 
 class StorylineDetailView(generics.RetrieveAPIView):
@@ -62,24 +75,19 @@ class StorylineStoriesView(generics.ListAPIView):
         )
 
 
-class StorylinesForStoryView(generics.RetrieveAPIView):
+
+class StorylinesForStoryView(generics.ListAPIView):
+    serializer_class = StorylineSerializer
+    pagination_class = CustomPageNumberPagination
+    lookup_url_kwarg = "slug"
     lookup_field = "slug"
-    queryset = Story.objects.all()
 
-    def retrieve(self, request, *args, **kwargs):
-        story = self.get_object()
-        story_id = story.id
-
-        # Get the StoryNode from Neo4j
-        story_node = StoryNode.nodes.get(story_id=story_id)
-
-        # Get all Storyline nodes this story belongs to
+    def get_queryset(self):
+        slug = self.kwargs.get(self.lookup_url_kwarg)
+        story = Story.objects.get(slug=slug)
+        story_node = StoryNode.nodes.get(story_id=story.id)
         storylines = list(story_node.belongs_to_storyline.all())
-
-        # Serialize and return the storylines
-        serializer = StorylineSerializer(storylines, many=True)
-        return Response(serializer.data)
-
+        return storylines
 
 # TODO: Implement like StorylinesForStoryView with metadata.
 class TrendingHashtagsListView(generics.ListAPIView):
