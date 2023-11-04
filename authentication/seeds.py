@@ -17,7 +17,7 @@ def random_string(length):
 class CustomUserSeed(BaseSeed):
     raw_file = "users"
     model = CustomUser
-    COMMON_PASSWORD_HASH = make_password("common_password")
+    COMMON_PASSWORD_HASH = make_password("commonPassword=1")
 
     @classmethod
     def get_fields(cls, item):
