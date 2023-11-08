@@ -1,0 +1,20 @@
+[
+    {
+        "id": "1",
+        "name": "Settings",
+        "slug": "settings",
+        "parent": null
+    },
+    {
+    "id": "2",
+        "name": "Profile Settings",
+        "slug": "profile-settings",
+        "parent": 1
+    },
+    {
+    "id": "3",
+        "name": "Notification Settings",
+        "slug": "notification-settings",
+        "parent": 1
+    }
+]
