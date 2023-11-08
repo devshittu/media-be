@@ -26,4 +26,4 @@ class UserFeedPositionSeed(BaseSeed):
         }
 
 
-# stories/seeds.py
+# users/seeds.py
