@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "question": "How do I reset my password?",
+    "answer": "To reset your password, go to the settings page and click on 'Reset Password'.",
+    "app_version": 1
+  },
+  {
+    "id": "2",
+    "question": "How can I delete my account?",
+    "answer": "If you need to delete your account, please contact customer support for assistance.",
+    "app_version": 1
+  },
+  {
+    "id": "3",
+    "question": "How do I change my email address?",
+    "answer": "You can change your email address from your profile settings page.",
+    "app_version": 1
+  }
+]
