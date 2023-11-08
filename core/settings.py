@@ -23,7 +23,7 @@ SECRET_KEY = config(
 )
 DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = [
-    'web',
+    "web",
     "127.0.0.1",
     "localhost",
     "*.mediaapp.local",
@@ -97,7 +97,7 @@ INSTALLED_APPS = [
     "analytics",
     "stories",
     "managekit",
-    'feedback',
+    "feedback",
 ]
 
 MIDDLEWARE = [
@@ -295,4 +295,4 @@ CELERY_TIMEZONE = "UTC"
 # core/settings.py
 
 
-SEEDING = False 
+SEEDING = False
