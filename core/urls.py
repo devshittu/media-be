@@ -24,6 +24,7 @@ urlpatterns = [
         path('users/', include('users.urls')),
         path('analytics/', include('analytics.urls')),
         path('feedbacks/', include('feedback.urls')),
+        path('support/', include('support.urls')),
     ])),
     # path('auth/', include('rest_auth.urls')),  # URLs for dj-rest-auth
     # path('auth/registration/', include('rest_auth.registration.urls')),  # URLs for registration
