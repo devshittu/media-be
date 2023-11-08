@@ -67,8 +67,9 @@ CUSTOM_APPS = [
     "users",
     "system_messaging",
     "multimedia",
-    "analytics",
     "stories",
+    "support"
+    # "analytics",
     # ... any other custom apps ...
 ]
 
@@ -98,6 +99,7 @@ INSTALLED_APPS = [
     "stories",
     "managekit",
     "feedback",
+    "support",
 ]
 
 MIDDLEWARE = [
