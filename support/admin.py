@@ -10,12 +10,8 @@ from .models import (
     TermsAndConditions,
     PrivacyTerms,
 )
-from django.utils.html import format_html
-from django.urls import reverse
-from django.utils.safestring import mark_safe
 
 
-@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name", "parent", "created_at", "updated_at")
     search_fields = ("name",)
@@ -23,7 +19,6 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
 
-@admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
     list_display = ("subject", "user", "category", "created_at", "updated_at")
     search_fields = ("subject", "description")
@@ -31,7 +26,6 @@ class TicketAdmin(admin.ModelAdmin):
     raw_id_fields = ("user",)
 
 
-@admin.register(TicketResponse)
 class TicketResponseAdmin(admin.ModelAdmin):
     list_display = ("ticket", "user", "created_at", "updated_at")
     search_fields = ("message",)
@@ -39,14 +33,12 @@ class TicketResponseAdmin(admin.ModelAdmin):
     raw_id_fields = ("user", "ticket")
 
 
-@admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ("name", "slug", "created_at", "updated_at")
     search_fields = ("name",)
     prepopulated_fields = {"slug": ("name",)}
 
 
-@admin.register(AppVersion)
 class AppVersionAdmin(admin.ModelAdmin):
     list_display = (
         "version",
@@ -60,58 +52,49 @@ class AppVersionAdmin(admin.ModelAdmin):
     search_fields = ("version",)
 
 
-# @admin.register(Article)
-# class ArticleAdmin(admin.ModelAdmin):
-#     list_display = (
-#         "title",
-#         "slug",
-#         "category",
-#         "app_version",
-#         "created_at",
-#         "updated_at",
-#     )
-#     readonly_fields = ("slug",)  # Make slug read-only
-#     search_fields = ("title", "content")
-#     list_filter = ("created_at", "updated_at", "category", "app_version")
-#     prepopulated_fields = {"slug": ("title",)}
-#     filter_horizontal = ("tags",)
-@admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = (
         "title",
+        "slug",  # Include slug here if you want to display it in the list
         "category",
         "app_version",
         "created_at",
         "updated_at",
     )
-    # Removed slug from readonly_fields to allow prepopulated_fields to work
     search_fields = ("title", "content")
     list_filter = ("created_at", "updated_at", "category", "app_version")
-    prepopulated_fields = {
-        "slug": ("title",)
-    }  # This line will auto-fill the slug field based on the title
+    # Removed prepopulated_fields for slug since it's an AutoSlugField
     filter_horizontal = ("tags",)
 
 
-@admin.register(FAQ)
 class FAQAdmin(admin.ModelAdmin):
     list_display = ("question", "app_version", "created_at", "updated_at")
     search_fields = ("question", "answer")
     list_filter = ("created_at", "updated_at", "app_version")
 
 
-@admin.register(TermsAndConditions)
 class TermsAndConditionsAdmin(admin.ModelAdmin):
     list_display = ("title", "app_version", "created_at", "updated_at")
     search_fields = ("title", "content")
     list_filter = ("created_at", "updated_at", "app_version")
 
 
-@admin.register(PrivacyTerms)
 class PrivacyTermsAdmin(admin.ModelAdmin):
     list_display = ("title", "app_version", "created_at", "updated_at")
     search_fields = ("title", "content")
     list_filter = ("created_at", "updated_at", "app_version")
+
+
+# Register the models with their custom admin views
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Article, ArticleAdmin)
+admin.site.register(AppVersion, AppVersionAdmin)
+admin.site.register(Ticket, TicketAdmin)
+admin.site.register(TicketResponse, TicketResponseAdmin)
+admin.site.register(Tag, TagAdmin)
+admin.site.register(FAQ, FAQAdmin)
+admin.site.register(TermsAndConditions, TermsAndConditionsAdmin)
+admin.site.register(PrivacyTerms, PrivacyTermsAdmin)
 
 
 # support/admin.py
