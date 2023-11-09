@@ -79,25 +79,9 @@ class AppVersionSerializer(UnixTimestampModelSerializer):
         ]
 
 
-# class ArticleSerializer(UnixTimestampModelSerializer):
-#     content = MarkdownField()
-
-#     class Meta:
-#         model = Article
-#         fields = [
-#             "url",
-#             "title",
-#             "slug",
-#             "content",
-#             "category",
-#             "tags",
-#             "app_version",
-#             "created_at",
-#             "updated_at",
-#         ]
-
-
 class ArticleSerializer(UnixTimestampModelSerializer):
+    category = CategorySerializer(read_only=True)
+    app_version = AppVersionSerializer(read_only=True)
     content = MarkdownField()
 
     class Meta:
