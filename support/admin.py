@@ -8,15 +8,15 @@ from .models import (
     Article,
     FAQ,
     TermsAndConditions,
-    PrivacyTerms,
+    PrivacyPolicy,
 )
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("name", "parent", "created_at", "updated_at")
+    list_display = ("name", "parent", "slug", "created_at", "updated_at")
     search_fields = ("name",)
     list_filter = ("created_at", "updated_at")
-    prepopulated_fields = {"slug": ("name",)}
+    # prepopulated_fields = {"slug": ("name",)}
 
 
 class TicketAdmin(admin.ModelAdmin):
@@ -79,7 +79,7 @@ class TermsAndConditionsAdmin(admin.ModelAdmin):
     list_filter = ("created_at", "updated_at", "app_version")
 
 
-class PrivacyTermsAdmin(admin.ModelAdmin):
+class PrivacyPolicyAdmin(admin.ModelAdmin):
     list_display = ("title", "app_version", "created_at", "updated_at")
     search_fields = ("title", "content")
     list_filter = ("created_at", "updated_at", "app_version")
@@ -94,7 +94,6 @@ admin.site.register(TicketResponse, TicketResponseAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(FAQ, FAQAdmin)
 admin.site.register(TermsAndConditions, TermsAndConditionsAdmin)
-admin.site.register(PrivacyTerms, PrivacyTermsAdmin)
-
+admin.site.register(PrivacyPolicy, PrivacyPolicyAdmin)
 
 # support/admin.py
