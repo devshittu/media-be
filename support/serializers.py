@@ -9,7 +9,7 @@ from .models import (
     FAQ,
     VersionedDocument,
     TermsAndConditions,
-    PrivacyTerms,
+    PrivacyPolicy,
 )
 from django.utils.html import mark_safe
 from markdown import markdown
@@ -28,21 +28,28 @@ class MarkdownField(serializers.CharField):
         return super().to_internal_value(data)
 
 
+class SubcategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ["id", "name", "slug"]
+
+
 class CategorySerializer(UnixTimestampModelSerializer):
-    subcategories = serializers.HyperlinkedRelatedField(
-        many=True, read_only=True, view_name="category-detail"
+    subcategories = SubcategorySerializer(
+        many=True,
+        read_only=True,
     )
 
     class Meta:
         model = Category
-        fields = ["url", "name", "subcategories", "created_at", "updated_at"]
+        fields = ["id", "name", "slug", "subcategories", "created_at", "updated_at"]
 
 
 class TicketSerializer(UnixTimestampModelSerializer):
     class Meta:
         model = Ticket
         fields = [
-            "url",
+            "id",
             "user",
             "category",
             "subject",
@@ -61,15 +68,17 @@ class TicketResponseSerializer(UnixTimestampModelSerializer):
 class TagSerializer(UnixTimestampModelSerializer):
     class Meta:
         model = Tag
-        fields = ["url", "name", "slug", "created_at", "updated_at"]
+        fields = ["id", "name", "slug", "created_at", "updated_at"]
 
 
 class AppVersionSerializer(UnixTimestampModelSerializer):
     class Meta:
         model = AppVersion
         fields = [
-            "url",
+            "id",
             "version",
+            "major_version",
+            "minor_version",
             "features",
             "updates",
             "bug_fixes",
@@ -87,7 +96,7 @@ class ArticleSerializer(UnixTimestampModelSerializer):
     class Meta:
         model = Article
         fields = [
-            "url",
+            "id",
             "title",
             "slug",
             "content",
@@ -97,7 +106,6 @@ class ArticleSerializer(UnixTimestampModelSerializer):
             "created_at",
             "updated_at",
         ]
-        extra_kwargs = {"url": {"lookup_field": "slug", "view_name": "article-detail"}}
 
 
 class FAQSerializer(UnixTimestampModelSerializer):
@@ -106,7 +114,6 @@ class FAQSerializer(UnixTimestampModelSerializer):
     class Meta:
         model = FAQ
         fields = [
-            "url",
             "question",
             "answer",
             "app_version",
@@ -116,11 +123,11 @@ class FAQSerializer(UnixTimestampModelSerializer):
 
 
 class VersionedDocumentSerializer(UnixTimestampModelSerializer):
-    content = MarkdownField()
+    # content = MarkdownField()
 
     class Meta:
         model = VersionedDocument
-        fields = ["url", "content", "app_version", "created_at", "updated_at"]
+        fields = ["content", "app_version", "created_at", "updated_at"]
         abstract = True
 
 
@@ -130,7 +137,13 @@ class TermsAndConditionsSerializer(VersionedDocumentSerializer):
         fields = VersionedDocumentSerializer.Meta.fields + ["title"]
 
 
-class PrivacyTermsSerializer(VersionedDocumentSerializer):
+# support/serializers.py
+
+
+class PrivacyPolicySerializer(VersionedDocumentSerializer):
     class Meta(VersionedDocumentSerializer.Meta):
-        model = PrivacyTerms
+        model = PrivacyPolicy
         fields = VersionedDocumentSerializer.Meta.fields + ["title"]
+
+
+# support/serializers.py
