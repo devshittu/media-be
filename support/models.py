@@ -44,10 +44,19 @@ class Tag(SoftDeletableModel, TimestampedModel):
 
 class AppVersion(SoftDeletableModel, TimestampedModel):
     version = models.CharField(max_length=50, unique=True)
+    major_version = models.IntegerField()
+    minor_version = models.IntegerField()
     features = models.TextField(blank=True)
     updates = models.TextField(blank=True)
     bug_fixes = models.TextField(blank=True)
     deprecations = models.TextField(blank=True)
+
+    def save(self, *args, **kwargs):
+        # Automatically set major and minor version fields
+        major, minor, _ = self.version.split(".", 2)
+        self.major_version = int(major)
+        self.minor_version = int(minor)
+        super().save(*args, **kwargs)
 
 
 class Article(SoftDeletableModel, TimestampedModel):
@@ -110,14 +119,14 @@ class TermsAndConditions(VersionedDocument):
     )
 
 
-class PrivacyTerms(VersionedDocument):
+class PrivacyPolicy(VersionedDocument):
     title = models.CharField(max_length=255)
     app_version = models.ForeignKey(
         AppVersion,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="privacy_terms",  # Unique related_name
+        related_name="privacy_policy",  # Updated related_name
     )
 
 
