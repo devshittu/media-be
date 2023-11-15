@@ -1,6 +1,14 @@
 from django.utils import timezone
 from managekit.utils.base_seed import BaseSeed
-from .models import FAQ, Article, AppVersion, Category, Tag
+from .models import (
+    FAQ,
+    Article,
+    AppVersion,
+    Category,
+    Tag,
+    TermsAndConditions,
+    PrivacyPolicy,
+)
 from django.utils.text import slugify
 
 
@@ -13,6 +21,8 @@ class AppVersionSeed(BaseSeed):
     def get_fields(cls, item):
         return {
             "version": item["version"],
+            "major_version": item["major_version"],
+            "minor_version": item["minor_version"],
             "features": item["features"],
             "updates": item["updates"],
             "bug_fixes": item["bug_fixes"],
@@ -65,6 +75,42 @@ class FAQSeed(BaseSeed):
         return {
             "question": item["question"],
             "answer": item["answer"],
+            "app_version": item["app_version"],
+            "created_at": timezone.now().isoformat(),
+            "updated_at": timezone.now().isoformat(),
+        }
+
+
+class TermsAndConditionsSeed(BaseSeed):
+    raw_file = "terms"
+    model = TermsAndConditions
+    dependencies = [
+        AppVersionSeed,  # Assuming FAQs depend on AppVersion
+    ]
+
+    @classmethod
+    def get_fields(cls, item):
+        return {
+            "content": item["content"],
+            "title": item["title"],
+            "app_version": item["app_version"],
+            "created_at": timezone.now().isoformat(),
+            "updated_at": timezone.now().isoformat(),
+        }
+
+
+class PrivacyPolicySeed(BaseSeed):
+    raw_file = "policies"
+    model = PrivacyPolicy
+    dependencies = [
+        AppVersionSeed,  # Assuming FAQs depend on AppVersion
+    ]
+
+    @classmethod
+    def get_fields(cls, item):
+        return {
+            "content": item["content"],
+            "title": item["title"],
             "app_version": item["app_version"],
             "created_at": timezone.now().isoformat(),
             "updated_at": timezone.now().isoformat(),
