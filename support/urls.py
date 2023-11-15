@@ -2,24 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Categories
-    path(
-        "categories/",
-        views.CategoryViewSet.as_view({"get": "list", "post": "create"}),
-        name="category-list",
-    ),
-    path(
-        "categories/<int:pk>/",
-        views.CategoryViewSet.as_view(
-            {
-                "get": "retrieve",
-                "put": "update",
-                "patch": "partial_update",
-                "delete": "destroy",
-            }
-        ),
-        name="category-detail",
-    ),
     # Tickets
     path(
         "tickets/",
@@ -56,24 +38,6 @@ urlpatterns = [
         ),
         name="ticketresponse-detail",
     ),
-    # Tags
-    path(
-        "tags/",
-        views.TagViewSet.as_view({"get": "list", "post": "create"}),
-        name="tag-list",
-    ),
-    path(
-        "tags/<int:pk>/",
-        views.TagViewSet.as_view(
-            {
-                "get": "retrieve",
-                "put": "update",
-                "patch": "partial_update",
-                "delete": "destroy",
-            }
-        ),
-        name="tag-detail",
-    ),
     # App Versions
     path(
         "app-versions/",
@@ -92,15 +56,15 @@ urlpatterns = [
         ),
         name="appversion-detail",
     ),
-    # Articles
+    # Categories
     path(
-        "articles/",
-        views.ArticleViewSet.as_view({"get": "list", "post": "create"}),
-        name="article-list",
+        "categories/",
+        views.CategoryViewSet.as_view({"get": "list", "post": "create"}),
+        name="category-list",
     ),
     path(
-        "articles/<slug:slug>/",
-        views.ArticleViewSet.as_view(
+        "categories/<slug:slug>/",  # Use slug in the URL pattern
+        views.CategoryViewSet.as_view(
             {
                 "get": "retrieve",
                 "put": "update",
@@ -108,11 +72,17 @@ urlpatterns = [
                 "delete": "destroy",
             }
         ),
-        name="article-detail",  # This name must match the 'view_name' in your serializer's extra_kwargs
+        name="category-detail",
+    ),
+    # Tags
+    path(
+        "tags/",
+        views.TagViewSet.as_view({"get": "list", "post": "create"}),
+        name="tag-list",
     ),
     path(
-        "articles/<int:pk>/",
-        views.ArticleViewSet.as_view(
+        "tags/<int:pk>/",
+        views.TagViewSet.as_view(
             {
                 "get": "retrieve",
                 "put": "update",
@@ -120,60 +90,52 @@ urlpatterns = [
                 "delete": "destroy",
             }
         ),
-        name="article-detail",
+        name="tag-detail",
     ),
-    # FAQs
+    # Versioned Articles
     path(
-        "faqs/",
-        views.FAQViewSet.as_view({"get": "list", "post": "create"}),
-        name="faq-list",
+        "<str:version>/articles/",
+        views.ArticleViewSet.as_view({"get": "list"}),
+        name="article-list-versioned",
     ),
     path(
-        "faqs/<int:pk>/",
-        views.FAQViewSet.as_view(
-            {
-                "get": "retrieve",
-                "put": "update",
-                "patch": "partial_update",
-                "delete": "destroy",
-            }
-        ),
-        name="faq-detail",
+        "<str:version>/articles/category/<slug:category_slug>/",
+        views.ArticleViewSet.as_view({"get": "articles_by_category"}),
+        name="articles-by-category",
+    ),
+    path(
+        "<str:version>/articles/<int:pk>/",
+        views.ArticleViewSet.as_view({"get": "retrieve"}),
+        name="article-detail-versioned",
+    ),
+    path(
+        "<str:version>/articles/<slug:slug>/",
+        views.ArticleViewSet.as_view({"get": "retrieve"}),
+        name="article-detail-versioned-slug",
+    ),
+    # Versioned FAQ list view
+    path(
+        "<str:version>/faqs/",
+        views.FAQViewSet.as_view({"get": "list"}),
+        name="faq-list-versioned",
+    ),
+    # FAQ detail view with version
+    path(
+        "<str:version>/faqs/<int:pk>/",
+        views.FAQViewSet.as_view({"get": "retrieve"}),
+        name="faq-detail-versioned",
+    ),
+    path(
+        "<str:version>/privacy-policies/",
+        views.PrivacyPolicyViewSet.as_view({"get": "retrieve"}),
+        name="privacypolicy-detail-versioned",
     ),
     # Terms and Conditions
     path(
-        "terms-and-conditions/",
-        views.TermsAndConditionsViewSet.as_view({"get": "list", "post": "create"}),
-        name="termsandconditions-list",
-    ),
-    path(
-        "terms-and-conditions/<int:pk>/",
-        views.TermsAndConditionsViewSet.as_view(
-            {
-                "get": "retrieve",
-                "put": "update",
-                "patch": "partial_update",
-                "delete": "destroy",
-            }
-        ),
-        name="termsandconditions-detail",
-    ),
-    # Privacy Terms
-    path(
-        "privacy-terms/",
-        views.PrivacyTermsViewSet.as_view({"get": "list", "post": "create"}),
-        name="privacyterms-list",
-    ),
-    path(
-        "privacy-terms/<int:pk>/",
-        views.PrivacyTermsViewSet.as_view(
-            {
-                "get": "retrieve",
-                "put": "update",
-                "patch": "partial_update",
-                "delete": "destroy",
-            }
-        ),
-        name="privacyterms-detail",
+        "<str:version>/terms-and-conditions/",
+        views.TermsAndConditionsViewSet.as_view({"get": "retrieve"}),
+        name="termsandconditions-detail-versioned",
     ),
 ]
+
+# support/urls.py
