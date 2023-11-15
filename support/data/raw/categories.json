@@ -16,5 +16,53 @@
         "name": "Notification Settings",
         "slug": "notification-settings",
         "parent": 1
-    }
+    },
+		{
+			"id": 4,
+			"name": "Account Security",
+			"slug": "account-security",
+			"parent": null,
+			"created_at": 1700078002,
+			"updated_at": 1700078002
+		},
+		{
+			"id": 5,
+			"name": "Account Preferences",
+			"slug": "account-preferences",
+			"parent": null,
+			"created_at": 1700078014,
+			"updated_at": 1700078014
+		},
+		{
+			"id": 6,
+			"name": "Themes",
+			"slug": "themes",
+			"parent": null,
+			"created_at": 1700078025,
+			"updated_at": 1700078025
+		},
+		{
+			"id": 7,
+			"name": "My Identity",
+			"slug": "my-identity",
+			"parent": null,
+			"created_at": 1700078035,
+			"updated_at": 1700078035
+		},
+		{
+			"id": 8,
+			"name": "How Tos",
+			"slug": "how-tos",
+			"parent": null,
+			"created_at": 1700078044,
+			"updated_at": 1700078044
+		},
+		{
+			"id": 9,
+			"name": "What is",
+			"slug": "what-is",
+			"parent": null,
+			"created_at": 1700078062,
+			"updated_at": 1700078062
+		}
 ]

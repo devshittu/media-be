@@ -2,6 +2,8 @@
   {
     "id": "1",
     "version": "1.0.0",
+    "major_version": 1,
+    "minor_version": 0,
     "features": "Initial release with basic features.",
     "updates": "N/A",
     "bug_fixes": "N/A",
