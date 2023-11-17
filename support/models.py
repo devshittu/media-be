@@ -1,5 +1,7 @@
+import re
 from django.db import models
 from django.conf import settings
+from django.utils.html import strip_tags
 from autoslug import AutoSlugField
 from utils.models import SoftDeletableModel, TimestampedModel, FlaggedContentMixin
 
@@ -15,6 +17,9 @@ class Category(SoftDeletableModel, TimestampedModel):
         related_name="subcategories",
     )
 
+    def __str__(self):
+        return self.name
+
 
 class Ticket(SoftDeletableModel, TimestampedModel):
     user = models.ForeignKey(
@@ -24,6 +29,9 @@ class Ticket(SoftDeletableModel, TimestampedModel):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     subject = models.CharField(max_length=255)
     description = models.TextField()
+
+    def __str__(self):
+        return self.subject
 
 
 class TicketResponse(SoftDeletableModel, TimestampedModel):
@@ -41,6 +49,9 @@ class Tag(SoftDeletableModel, TimestampedModel):
         populate_from="name", unique=True, always_update=True, db_index=True
     )
 
+    def __str__(self):
+        return self.name
+
 
 class AppVersion(SoftDeletableModel, TimestampedModel):
     version = models.CharField(max_length=50, unique=True)
@@ -57,6 +68,9 @@ class AppVersion(SoftDeletableModel, TimestampedModel):
         self.major_version = int(major)
         self.minor_version = int(minor)
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.version
 
 
 class Article(SoftDeletableModel, TimestampedModel):
@@ -80,6 +94,66 @@ class Article(SoftDeletableModel, TimestampedModel):
         blank=True,
         related_name="articles",
     )
+
+    def __str__(self):
+        return self.title
+
+    def summary(self):
+        """
+        Generate a summary of the content, not exceeding 200 characters.
+        """
+        content_text = self._strip_markdown(strip_tags(self.content))
+        max_length = 200
+
+        if len(content_text) > max_length:
+            return content_text[:max_length].rsplit(" ", 1)[0] + "..."
+        else:
+            return content_text
+
+    def reading_time(self):
+        """
+        Calculate the reading time of the article, stripping HTML and Markdown syntax.
+        Assumes an average reading speed of 200 words per minute.
+        """
+        content_text = self._strip_markdown(strip_tags(self.content))
+        word_count = len(re.findall(r"\w+", content_text))
+        reading_speed_per_minute = 200
+        reading_time_minutes = word_count / reading_speed_per_minute
+        return max(1, round(reading_time_minutes))  # Ensure at least 1 minute
+
+    def _strip_markdown(self, text):
+        """
+        Strip Markdown syntax elements from text.
+        """
+        # Patterns with capturing groups
+        patterns_with_groups = [
+            (r"\!\[.*?\]\(.*?\)", ""),  # Images
+            (r"\[.*?\]\(.*?\)", ""),  # Links
+            (r"\*\*(.*?)\*\*", r"\1"),  # Bold
+            (r"\*(.*?)\*", r"\1"),  # Italic
+            (r"\~\~(.*?)\~\~", r"\1"),  # Strikethrough
+            (r"\`(.*?)\`", r"\1"),  # Inline code
+        ]
+
+        # Patterns without capturing groups
+        patterns_without_groups = [
+            r"\n\-(.*?)",  # List items
+            r"\n\*(.*?)",  # List items
+            r"\n\d\.(.*?)",  # Numbered list items
+            r"\#\s(.*?)",  # Headers
+            r"\>\s(.*?)",  # Blockquotes
+        ]
+
+        for pattern, replacement in patterns_with_groups:
+            text = re.sub(pattern, replacement, text)
+
+        for pattern in patterns_without_groups:
+            text = re.sub(pattern, "", text)
+
+        # Remove any remaining Markdown characters
+        text = re.sub(r"[\*\[\]\(\)\#\>\`\-\!\~]", "", text)
+
+        return text
 
 
 class FAQ(SoftDeletableModel, TimestampedModel):
