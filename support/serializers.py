@@ -91,7 +91,7 @@ class AppVersionSerializer(UnixTimestampModelSerializer):
 class ArticleSerializer(UnixTimestampModelSerializer):
     category = CategorySerializer(read_only=True)
     app_version = AppVersionSerializer(read_only=True)
-    content = MarkdownField()
+    # content = MarkdownField()
 
     class Meta:
         model = Article
@@ -100,6 +100,8 @@ class ArticleSerializer(UnixTimestampModelSerializer):
             "title",
             "slug",
             "content",
+            "reading_time",
+            "summary",
             "category",
             "tags",
             "app_version",
@@ -107,9 +109,15 @@ class ArticleSerializer(UnixTimestampModelSerializer):
             "updated_at",
         ]
 
+    def get_summary(self, obj):
+        return obj.summary()
+
+    def get_reading_time(self, obj):
+        return obj.reading_time()
+
 
 class FAQSerializer(UnixTimestampModelSerializer):
-    answer = MarkdownField()
+    # answer = MarkdownField()
 
     class Meta:
         model = FAQ
