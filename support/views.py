@@ -125,23 +125,37 @@ class ArticleViewSet(viewsets.ModelViewSet):
     @action(
         detail=False, methods=["get"], url_path="category/(?P<category_slug>[-\w]+)"
     )
-    def articles_by_category(self, request, category_slug=None):
+    def articles_by_category(self, request, version, category_slug=None):
         """
-        Retrieve articles by category slug.
+        Retrieve articles by category slug and version.
         """
-        if category_slug:
-            articles = Article.objects.filter(category__slug=category_slug)
-            page = self.paginate_queryset(articles)
-            if page is not None:
-                serializer = self.get_serializer(page, many=True)
-                return self.get_paginated_response(serializer.data)
-            serializer = self.get_serializer(articles, many=True)
-            return Response(serializer.data)
-        else:
+        if not category_slug:
             return Response(
                 {"detail": "Category slug not provided."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+        # Retrieve the version and filter articles
+        if not version.startswith("v"):
+            raise ValidationError(
+                'Version parameter is mandatory and should start with "v"'
+            )
+
+        version = get_latest_version(version.lstrip("v"))
+        if not version:
+            raise Http404("Version not found.")
+
+        articles = Article.objects.filter(
+            category__slug=category_slug, app_version__version=version
+        )
+
+        page = self.paginate_queryset(articles)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(articles, many=True)
+        return Response(serializer.data)
 
 
 class FAQViewSet(viewsets.ModelViewSet):
