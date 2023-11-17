@@ -22,5 +22,35 @@
     "content": "Having trouble? Here's how to troubleshoot common issues...",
     "app_version": 1,
     "category": 1
-  }
+  },
+
+		{
+			"id": 4,
+			"title": "Changing Your Profile Name",
+			"slug": "changing-your-profile-name",
+			"content": "If you need to update your profile name, follow these simple steps to make the change. It's quick and easy!\r\n\r\n## Step-by-Step Guide\r\n\r\n1. **Log In**: First, make sure you are logged into your account. If you're not logged in, you can do so [here](https://app.mediaapp.local/login).\r\n\r\n2. **Navigate to Settings**: Once logged in, go to the **Settings** page by clicking [this link](https://app.mediaapp.local/settings) or selecting 'Settings' from the user menu.\r\n\r\n3. **Access Account Settings**: In the **Settings** page, click on the **Account** tab to access your account settings.\r\n\r\n4. **Change Your Name**: In the Account settings, you'll find an option to change your profile name. Enter your preferred name in the provided field.\r\n\r\n5. **Save Changes**: After entering your new name, click the **Update Settings** button to save your changes.\r\n\r\n6. **Confirmation**: Upon successful update, you will see a toast notification confirming that your profile name has been changed.\r\n\r\n## Additional Information\r\n\r\n- If you encounter any issues while changing your name, please contact our support team for assistance.\r\n- Remember, your profile name is visible to other users on the platform, so choose a name that you are comfortable with.\r\n\r\nThank you for being a part of our community!",
+			"reading_time": 1,
+      "category": 2,
+			"tags": [
+				1
+			],
+			"app_version": 1,
+			"created_at": 1700253139,
+			"updated_at": 1700253139
+		},
+    {
+			"id": 5,
+			"title": "Peeking at a Storyline from a Story",
+			"slug": "peeking-at-a-storyline-from-a-story",
+			"content": "# How to Peek at a Storyline from a Story Card\r\n\r\nWant to get a quick glimpse of a storyline without diving into the full story? Here's how you can peek at the storyline from a story card.\r\n\r\n## Step-by-Step Guide\r\n\r\n1. **Navigate to the Story Card**: First, find the story you are interested in. You can do this by browsing through the available stories on our platform.\r\n\r\n2. **Locate the Clock Icon**: On the story card, look for the clock icon which looks like this:\r\n\r\n\r\n   <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.5\" class=\"w-6 h-6 mr-2\" viewBox=\"0 0 24 24\" role=\"img\" aria-hidden=\"true\">\r\n     <circle cx=\"12\" cy=\"12\" r=\"10\"></circle>\r\n     <path d=\"M12 6v6l4 2\"></path>\r\n   </svg>\r\n\r\n\r\n3. **Hover Over the Icon**: Move your cursor over the clock icon. When you hover over it, a pop-up will appear.\r\n\r\n4. **View the Storyline**: The pop-up will provide a brief overview or 'peek' of the storyline. This allows you to quickly understand the gist of the story without reading the entire content.\r\n\r\n## Tips\r\n\r\n- The storyline peek is designed to give you a quick summary. For the full story, click on the story card to read more.\r\n- If the pop-up does not appear, make sure your cursor is directly over the clock icon.\r\n\r\nEnjoy exploring stories in a more efficient way!",
+			"reading_time": 1,
+			"summary": "How to Peek at a Storyline from a Story Card\r\n\r\nWant to get a quick glimpse of a storyline without diving into the full story? Here's how you can peek at the storyline from a story...",
+			"category": 8,
+			"tags": 
+				1
+			,
+			"app_version": 1,
+			"created_at": 1700257120,
+			"updated_at": 1700258121
+		}
 ]
