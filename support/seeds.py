@@ -129,7 +129,7 @@ class ArticleSeed(BaseSeed):
     @classmethod
     def get_fields(cls, item):
         # Ensure that the title is unique to avoid slug conflicts
-        unique_title = item["title"] + timezone.now().strftime(" %Y-%m-%d %H:%M:%S")
+        unique_title = item["title"]
         return {
             "title": unique_title,
             "slug": slugify(unique_title),
