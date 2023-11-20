@@ -12,9 +12,9 @@ def create_default_settings(user):
         },
         "notification_settings": {
             "email": {
-                "account": 1,
-                "marketing": 1,
-                "updates": 1,
+                "account": True,
+                "marketing": True,
+                "updates": True,
             },
         },
         "personal_settings": {
