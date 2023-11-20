@@ -5,9 +5,9 @@ from common.serializers import CustomUserSerializer
 
 
 class NotificationSettingsDataSerializer(serializers.Serializer):
-    account = serializers.IntegerField(required=False)
-    marketing = serializers.IntegerField(required=False)
-    updates = serializers.IntegerField(required=False)
+    account = serializers.BooleanField(required=False)
+    marketing = serializers.BooleanField(required=False)
+    updates = serializers.BooleanField(required=False)
 
 
 class SettingNotificationSerializer(serializers.Serializer):
@@ -25,7 +25,9 @@ class SystemSettingsDataSerializer(serializers.Serializer):
 
 
 class PersonalSettingsDataSerializer(serializers.Serializer):
-    favorite_categories = serializers.ListField(child=serializers.CharField(), required=False)
+    favorite_categories = serializers.ListField(
+        child=serializers.CharField(), required=False
+    )
 
 
 class UserSettingSerializer(UnixTimestampModelSerializer):
@@ -47,21 +49,24 @@ class UserSettingSerializer(UnixTimestampModelSerializer):
 
     def update(self, instance, validated_data):
         # Extract nested settings data
-        personal_settings_data = validated_data.get('personal_settings', {})
-        
+        personal_settings_data = validated_data.get("personal_settings", {})
+
         print("Current personal_settings:", instance.personal_settings)
         print("Incoming personal_settings_data:", personal_settings_data)
 
         # Merge old and new data for personal settings
-        instance.personal_settings = {**instance.personal_settings, **personal_settings_data}
-        
+        instance.personal_settings = {
+            **instance.personal_settings,
+            **personal_settings_data,
+        }
+
         print("Merged personal_settings:", instance.personal_settings)
 
         # Extract nested settings data
         # personal_settings_data = validated_data.get('personal_settings', {})
-        system_settings_data = validated_data.get('system_settings', {})
-        account_settings_data = validated_data.get('account_settings', {})
-        notification_settings_data = validated_data.get('notification_settings', {})
+        system_settings_data = validated_data.get("system_settings", {})
+        account_settings_data = validated_data.get("account_settings", {})
+        notification_settings_data = validated_data.get("notification_settings", {})
 
         print("Current notification_settings:", instance.notification_settings)
         print("Incoming notification_settings_data:", notification_settings_data)
@@ -69,23 +74,27 @@ class UserSettingSerializer(UnixTimestampModelSerializer):
         # Merge old and new data for each setting
         # instance.personal_settings = {**instance.personal_settings, **personal_settings_data}
         instance.system_settings = {**instance.system_settings, **system_settings_data}
-        instance.account_settings = {**instance.account_settings, **account_settings_data}
+        instance.account_settings = {
+            **instance.account_settings,
+            **account_settings_data,
+        }
         # instance.notification_settings = {**instance.notification_settings, **notification_settings_data}
 
-
         # Special handling for nested dictionary in notification settings
-        email_settings_data = notification_settings_data.get('email', {})
-        if 'email' in instance.notification_settings:
-            instance.notification_settings['email'] = {**instance.notification_settings['email'], **email_settings_data}
+        email_settings_data = notification_settings_data.get("email", {})
+        if "email" in instance.notification_settings:
+            instance.notification_settings["email"] = {
+                **instance.notification_settings["email"],
+                **email_settings_data,
+            }
         else:
-            instance.notification_settings['email'] = email_settings_data
+            instance.notification_settings["email"] = email_settings_data
 
         print("Merged notification_settings:", instance.notification_settings)
 
         instance.save()
 
         return instance
-
 
 
 class FollowSerializer(serializers.ModelSerializer):
