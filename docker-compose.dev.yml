@@ -1,19 +1,20 @@
 version: "3.9"
 
 services:
-  web:
+  web-app:
+    container_name: backend-app
     build: .
+    image: web-app-image:0.0.1
     # command: gunicorn core.wsgi -b 0.0.0.0:8000  # new
     command: python /code/manage.py runserver 0.0.0.0:8000
-    # command: python /code/manage.py runsslserver 0.0.0.0:8000
     volumes:
       - .:/code
       - media_volume:/code/media # Add this line
     ports:
       - 8000:8000
     depends_on:
-      - db
-      - neo4j
+      - db-postgres
+      - db-neo4j
     networks:
       - my_media_network
 
@@ -28,24 +29,30 @@ services:
     # - "DJANGO_CSRF_COOKIE_SECURE=False"  # new
 
   redis:
+    container_name: db-redis
     image: "redis:alpine"
+    volumes:
+      - redis_data:/data
     ports:
       - "6379:6379"
     networks:
       - my_media_network
 
   celery:
+    container_name: celery-engine
+    image: "celery"
     build: .
     command: celery -A core worker --loglevel=info
     volumes:
       - .:/code
     depends_on:
-      - db
+      - db-postgres
       - redis
     networks:
       - my_media_network
 
-  db:
+  db-postgres:
+    container_name: db-postgresql
     image: postgres:13
     volumes:
       - postgres_data:/var/lib/postgresql/data/
@@ -57,7 +64,8 @@ services:
     networks:
       - my_media_network
 
-  neo4j:
+  db-neo4j:
+    container_name: db-neo4j
     image: neo4j:latest
     ports:
       - "7474:7474"
@@ -71,29 +79,31 @@ services:
       - my_media_network
 
   nginx:
+    container_name: nginx-engine
     build:
-        context: .
-        dockerfile: Dockerfile.nginx
+      context: .
+      dockerfile: Dockerfile.nginx
     image: nginx:latest
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx-conf/nginx.conf:/etc/nginx/nginx.conf
-      - /Users/mshittu/programming-projects/server-services/local-certs:/etc/nginx/certs
-      - ./nginx-conf/start-nginx.sh:/start-nginx.sh  # Mount the start-up script into the container
-    command: /start-nginx.sh  # Override the default command to use your script
+      - ./nginx-conf:/etc/nginx
+    command: ./start-nginx.sh
     depends_on:
-      - web
+      - db-neo4j
+      - web-app
+      - frontend-app
     networks:
       - my_media_network
 
-  media-fe:
-    container_name: media-fe
+  frontend-app:
+    container_name: frontend-app
     build:
       context: /Users/mshittu/programming-projects/javascript/react/media-fe/
       dockerfile: dev.Dockerfile
 
+    image: frontend-app-image:0.0.1
     # Set environment variables directly in the docker-compose file
     environment:
       ENV_VARIABLE: ${ENV_VARIABLE}
@@ -106,7 +116,8 @@ services:
     volumes:
       - /Users/mshittu/programming-projects/javascript/react/media-fe/src:/app/src
       - /Users/mshittu/programming-projects/javascript/react/media-fe/public:/app/public
-      # - /Users/mshittu/Library/Application Support/mkcert/rootCA.pem:/usr/local/share/ca-certificates/rootCA.crt
+      - frontend-node-modules:/app/node_modules
+      # - /Users/mshittu/programming-projects/javascript/react/media-fe/node_modules:/app/node_modules
 
     restart: always
     ports:
@@ -114,16 +125,17 @@ services:
     networks:
       - my_media_network
     depends_on:
-      - web
+      - web-app
 
 volumes:
   postgres_data:
   media_volume:
   neo4j_data:
   neo4j_logs:
+  redis_data:
+  frontend-node-modules:
 
 networks:
   my_media_network:
     external: true
-
 # docker-compose.dev.yml
