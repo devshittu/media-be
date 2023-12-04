@@ -1,25 +1,34 @@
-# FROM python:3.10.4-slim-bullseye
-FROM --platform=linux/amd64 python:3.10.4-slim-bullseye
+# Build stage
+FROM python:3.10.4-slim-bullseye as builder
 
-# Install system dependencies including ffmpeg
-RUN apt-get update && apt-get install -y ffmpeg && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-
-# Set environment variables
-ENV PIP_DISABLE_PIP_VERSION_CHECK 1
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
-# Set work directory
 WORKDIR /code
 
-# Install dependencies
-COPY ./requirements.txt .
-RUN pip install -r requirements.txt
-# RUN pip install gunicorn
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
 
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project
+# Final stage
+FROM python:3.10.4-slim-bullseye
+
+# Copy installed packages from builder
+COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+# Set environment variables
+ENV PIP_DISABLE_PIP_VERSION_CHECK 1 \
+    PYTHONDONTWRITEBYTECODE 1 \
+    PYTHONUNBUFFERED 1
+
+WORKDIR /code
+
+# Copy project files
 COPY . .
 
-# Dockerfile
+# Command to run the application
+CMD ["python", "/code/manage.py", "runserver", "0.0.0.0:8000"]
+
+ # Dockerfile.web-app
