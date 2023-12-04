@@ -1,6 +1,14 @@
-FROM nginx:latest
+# Use a lighter base image
+FROM nginx:alpine
 
-# Install netcat-openbsd
-RUN apt-get update && apt-get install -y netcat-openbsd && rm -rf /var/lib/apt/lists/*
+# Install netcat-openbsd for your script functionality (if you still need it)
+RUN apk --no-cache add netcat-openbsd
 
+# Set the working directory to the NGINX home directory
+WORKDIR /etc/nginx
+
+# The rest of the file does not need to COPY files since they will be mounted as volumes
+
+# The ENTRYPOINT or CMD can be set to run NGINX. This can be overridden in docker-compose if needed.
+CMD ["nginx", "-g", "daemon off;"]
 # Dockerfile.nginx
