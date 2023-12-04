@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
-while ! nc -z web 8000; do
-  echo "Waiting for the web service to start..."
+while ! nc -z web-app 8000; do
+  echo "Waiting for the web-app service to start..."
   sleep 1
 done
 
