@@ -6,7 +6,7 @@ class CustomUserAdmin(admin.ModelAdmin):
     # Fields to be displayed in the list view
     list_display = (
         "email",
-        "name",
+        "display_name",
         "username",
         "date_of_birth",
         "last_activity",
@@ -15,7 +15,7 @@ class CustomUserAdmin(admin.ModelAdmin):
     )
 
     # Fields that will be used for searching
-    search_fields = ("email", "name", "username")
+    search_fields = ("email", "display_name", "username")
 
     # Fields that can be used for filtering the list view
     list_filter = ("is_active", "is_staff", "roles", "date_of_birth", "last_activity")
@@ -25,7 +25,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 
     # Fields to be grouped in the form view
     fieldsets = (
-        (None, {"fields": ("email", "name", "username", "password")}),
+        (None, {"fields": ("email", "display_name", "username", "password")}),
         (
             "Personal Info",
             {
