@@ -23,7 +23,7 @@ SECRET_KEY = config(
 )
 DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = [
-    "web",
+    "web-app",
     "127.0.0.1",
     "localhost",
     "*.mediaapp.local",
@@ -52,8 +52,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://api.mediaapp.local",
     "http://app.mediaapp.local",
     "https://app.mediaapp.local",
-    "http://web:8000",
-    "https://web:8000",
+    "http://web-app:8000",
+    "https://web-app:8000",
     "http://localhost:3001",
 ]
 
@@ -149,13 +149,13 @@ DATABASES = {
         "PASSWORD": os.environ.get(
             "POSTGRES_PASSWORD", "mediabepassword"
         ),  # Default value is 'mediabepassword'
-        "HOST": "db",  # This should match the service name for Postgres in your docker-compose file
+        "HOST": "db-postgres",  # This should match the service name for Postgres in your docker-compose file
         "PORT": "5432",  # Default port for PostgreSQL
     }
 }
 
 # Neo4j Configuration
-NEOMODEL_NEO4J_BOLT_URL = "bolt://neo4j:password@neo4j:7687"
+NEOMODEL_NEO4J_BOLT_URL = "bolt://neo4j:password@db-neo4j:7687"
 NEOMODEL_NEO4J_AUTH = (
     config("NEOMODEL_NEO4J_AUTH_USERNAME", default="neo4j", cast=str),
     config("NEOMODEL_NEO4J_AUTH_PASSWORD", default="password", cast=str),
