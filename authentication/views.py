@@ -1,10 +1,18 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
-from .models import CustomUser, PasswordResetToken, OTP, VerificationToken, BlacklistedToken
+from .models import (
+    CustomUser,
+    PasswordResetToken,
+    OTP,
+    VerificationToken,
+    BlacklistedToken,
+)
 from .serializers import (
     PasswordResetRequestSerializer,
     PasswordResetConfirmSerializer,
     VerificationTokenSerializer,
+    UpdatePasswordSerializer,
+    UpdateUserSerializer,
 )
 from .utils import set_refresh_token_cookie
 from .tasks import send_otp_verification_email, send_link_verification_email
@@ -87,7 +95,7 @@ class RefreshTokenView(APIView):
         # Check if the token is blacklisted
         if BlacklistedToken.objects.filter(token=refresh_token).exists():
             raise AuthenticationFailed("Token has been blacklisted")
-        
+
         try:
             refresh = RefreshToken(refresh_token)
             access_token = str(refresh.access_token)
@@ -229,7 +237,7 @@ class ResendOTPView(APIView):
 
         # Send OTP to user's email
         context = {
-            "UserName": user.name,
+            "UserName": user.display_name,
             "OTP_CODE": otp.otp,
             "PlatformName": config("APP_NAME", default="App Name", cast=str),
         }
@@ -296,7 +304,7 @@ class ResendVerificationLinkView(APIView):
         verification_link = f"{config('APP_FRONTEND_DOMAIN', default='http://127.0.0.1:3000/', cast=str)}verify-account/{token}"
 
         context = {
-            "UserName": user.name,
+            "UserName": user.display_name,
             "VerificationLink": verification_link,
             "PlatformName": config("APP_NAME", default="App Name", cast=str),
         }
@@ -369,24 +377,61 @@ class AuthUserView(generics.RetrieveAPIView):
         # UserSetting.objects.get_or_create(user=self.request.user)
         return self.request.user
 
+
+class UpdatePasswordView(generics.UpdateAPIView):
+    serializer_class = UpdatePasswordSerializer
+    model = CustomUser
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Set the new password
+            self.object = serializer.save()
+            return Response(
+                {"status": "success", "message": "Password updated successfully"},
+                status=status.HTTP_200_OK,
+            )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateUserView(generics.UpdateAPIView):
+    serializer_class = UpdateUserSerializer
+    model = CustomUser
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         # Get the refresh token from the request's cookies
-        refresh_token = request.COOKIES.get('refresh_token')
+        refresh_token = request.COOKIES.get("refresh_token")
 
         # Check if the refresh_token exists
         if not refresh_token:
-            return Response({"detail": "Refresh token not found."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Refresh token not found."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         # Blacklist the token
         BlacklistedToken.objects.create(token=refresh_token)
 
         # Clear the refresh token cookie
         response = Response({"detail": "Successfully logged out."})
-        response.delete_cookie('refresh_token')
+        response.delete_cookie("refresh_token")
 
         return response
+
 
 # authentication/views.py
