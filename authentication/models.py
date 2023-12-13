@@ -56,7 +56,7 @@ class CustomUser(AbstractUser):
     # The 'id' field is already provided by Django's base model.
     # The 'username' and 'email' fields are already provided by AbstractUser.
     
-    name = models.CharField(max_length=255)  # New field for the full name of the user.
+    display_name = models.CharField(max_length=255)  # New field for the full name of the user.
     
     ROLE_CHOICES = [
         ('reader', 'Reader'),
