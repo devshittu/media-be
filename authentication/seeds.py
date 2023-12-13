@@ -59,7 +59,10 @@ class CustomUserSeed(BaseSeed):
         )
 
         return {
-            "name": item["name"],
+            # "display_name": item["display_name"],
+            "display_name": item[
+                "display_name"
+            ],  # Use 'display_name' instead of 'name'
             "username": item["username"],
             "email": item["email"],
             "password": hashed_password,
