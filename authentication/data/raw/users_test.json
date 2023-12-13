@@ -1,7 +1,7 @@
 [
     {
         "id": "21",
-        "name": "Test User",
+        "display_name": "Test User",
         "username": "testuser",
         "email": "test@example.com",
         "password": "testpassword"
