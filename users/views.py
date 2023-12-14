@@ -97,7 +97,7 @@ class FollowUserView(generics.CreateAPIView):
             followed_user = get_object_or_404(
                 CustomUser, username=self.kwargs.get("username", "")
             )
-        
+
         # Prevent user from following themselves
         if self.request.user == followed_user:
             raise serializers.ValidationError({"detail": "You cannot follow yourself."})
@@ -105,17 +105,16 @@ class FollowUserView(generics.CreateAPIView):
         try:
             serializer.save(follower=self.request.user, followed=followed_user)
         except IntegrityError:
-            raise serializers.ValidationError({"detail": "You are already following this user."})
+            raise serializers.ValidationError(
+                {"detail": "You are already following this user."}
+            )
 
     def create(self, request, *args, **kwargs):
         response = super(FollowUserView, self).create(request, *args, **kwargs)
-        
+
         # Check if creation was successful
         if response.status_code == status.HTTP_201_CREATED:
-            response.data = {
-                "status": "success",
-                "data": response.data
-            }
+            response.data = {"status": "success", "data": response.data}
         # Note: If there are other status codes you want to handle, you can add more conditions.
         return response
 
@@ -144,6 +143,5 @@ class UnfollowedUsersView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return CustomUser.objects.not_followed_by(user).order_by("id")
-
 
 # users/views.py
