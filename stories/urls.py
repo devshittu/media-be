@@ -58,28 +58,40 @@ urlpatterns = [
         StoryRetrieveUpdateDestroyView.as_view(),
         name="story-retrieve-update-destroy",
     ),
-    path("stories/<slug:story_slug>/like/", LikeCreateView.as_view(), name="like-story-by-slug",),
+    path(
+        "stories/<slug:story_slug>/like/",
+        LikeCreateView.as_view(),
+        name="like-story-by-slug",
+    ),
     path(
         "stories/<slug:story_slug>/dislike/",
         DislikeCreateView.as_view(),
         name="dislike-story-by-slug",
     ),
     path(
-        "stories/<slug:story_slug>/unlike/", LikeDestroyView.as_view(), name="unlike-story-by-slug"
+        "stories/<slug:story_slug>/unlike/",
+        LikeDestroyView.as_view(),
+        name="unlike-story-by-slug",
     ),
     path(
         "stories/<slug:story_slug>/undislike/",
         DislikeDestroyView.as_view(),
         name="undislike-story-by-slug",
     ),
-    path("stories/<int:story_id>/like/", LikeCreateView.as_view(), name="like-story-by-id"),
+    path(
+        "stories/<int:story_id>/like/",
+        LikeCreateView.as_view(),
+        name="like-story-by-id",
+    ),
     path(
         "stories/<int:story_id>/dislike/",
         DislikeCreateView.as_view(),
         name="dislike-story-by-id",
     ),
     path(
-        "stories/<int:story_id>/unlike/", LikeDestroyView.as_view(), name="unlike-story-by-id"
+        "stories/<int:story_id>/unlike/",
+        LikeDestroyView.as_view(),
+        name="unlike-story-by-id",
     ),
     path(
         "stories/<int:story_id>/undislike/",
