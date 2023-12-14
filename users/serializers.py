@@ -2,6 +2,10 @@ from rest_framework import serializers
 from .models import Follow, UserSetting, UserFeedPosition
 from utils.serializers import UnixTimestampModelSerializer
 from common.serializers import CustomUserSerializer
+from django.contrib.auth import password_validation
+from django.contrib.auth.hashers import make_password
+from rest_framework import serializers
+from authentication.models import CustomUser
 
 
 class NotificationSettingsDataSerializer(serializers.Serializer):
@@ -14,9 +18,24 @@ class SettingNotificationSerializer(serializers.Serializer):
     email = NotificationSettingsDataSerializer(required=False)
 
 
-class AccountSettingsDataSerializer(serializers.Serializer):
-    display_name = serializers.CharField(required=False)
-    email = serializers.EmailField(required=False)
+class AccountSettingsDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ["display_name", "username", "email"]
+
+    def validate_email(self, value):
+        if CustomUser.objects.exclude(pk=self.instance.pk).filter(email=value).exists():
+            raise serializers.ValidationError("This email is already in use.")
+        return value
+
+    def validate_username(self, value):
+        if (
+            CustomUser.objects.exclude(pk=self.instance.pk)
+            .filter(username=value)
+            .exists()
+        ):
+            raise serializers.ValidationError("This username is already in use.")
+        return value
 
 
 class SystemSettingsDataSerializer(serializers.Serializer):
@@ -33,7 +52,7 @@ class PersonalSettingsDataSerializer(serializers.Serializer):
 class UserSettingSerializer(UnixTimestampModelSerializer):
     user_id = serializers.UUIDField(read_only=True)
     system_settings = SystemSettingsDataSerializer()
-    account_settings = AccountSettingsDataSerializer()
+    account_settings = AccountSettingsDataSerializer(source="user")
     notification_settings = SettingNotificationSerializer()
     personal_settings = PersonalSettingsDataSerializer()
 
@@ -78,7 +97,6 @@ class UserSettingSerializer(UnixTimestampModelSerializer):
             **instance.account_settings,
             **account_settings_data,
         }
-        # instance.notification_settings = {**instance.notification_settings, **notification_settings_data}
 
         # Special handling for nested dictionary in notification settings
         email_settings_data = notification_settings_data.get("email", {})
@@ -93,6 +111,14 @@ class UserSettingSerializer(UnixTimestampModelSerializer):
         print("Merged notification_settings:", instance.notification_settings)
 
         instance.save()
+
+        # Update CustomUser fields
+        if account_settings_data:
+            user = instance.user
+            for attr, value in account_settings_data.items():
+                if hasattr(user, attr):
+                    setattr(user, attr, value)
+            user.save()
 
         return instance
 
