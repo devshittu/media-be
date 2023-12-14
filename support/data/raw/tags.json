@@ -1,17 +1,17 @@
 [
     {
         "id": "1",
-        "name": "Update",
-        "slug": "update"
-    },
-    {
-        "id": "2",
         "name": "Feature",
         "slug": "feature"
     },
     {
+        "id": "2",
+        "name": "HowTo",
+        "slug": "how-to"
+    },
+    {
         "id": "3",
-        "name": "Bugfix",
-        "slug": "bugfix"
+        "name": "WhatIs",
+        "slug": "what-is"
     }
 ]
