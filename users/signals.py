@@ -7,7 +7,8 @@ def create_default_settings(user):
     default_settings = {
         "system_settings": {"theme": "system", "language": "en"},
         "account_settings": {
-            "display_name": user.username,
+            "username": user.username,
+            "display_name": user.display_name,
             "email": user.email,
         },
         "notification_settings": {
@@ -18,22 +19,22 @@ def create_default_settings(user):
             },
         },
         "personal_settings": {
-            "favorite_categories": ['__all__'],
-        }
+            "favorite_categories": ["__all__"],
+        },
     }
     return UserSetting.objects.create(user=user, **default_settings)
 
 
 @receiver(post_save, sender=CustomUser)
 def create_user_settings(sender, instance, created, **kwargs):
-    if created: # and instance.is_active
+    if created:  # and instance.is_active
         create_default_settings(instance)
-
 
 
 @receiver(post_save, sender=CustomUser)
 def create_user_feed_position(sender, instance, created, **kwargs):
     if created:
         UserFeedPosition.objects.create(user=instance)
+
 
 # users/signals.py
