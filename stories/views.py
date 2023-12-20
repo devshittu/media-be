@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics, filters, status, serializers
 from django.db import IntegrityError
 from .pagination import CenteredPageNumberPagination
+from users.models import UserSetting
 
 from stories.neo_models import StoryNode
 from .models import Story, Like, Dislike, Bookmark, Category
@@ -11,9 +12,18 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from utils.mixins import SoftDeleteMixin
-from .serializers import LikeSerializer, DislikeSerializer, CategorySerializer
+from .serializers import (
+    LikeSerializer,
+    DislikeSerializer,
+    CategorySerializer,
+    TrendingStorySerializer,
+)
 from utils.pagination import CustomPageNumberPagination
 from .mixins import StoryMixin
+from django.db.models import F, Count, Q
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class CategoryListCreateView(generics.ListCreateAPIView):
@@ -44,7 +54,7 @@ class StoriesByCategoryView(generics.ListAPIView):
 class StoryListCreateView(generics.ListCreateAPIView):
     """View to list all stories or create a new story."""
 
-    # queryset = Story.objects.all()
+    # permission_classes = [IsAuthenticated]
     serializer_class = StorySerializer
 
     def get_queryset(self):
@@ -79,17 +89,110 @@ class StoryRetrieveUpdateDestroyView(
     lookup_url_kwarg = "story_slug"
 
 
-#             return Response({"error": "Pagination error."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 class UserFeedView(generics.ListAPIView):
     serializer_class = StorySerializer
-    pagination_class = CenteredPageNumberPagination
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Fetch stories for the user feed
-        # You can add more filters or ordering here based on your requirements
-        return Story.objects.all().order_by("-created_at")
+        user = self.request.user
+        logger.debug(f"The logged user: {user}!")
+
+        if not user.is_authenticated:
+            logger.debug("User is not authenticated.")
+            return Story.objects.none()
+
+        try:
+            user_settings = UserSetting.objects.get(user=user)
+            preferred_categories = user_settings.personal_settings.get(
+                "favorite_categories", []
+            )
+            logger.debug(f"The preferred_categories: {preferred_categories} found!")
+        except UserSetting.DoesNotExist:
+            logger.debug("User settings not found.")
+            return Story.objects.none()
+
+        if "__all__" in preferred_categories:
+            return Story.objects.all().order_by("-created_at")
+        elif preferred_categories:
+            return Story.objects.filter(category__id__in=preferred_categories).order_by(
+                "-created_at"
+            )
+        else:
+            logger.debug("Favorite categories are empty.")
+            return Story.objects.none()
+
+
+class UserInverseFeedView(generics.ListAPIView):
+    serializer_class = StorySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        print(f"The logged user: {user}!")
+
+        if not user.is_authenticated:
+            print("User is not authenticated.")
+            return Story.objects.none()
+
+        try:
+            user_settings = UserSetting.objects.get(user=user)
+            preferred_categories = user_settings.personal_settings.get(
+                "favorite_categories", []
+            )
+            print(f"The preferred_categories: {preferred_categories} found!")
+        except UserSetting.DoesNotExist:
+            print("User settings not found.")
+            return Story.objects.none()
+
+        if "__all__" in preferred_categories:
+            # Return an empty queryset if user's favorite categories include all categories
+            print("User's favorite categories include all categories.")
+            return Story.objects.none()
+        elif preferred_categories:
+            # Exclude stories from preferred categories
+            return Story.objects.exclude(
+                category__id__in=preferred_categories
+            ).order_by("-created_at")
+        else:
+            # Return all stories if favorite categories are empty
+            return Story.objects.all().order_by("-created_at")
+
+
+class TrendingStoriesView(generics.ListAPIView):
+    serializer_class = TrendingStorySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if not user.is_authenticated:
+            return Story.objects.none()
+
+        try:
+            user_settings = UserSetting.objects.get(user=user)
+            favorite_categories = user_settings.personal_settings.get(
+                "favorite_categories", []
+            )
+        except UserSetting.DoesNotExist:
+            return Story.objects.none()
+
+        queryset = (
+            Story.objects.filter(category__id__in=favorite_categories)
+            .annotate(
+                like_count=Count("likes_set", distinct=True),
+                dislike_count=Count("dislikes_set", distinct=True),
+                view_count=Count(
+                    "interactions",
+                    filter=Q(interactions__interaction_type="view"),
+                    distinct=True,
+                ),
+            )
+            .annotate(
+                calculated_trending_score=F("like_count")
+                - F("dislike_count")
+                + F("view_count")
+            )
+            .order_by("-calculated_trending_score")
+        )
+
+        return queryset
 
 
 class LikeCreateView(StoryMixin, generics.CreateAPIView):
