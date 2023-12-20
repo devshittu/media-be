@@ -7,17 +7,17 @@ from utils.managers import SoftDeleteManager, ActiveUnflaggedManager
 from feedback.managers import ReportManager
 from utils.models import SoftDeletableModel, TimestampedModel, FlaggedContentMixin
 
+
 class Category(SoftDeletableModel, TimestampedModel):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    slug = AutoSlugField(populate_from='title', unique=True, always_update=True)
-    
-    objects = SoftDeleteManager()
+    slug = AutoSlugField(populate_from="title", unique=True, always_update=True)
 
+    objects = SoftDeleteManager()
 
     def __str__(self):
         return self.title
-    
+
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
@@ -25,15 +25,46 @@ class Category(SoftDeletableModel, TimestampedModel):
 
 class Story(FlaggedContentMixin, SoftDeletableModel, TimestampedModel):
     """Model representing a user's story."""
+
     title = models.CharField(max_length=100)
-    slug = AutoSlugField(populate_from='title', unique=True, always_update=True, db_index=True, max_length=100)
+    slug = AutoSlugField(
+        populate_from="title",
+        unique=True,
+        always_update=True,
+        db_index=True,
+        max_length=100,
+    )
     body = models.TextField(max_length=500)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='stories')
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, db_index=True)
-    parent_story = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True, related_name='child_stories', db_index=True)
-    source_link = models.URLField(blank=True, null=True, help_text="URL where the full story can be read.")
-    event_occurred_at = models.DateTimeField(blank=True, null=True, db_index=True, help_text="Date and time when the event/incident occurred.")
-    event_reported_at = models.DateTimeField(blank=True, null=True, db_index=True, auto_now_add=True, help_text="Date and time when the event/incident was reported to the system.")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="stories"
+    )
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, null=True, db_index=True
+    )
+    parent_story = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="child_stories",
+        db_index=True,
+    )
+    source_link = models.URLField(
+        blank=True, null=True, help_text="URL where the full story can be read."
+    )
+    event_occurred_at = models.DateTimeField(
+        blank=True,
+        null=True,
+        db_index=True,
+        help_text="Date and time when the event/incident occurred.",
+    )
+    event_reported_at = models.DateTimeField(
+        blank=True,
+        null=True,
+        db_index=True,
+        auto_now_add=True,
+        help_text="Date and time when the event/incident was reported to the system.",
+    )
 
     story_node = None  # Temporary attribute for caching
 
@@ -52,43 +83,59 @@ class Story(FlaggedContentMixin, SoftDeletableModel, TimestampedModel):
     @property
     def dislikes_count(self):
         return self.dislikes_set.count()
-    
+
+    @property
+    def trending_score(self):
+        likes = self.likes_count
+        dislikes = self.dislikes_count
+        views = self.interactions.filter(interaction_type="view").count()
+        # Simple formula: likes - dislikes + views
+        return likes - dislikes + views
+
     def __str__(self):
         return self.title
-    
+
     class Meta:
         verbose_name_plural = "Stories"
-    
+
     def get_absolute_url(self):
-        return reverse('story-retrieve-update-destroy', kwargs={'story_slug': self.slug})
+        return reverse(
+            "story-retrieve-update-destroy", kwargs={"story_slug": self.slug}
+        )
 
 
 class Like(SoftDeletableModel, TimestampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='likes_set')
-    
+    story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name="likes_set")
+
     class Meta:
-        unique_together = ['user', 'story']
+        unique_together = ["user", "story"]
+
 
 class Dislike(SoftDeletableModel, TimestampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='dislikes_set')
+    story = models.ForeignKey(
+        Story, on_delete=models.CASCADE, related_name="dislikes_set"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "Dislikes"
-        unique_together = ['user', 'story']
+        unique_together = ["user", "story"]
+
 
 class Bookmark(SoftDeletableModel, TimestampedModel):
     BOOKMARK_CATEGORIES = [
-        ('Read Later', 'Read Later'),
-        ('Favorites', 'Favorites'),
-        ('Save', 'Save')
+        ("Read Later", "Read Later"),
+        ("Favorites", "Favorites"),
+        ("Save", "Save"),
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='bookmarks')
-    bookmark_category = models.CharField(max_length=50, choices=BOOKMARK_CATEGORIES, default='Read Later')
+    story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name="bookmarks")
+    bookmark_category = models.CharField(
+        max_length=50, choices=BOOKMARK_CATEGORIES, default="Read Later"
+    )
     note = models.TextField(null=True, blank=True)
 
     @property
@@ -109,10 +156,11 @@ class Bookmark(SoftDeletableModel, TimestampedModel):
     @property
     def story_published_at(self):
         return self.story.created_at
+
     class Meta:
         # db_table = ''
-        verbose_name = 'Bookmark'
-        verbose_name_plural = 'Bookmarks'
+        verbose_name = "Bookmark"
+        verbose_name_plural = "Bookmarks"
 
     def __str__(self):
         return f"Bookmark of story: {self.story.title}"
