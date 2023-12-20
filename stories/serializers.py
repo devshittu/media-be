@@ -48,7 +48,6 @@ class StorySerializer(UnixTimestampModelSerializer):
             "multimedia",
             "likes_count",
             "dislikes_count",
-
         ] + [f.name for f in Story._meta.fields]
         # if there are fields from the model that we don't want to show in the view here it is 'slug', 'body', 'deleted_at'.
         # fields = ['storylines_count', 'multimedia'] + [f.name for f in Story._meta.fields if f.name not in ['slug', 'body', 'deleted_at']]
@@ -58,7 +57,7 @@ class StorySerializer(UnixTimestampModelSerializer):
         if user.is_authenticated:
             return Like.objects.filter(story=obj, user=user).exists()
         return None
-    
+
     def get_has_disliked(self, obj):
         user = self.context["request"].user
         if user.is_authenticated:
@@ -81,11 +80,13 @@ class StorySerializer(UnixTimestampModelSerializer):
             return len(storylines)
         except:
             return 0
-    
+
     def get_storyline_id(self, obj):
         try:
             story_node = StoryNode.nodes.get(story_id=obj.id)
-            storyline = story_node.belongs_to_storyline.all()[0]  # Assuming a story belongs to only one storyline
+            storyline = story_node.belongs_to_storyline.all()[
+                0
+            ]  # Assuming a story belongs to only one storyline
             return storyline.id
         except:
             return None
@@ -94,38 +95,40 @@ class StorySerializer(UnixTimestampModelSerializer):
 class LikeSerializer(UnixTimestampModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     story = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Like
         fields = ["user", "story", "created_at"]
-    
+
     def validate(self, data):
         # Inject the user and story into the validated data
-        request = self.context.get('request')
-        data['user'] = request.user
-        data['story'] = self.context['view'].get_story()
+        request = self.context.get("request")
+        data["user"] = request.user
+        data["story"] = self.context["view"].get_story()
         return data
-
 
 
 class DislikeSerializer(UnixTimestampModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     story = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Dislike
         fields = ["user", "story", "created_at"]
-    
+
     def validate(self, data):
         # Inject the user and story into the validated data
-        request = self.context.get('request')
-        data['user'] = request.user
-        data['story'] = self.context['view'].get_story()
+        request = self.context.get("request")
+        data["user"] = request.user
+        data["story"] = self.context["view"].get_story()
         return data
-
 
 
 class BookmarkSerializer(UnixTimestampModelSerializer):
     story = StorySerializer(read_only=True)
-    story_id = serializers.PrimaryKeyRelatedField(queryset=Story.objects.all(), write_only=True)
+    story_id = serializers.PrimaryKeyRelatedField(
+        queryset=Story.objects.all(), write_only=True
+    )
     user = CustomUserSerializer(read_only=True)
 
     class Meta:
@@ -139,6 +142,19 @@ class BookmarkSerializer(UnixTimestampModelSerializer):
             "story",
             "story_id",
             "created_at",
+        ]
+
+
+class TrendingStorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Story
+        fields = [
+            "id",
+            "title",
+            "body",
+            "trending_score",
+            "likes_count",
+            "dislikes_count",
         ]
 
 
