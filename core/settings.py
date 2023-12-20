@@ -54,6 +54,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://app.mediaapp.local",
     "http://web-app:8000",
     "https://web-app:8000",
+    "http://localhost:3000",
     "http://localhost:3001",
 ]
 
@@ -298,3 +299,26 @@ CELERY_TIMEZONE = "UTC"
 
 
 SEEDING = False
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        "media_be": {  # Replace 'your_app_name' with the name of your Django app
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
