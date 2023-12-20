@@ -5,6 +5,7 @@ from .views import (
     StoryListCreateView,
     StoryRetrieveUpdateDestroyView,
     UserFeedView,
+    UserInverseFeedView,
     StoriesByCategoryView,
     LikeCreateView,
     DislikeCreateView,
@@ -12,6 +13,7 @@ from .views import (
     DislikeDestroyView,
     BookmarkCreateListView,
     BookmarkRetrieveUpdateDestroyView,
+    TrendingStoriesView,
 )
 from .neo_views import (
     StorylineListView,
@@ -38,6 +40,8 @@ urlpatterns = [
         name="stories-by-category",
     ),
     path("user-feed/", UserFeedView.as_view(), name="user-feed"),
+    path("user-inverse-feed/", UserInverseFeedView.as_view(), name="user-inverse-feed"),
+    path("trending-stories/", TrendingStoriesView.as_view(), name="trending-stories"),
     path(
         "stories/hashtag/<slug:hashtag_name>/",
         StoriesByHashtagsView.as_view(),
