@@ -19,6 +19,7 @@ from .serializers import (
     TrendingStorySerializer,
 )
 from utils.pagination import CustomPageNumberPagination
+from utils.permissions import IsOwner
 from .mixins import StoryMixin
 from django.db.models import F, Count, Q
 import logging
@@ -264,8 +265,19 @@ class DislikeDestroyView(StoryMixin, generics.DestroyAPIView):
 class BookmarkCreateListView(generics.ListCreateAPIView):
     queryset = Bookmark.objects.all()
     serializer_class = BookmarkSerializer
+    permission_classes = [IsAuthenticated]
 
-    # permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Bookmark.objects.filter(user=user)
+
+        # Get the 'category' query parameter
+        category = self.request.query_params.get("category", None)
+        if category is not None:
+            queryset = queryset.filter(bookmark_category=category)
+
+        return queryset
+
     def perform_create(self, serializer):
         user = self.request.user
         story_id = serializer.validated_data.get(
@@ -295,19 +307,26 @@ class BookmarkCreateListView(generics.ListCreateAPIView):
         return response
 
 
-class BookmarkRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class BaseBookmarkView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Bookmark.objects.all()
     serializer_class = BookmarkSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwner]
 
-    def get_object(self):
-        # Get the story ID from the URL
-        story_id = self.kwargs.get("story_id")
-        # Get the authenticated user
+    def get_user_bookmark(self, lookup_field, lookup_value):
         user = self.request.user
-        # Try to get the bookmark based on the story ID and user
-        bookmark = get_object_or_404(Bookmark, story_id=story_id, user=user)
-        return bookmark
+        filter_kwargs = {lookup_field: lookup_value, "user": user}
+        return get_object_or_404(Bookmark, **filter_kwargs)
 
+
+class BookmarkRetrieveUpdateDestroyView(BaseBookmarkView):
+    def get_object(self):
+        bookmark_id = self.kwargs.get("bookmark_id")
+        return self.get_user_bookmark("pk", bookmark_id)
+
+
+class BookmarkRetrieveUpdateDestroyViewByStoryId(BaseBookmarkView):
+    def get_object(self):
+        story_id = self.kwargs.get("story_id")
+        return self.get_user_bookmark("story_id", story_id)
 
 # stories/views.py
