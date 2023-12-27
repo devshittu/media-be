@@ -13,6 +13,7 @@ from .views import (
     DislikeDestroyView,
     BookmarkCreateListView,
     BookmarkRetrieveUpdateDestroyView,
+    BookmarkRetrieveUpdateDestroyViewByStoryId,
     TrendingStoriesView,
 )
 from .neo_views import (
@@ -62,26 +63,26 @@ urlpatterns = [
         StoryRetrieveUpdateDestroyView.as_view(),
         name="story-retrieve-update-destroy",
     ),
-    path(
-        "stories/<slug:story_slug>/like/",
-        LikeCreateView.as_view(),
-        name="like-story-by-slug",
-    ),
-    path(
-        "stories/<slug:story_slug>/dislike/",
-        DislikeCreateView.as_view(),
-        name="dislike-story-by-slug",
-    ),
-    path(
-        "stories/<slug:story_slug>/unlike/",
-        LikeDestroyView.as_view(),
-        name="unlike-story-by-slug",
-    ),
-    path(
-        "stories/<slug:story_slug>/undislike/",
-        DislikeDestroyView.as_view(),
-        name="undislike-story-by-slug",
-    ),
+    # path(
+    #     "stories/<slug:story_slug>/like/",
+    #     LikeCreateView.as_view(),
+    #     name="like-story-by-slug",
+    # ),
+    # path(
+    #     "stories/<slug:story_slug>/dislike/",
+    #     DislikeCreateView.as_view(),
+    #     name="dislike-story-by-slug",
+    # ),
+    # path(
+    #     "stories/<slug:story_slug>/unlike/",
+    #     LikeDestroyView.as_view(),
+    #     name="unlike-story-by-slug",
+    # ),
+    # path(
+    #     "stories/<slug:story_slug>/undislike/",
+    #     DislikeDestroyView.as_view(),
+    #     name="undislike-story-by-slug",
+    # ),
     path(
         "stories/<int:story_id>/like/",
         LikeCreateView.as_view(),
@@ -121,9 +122,14 @@ urlpatterns = [
     # Add URLs for Media, Category, and UserInterest views.
     path("bookmarks/", BookmarkCreateListView.as_view(), name="bookmark-list-create"),
     path(
-        "bookmarks/<int:story_id>/",
+        "bookmarks/<int:bookmark_id>/",
         BookmarkRetrieveUpdateDestroyView.as_view(),
         name="bookmark-retrieve-update-destroy",
+    ),
+    path(
+        "bookmarks/story/<int:story_id>/",
+        BookmarkRetrieveUpdateDestroyViewByStoryId.as_view(),
+        name="bookmark-detail-by-story",
     ),
 ]
 
