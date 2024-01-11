@@ -11,6 +11,7 @@ from .serializers import StorySerializer, BookmarkSerializer, CategorySerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from utils.permissions import CustomIsAuthenticated
 from utils.mixins import SoftDeleteMixin
 from .serializers import (
     LikeSerializer,
@@ -55,7 +56,7 @@ class StoriesByCategoryView(generics.ListAPIView):
 class StoryListCreateView(generics.ListCreateAPIView):
     """View to list all stories or create a new story."""
 
-    # permission_classes = [IsAuthenticated]
+    # permission_classes = [CustomIsAuthenticated]
     serializer_class = StorySerializer
 
     def get_queryset(self):
@@ -92,7 +93,7 @@ class StoryRetrieveUpdateDestroyView(
 
 class UserFeedView(generics.ListAPIView):
     serializer_class = StorySerializer
-    # permission_classes = [IsAuthenticated]
+    # permission_classes = [CustomIsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -199,7 +200,7 @@ class TrendingStoriesView(generics.ListAPIView):
 class LikeCreateView(StoryMixin, generics.CreateAPIView):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
 
     def perform_create(self, serializer):
         try:
@@ -211,7 +212,7 @@ class LikeCreateView(StoryMixin, generics.CreateAPIView):
 class DislikeCreateView(StoryMixin, generics.CreateAPIView):
     queryset = Dislike.objects.all()
     serializer_class = DislikeSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
 
     def perform_create(self, serializer):
         try:
@@ -223,7 +224,7 @@ class DislikeCreateView(StoryMixin, generics.CreateAPIView):
 class LikeDestroyView(StoryMixin, generics.DestroyAPIView):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
 
     def get_queryset(self):
         story_id = self.kwargs.get("story_id")
@@ -244,7 +245,7 @@ class LikeDestroyView(StoryMixin, generics.DestroyAPIView):
 class DislikeDestroyView(StoryMixin, generics.DestroyAPIView):
     queryset = Dislike.objects.all()
     serializer_class = DislikeSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
 
     def get_queryset(self):
         story_id = self.kwargs.get("story_id")
@@ -265,7 +266,7 @@ class DislikeDestroyView(StoryMixin, generics.DestroyAPIView):
 class BookmarkCreateListView(generics.ListCreateAPIView):
     queryset = Bookmark.objects.all()
     serializer_class = BookmarkSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -310,7 +311,7 @@ class BookmarkCreateListView(generics.ListCreateAPIView):
 class BaseBookmarkView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Bookmark.objects.all()
     serializer_class = BookmarkSerializer
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = [CustomIsAuthenticated, IsOwner]
 
     def get_user_bookmark(self, lookup_field, lookup_value):
         user = self.request.user
@@ -328,5 +329,6 @@ class BookmarkRetrieveUpdateDestroyViewByStoryId(BaseBookmarkView):
     def get_object(self):
         story_id = self.kwargs.get("story_id")
         return self.get_user_bookmark("story_id", story_id)
+
 
 # stories/views.py
