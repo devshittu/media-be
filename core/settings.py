@@ -224,7 +224,9 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    # "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    # TODO: for experimental purposes
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
     "ROTATE_REFRESH_TOKENS": False,
     "ALGORITHM": "HS256",
@@ -241,7 +243,8 @@ SIMPLE_JWT = {
 # REST Framework
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "utils.custom_jwt_authentication.CustomJWTAuthentication",
+        # "rest_framework_simplejwt.authentication.JWTAuthentication",
         # 'rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication',
     ),
     "DEFAULT_PAGINATION_CLASS": "utils.pagination.CustomPageNumberPagination",
@@ -295,8 +298,6 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "UTC"
-# core/settings.py
-
 
 SEEDING = False
 
@@ -322,3 +323,5 @@ LOGGING = {
         },
     },
 }
+
+# core/settings.py
