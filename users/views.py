@@ -9,9 +9,11 @@ from utils.mixins import SoftDeleteMixin
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from stories.models import Story
-from rest_framework.permissions import IsAuthenticated
+from utils.permissions import CustomIsAuthenticated
 from authentication.permissions import IsActiveUser, IsStaffUser, HasRoleReader
 from rest_framework import serializers
+from rest_framework.exceptions import APIException
+from utils.error_codes import ErrorCode
 
 
 class UserListCreateView(generics.ListCreateAPIView):
@@ -20,7 +22,7 @@ class UserListCreateView(generics.ListCreateAPIView):
     """
 
     # Must be admin to create a new user
-    # permission_classes = [IsAuthenticated, IsStaffUser]
+    # permission_classes = [CustomIsAuthenticated, IsStaffUser]
     queryset = CustomUser.objects.all().order_by("-id")
     serializer_class = CustomUserSerializer
 
@@ -33,21 +35,45 @@ class UserRetrieveUpdateDestroyView(
     """
 
     # Must be authenticated to update user information.
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
     queryset = CustomUser.objects.all().order_by("-id")
     serializer_class = CustomUserSerializer
 
 
-class UserSettingView(generics.RetrieveUpdateAPIView):
-    """
-    View to retrieve or update the authenticated user's settings.
-    """
+# class UserSettingView(generics.RetrieveUpdateAPIView):
+#     """
+#     View to retrieve or update the authenticated user's settings.
+#     """
 
+#     serializer_class = UserSettingSerializer
+#     permission_classes = [CustomIsAuthenticated]
+
+#     def get_object(self):
+#         return UserSetting.objects.get(user=self.request.user)
+
+
+class UserSettingView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSettingSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
 
     def get_object(self):
-        return UserSetting.objects.get(user=self.request.user)
+        try:
+            return UserSetting.objects.get(user=self.request.user)
+        except UserSetting.DoesNotExist:
+            raise APIException(
+                {
+                    "code": ErrorCode.SETTINGS_NOT_FOUND,
+                    "detail": "User settings not found.",
+                }
+            )
+
+    def update(self, request, *args, **kwargs):
+        try:
+            return super().update(request, *args, **kwargs)
+        except Exception as e:
+            raise APIException(
+                {"code": ErrorCode.SETTINGS_UPDATE_FAILED, "detail": str(e)}
+            )
 
 
 class UserSettingListCreateView(generics.ListCreateAPIView):
@@ -76,7 +102,7 @@ class UpdateFeedPositionView(APIView):
 
 class UserFollowersListView(generics.ListAPIView):
     serializer_class = FollowSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ["follower__username", "timestamp"]
     ordering = ["-timestamp"]  # Default ordering: recent followers
@@ -88,7 +114,7 @@ class UserFollowersListView(generics.ListAPIView):
 
 class FollowUserView(generics.CreateAPIView):
     serializer_class = FollowSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
 
     def perform_create(self, serializer):
         try:
@@ -118,9 +144,10 @@ class FollowUserView(generics.CreateAPIView):
         # Note: If there are other status codes you want to handle, you can add more conditions.
         return response
 
+
 class UnfollowUserView(generics.DestroyAPIView):
     serializer_class = FollowSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
 
     def get_object(self):
         try:
@@ -143,5 +170,6 @@ class UnfollowedUsersView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return CustomUser.objects.not_followed_by(user).order_by("id")
+
 
 # users/views.py
