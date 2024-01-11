@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
+from utils.permissions import CustomIsAuthenticated
 from .models import (
     CustomUser,
     PasswordResetToken,
@@ -36,6 +37,7 @@ from .utils import (
     generate_jwt_tokens,
     set_jwt_cookie,
 )
+from utils.error_codes import ErrorCode
 from utils.exceptions import CustomBadRequest
 
 # from users.models import UserSetting
@@ -52,7 +54,12 @@ class ObtainTokensView(APIView):
 
         # If authentication fails, raise an error
         if user is None:
-            raise AuthenticationFailed("Invalid login credentials")
+            raise AuthenticationFailed(
+                {
+                    "code": ErrorCode.AUTHENTICATION_FAILED,
+                    "detail": "Invalid login credentials",
+                }
+            )
 
         # Generate tokens for the authenticated user
         refresh = RefreshToken.for_user(
@@ -82,7 +89,12 @@ class TokenVerifyView(APIView):
             AccessToken(token)  # This will validate the token
             return Response({"token": "valid"})
         except TokenError:
-            raise AuthenticationFailed("Invalid token or token has expired")
+            raise AuthenticationFailed(
+                {
+                    "code": ErrorCode.INVALID_ACCESS_TOKEN,
+                    "detail": "Invalid access token or token has expired",
+                }
+            )
 
 
 class RefreshTokenView(APIView):
@@ -90,17 +102,32 @@ class RefreshTokenView(APIView):
         refresh_token = request.COOKIES.get("refresh_token")
 
         if not refresh_token:
-            raise AuthenticationFailed("Refresh token not provided")
+            raise AuthenticationFailed(
+                {
+                    "code": ErrorCode.TOKEN_NOT_PROVIDED,
+                    "detail": "Refresh token not provided",
+                }
+            )
 
         # Check if the token is blacklisted
         if BlacklistedToken.objects.filter(token=refresh_token).exists():
-            raise AuthenticationFailed("Token has been blacklisted")
+            raise AuthenticationFailed(
+                {
+                    "code": ErrorCode.BLACKLISTED_REFRESH_TOKEN,
+                    "detail": "Refresh token is no longer usable",
+                }
+            )
 
         try:
             refresh = RefreshToken(refresh_token)
             access_token = str(refresh.access_token)
         except Exception as e:
-            raise AuthenticationFailed("Invalid refresh token")
+            raise AuthenticationFailed(
+                {
+                    "code": ErrorCode.INVALID_REFRESH_TOKEN,
+                    "detail": "Invalid refresh token",
+                }
+            )
 
         return Response(
             {
@@ -118,8 +145,12 @@ class PasswordResetRequestView(APIView):
         user = CustomUser.objects.filter(email=email).first()
         if not user:
             return Response(
-                {"detail": "Email not found"}, status=status.HTTP_400_BAD_REQUEST
+                {"code": ErrorCode.EMAIL_NOT_FOUND, "detail": "Email not found"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
+            # return Response(
+            #     {"detail": "Email not found"}, status=status.HTTP_400_BAD_REQUEST
+            # )
 
         # Generate a token and save it
         token = get_random_string(length=32)
@@ -147,9 +178,16 @@ class PasswordResetConfirmView(APIView):
         reset_token = PasswordResetToken.objects.filter(token=token).first()
         if not reset_token or not reset_token.is_valid():
             return Response(
-                {"detail": "Invalid or expired token"},
+                {
+                    "code": ErrorCode.INVALID_OR_EXPIRED_RESET_TOKEN,
+                    "detail": "Invalid or expired token",
+                },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+            # return Response(
+            #     {"detail": "Invalid or expired token"},
+            #     status=status.HTTP_400_BAD_REQUEST,
+            # )
 
         # Set the new password for the user
         user = reset_token.user
@@ -184,7 +222,8 @@ class OTPVerificationWithTokenView(APIView):
             return response
 
         except ValueError as e:
-            raise CustomBadRequest(detail={"otp": [str(e)]})
+            raise CustomBadRequest({"code": ErrorCode.INVALID_OTP, "detail": [str(e)]})
+            # raise CustomBadRequest(detail={"otp": [str(e)]})
 
 
 class OTPVerificationOnlyView(APIView):
@@ -200,7 +239,8 @@ class OTPVerificationOnlyView(APIView):
             return Response({"message": "Account activated successfully!"})
 
         except ValueError as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            raise CustomBadRequest({"code": ErrorCode.INVALID_OTP, "detail": str(e)})
+            # return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ResendOTPView(APIView):
@@ -211,8 +251,12 @@ class ResendOTPView(APIView):
         user = CustomUser.objects.filter(email=email).first()
         if not user:
             return Response(
-                {"detail": "Invalid email"}, status=status.HTTP_400_BAD_REQUEST
+                {"code": ErrorCode.INVALID_EMAIL, "detail": "Invalid email"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
+            # return Response(
+            #     {"detail": "Invalid email"}, status=status.HTTP_400_BAD_REQUEST
+            # )
 
         # Check if there's a recent OTP that hasn't expired
         recent_otp = user.otps.filter(
@@ -221,10 +265,17 @@ class ResendOTPView(APIView):
         if recent_otp:
             return Response(
                 {
-                    "detail": "Please wait for the previous OTP to expire before requesting a new one."
+                    "code": ErrorCode.RECENT_OTP_STILL_VALID,
+                    "detail": "Please wait for the previous OTP to expire before requesting a new one.",
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+            # return Response(
+            #     {
+            #         "detail": "Please wait for the previous OTP to expire before requesting a new one."
+            #     },
+            #     status=status.HTTP_400_BAD_REQUEST,
+            # )
 
         # Generate new OTP
         otp_code = get_random_string(length=6, allowed_chars="0123456789")
@@ -253,9 +304,16 @@ class AccountVerificationView(APIView):
         verification_token = VerificationToken.objects.filter(token=token).first()
         if not verification_token or not verification_token.is_valid():
             return Response(
-                {"detail": "Invalid or expired verification link"},
+                {
+                    "code": ErrorCode.INVALID_VERIFICATION_LINK,
+                    "detail": "Invalid or expired verification link",
+                },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+            # return Response(
+            #     {"detail": "Invalid or expired verification link"},
+            #     status=status.HTTP_400_BAD_REQUEST,
+            # )
 
         # Activate user
         user = verification_token.user
@@ -275,8 +333,12 @@ class ResendVerificationLinkView(APIView):
 
         if not user:
             return Response(
-                {"detail": "Invalid email"}, status=status.HTTP_400_BAD_REQUEST
+                {"code": ErrorCode.INVALID_EMAIL, "detail": "Invalid email"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
+            # return Response(
+            #     {"detail": "Invalid email"}, status=status.HTTP_400_BAD_REQUEST
+            # )
 
         # Check if there's a recent verification token that hasn't expired
         recent_token = VerificationToken.objects.filter(
@@ -286,10 +348,17 @@ class ResendVerificationLinkView(APIView):
         if recent_token:
             return Response(
                 {
-                    "detail": "Please wait for the previous verification link to expire before requesting a new one."
+                    "code": ErrorCode.RECENT_OTP_STILL_VALID,
+                    "detail": "Please wait for the previous verification link to expire before requesting a new one.",
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+            # return Response(
+            #     {
+            #         "detail": "Please wait for the previous verification link to expire before requesting a new one."
+            #     },
+            #     status=status.HTTP_400_BAD_REQUEST,
+            # )
 
         # Generate a new verification token and save it
         token = get_random_string(length=32)
@@ -319,7 +388,15 @@ class RegisterView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        # serializer.is_valid(raise_exception=True)
+        if not serializer.is_valid():
+            return Response(
+                {
+                    "code": ErrorCode.USER_REGISTRATION_FAILED,
+                    "detail": serializer.errors,
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         user = self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(
@@ -370,7 +447,8 @@ class AuthUserView(generics.RetrieveAPIView):
     """
 
     serializer_class = AuthUserSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [CustomIsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
 
     def get_object(self):
         # Ensure the user's settings exist
@@ -381,7 +459,7 @@ class AuthUserView(generics.RetrieveAPIView):
 class UpdatePasswordView(generics.UpdateAPIView):
     serializer_class = UpdatePasswordSerializer
     model = CustomUser
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -404,14 +482,14 @@ class UpdatePasswordView(generics.UpdateAPIView):
 class UpdateUserView(generics.UpdateAPIView):
     serializer_class = UpdateUserSerializer
     model = CustomUser
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
 
     def get_object(self):
         return self.request.user
 
 
 class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CustomIsAuthenticated]
 
     def post(self, request):
         # Get the refresh token from the request's cookies
@@ -420,10 +498,13 @@ class LogoutView(APIView):
         # Check if the refresh_token exists
         if not refresh_token:
             return Response(
-                {"detail": "Refresh token not found."},
+                {"code": ErrorCode.LOGOUT_FAILED, "detail": "Refresh token not found."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
+            # return Response(
+            #     {"detail": "Refresh token not found."},
+            #     status=status.HTTP_400_BAD_REQUEST,
+            # )
         # Blacklist the token
         BlacklistedToken.objects.create(token=refresh_token)
 
