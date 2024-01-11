@@ -43,14 +43,19 @@ class StoryInteraction(SoftDeletableModel, TimestampedModel):
 
     INTERACTION_CHOICES = [
         ("view", "View"),
-        ("bookmark", "Bookmark"),
-        ("unbookmark", "Unbookmark"),
+        ("add-bookmark", "Add Bookmark"),
+        ("remove-bookmark", "Remove Bookmark"),
+        ("update-bookmark", "Update Bookmark"),
+        ("add-like", "Add Like"),
+        ("remove-like", "Remove Like"),
+        ("add-dislike", "Add Dislike"),
+        ("remove-dislike", "Remove Dislike"),
         ("share", "Share"),
         ("click_external", "Click External Link"),
         ("view_storyline", "View Storyline"),
-        ("report", "Report story"),
+        ("report", "Report"),
         ("highlight_text", "Highlight Text"),
-        # ... other interactions ...
+        # ... other interactions as needed ...
     ]
 
     user = models.ForeignKey(
@@ -66,7 +71,11 @@ class StoryInteraction(SoftDeletableModel, TimestampedModel):
     interaction_type = models.CharField(max_length=50, choices=INTERACTION_CHOICES)
     metadata = JSONField(blank=True, null=True)  # Additional data for the interaction
     user_session = models.ForeignKey(
-        UserSession, on_delete=models.CASCADE, related_name="interactions", null=True, blank=True
+        UserSession,
+        on_delete=models.CASCADE,
+        related_name="interactions",
+        null=True,
+        blank=True,
     )
 
     class Meta:
