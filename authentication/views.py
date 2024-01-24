@@ -39,12 +39,33 @@ from .utils import (
 )
 from utils.error_codes import ErrorCode
 from utils.exceptions import CustomBadRequest
+import logging
+
+# Set up logging
+# logger = logging.getLogger(__name__)
+
+logger = logging.getLogger("media_be")  # Use the logger defined in settings.py
 
 # from users.models import UserSetting
 
 
 class ObtainTokensView(APIView):
     def post(self, request):
+        # Get the origin of the request
+        origin = request.headers.get("Origin")
+        logger.info(f"Request origin: {origin}")
+
+        # Log request method and path
+        logger.info(f"Request Method: {request.method}")
+        logger.info(f"Request Path: {request.path}")
+
+        # Log request headers
+        for header, value in request.headers.items():
+            logger.info(f"Request Header: {header} - Value: {value}")
+
+        # Log request body data (be cautious with sensitive data like passwords)
+        logger.info(f"Request Body: {request.data}")
+
         # Extract username (or email) and password from the request data
         username_or_email = request.data.get("username_or_email")
         password = request.data.get("password")
@@ -67,9 +88,13 @@ class ObtainTokensView(APIView):
         )  # Assuming user is your authenticated user
         access_token = str(refresh.access_token)
 
+        # Calculate expiration times
+        access_token_expires_at = timezone.now() + refresh.access_token.lifetime
+
         response = Response(
             {
                 "access_token": access_token,
+                "access_token_expires_at": access_token_expires_at,
             }
         )
 
@@ -129,9 +154,19 @@ class RefreshTokenView(APIView):
                 }
             )
 
+        # Calculate expiration times
+        access_token_expires_at = timezone.now() + refresh.access_token.lifetime
+        # refresh_token_expires_at = timezone.now() + refresh.lifetime
+
+        # # Calculate access token expiration time
+        # access_token_expires_at = int(
+        #     timezone.now().timestamp() + refresh.access_token.lifetime.total_seconds()
+        # )
+
         return Response(
             {
                 "access_token": access_token,
+                "access_token_expires_at": access_token_expires_at,
             }
         )
 
@@ -493,20 +528,16 @@ class LogoutView(APIView):
 
     def post(self, request):
         # Get the refresh token from the request's cookies
-        refresh_token = request.COOKIES.get("refresh_token")
+        # refresh_token = request.COOKIES.get("refresh_token")
 
-        # Check if the refresh_token exists
-        if not refresh_token:
-            return Response(
-                {"code": ErrorCode.LOGOUT_FAILED, "detail": "Refresh token not found."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-            # return Response(
-            #     {"detail": "Refresh token not found."},
-            #     status=status.HTTP_400_BAD_REQUEST,
-            # )
-        # Blacklist the token
-        BlacklistedToken.objects.create(token=refresh_token)
+        # # Check if the refresh_token exists
+        # if not refresh_token:
+        #     return Response(
+        #         {"code": ErrorCode.LOGOUT_FAILED, "detail": "Refresh token not found."},
+        #         status=status.HTTP_400_BAD_REQUEST,
+        #     )
+        # # Blacklist the token
+        # BlacklistedToken.objects.create(token=refresh_token)
 
         # Clear the refresh token cookie
         response = Response({"detail": "Successfully logged out."})
