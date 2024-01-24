@@ -32,3 +32,5 @@ COPY . .
 CMD ["python", "/code/manage.py", "runserver", "0.0.0.0:8000"]
 
  # Dockerfile.web-app
+
+# /Users/mshittu/programming-projects/python/django/media-be/Dockerfile
