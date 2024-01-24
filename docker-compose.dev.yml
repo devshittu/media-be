@@ -145,3 +145,5 @@ networks:
   my_media_network:
     external: true
 # docker-compose.dev.yml
+
+# /Users/mshittu/programming-projects/python/django/media-be/docker-compose.dev.yml
