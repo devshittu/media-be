@@ -22,6 +22,7 @@ SECRET_KEY = config(
     cast=str,
 )
 DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
+
 ALLOWED_HOSTS = [
     "web-app",
     "127.0.0.1",
@@ -301,27 +302,27 @@ CELERY_TIMEZONE = "UTC"
 
 SEEDING = False
 
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
+if DEBUG: 
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+            },
         },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "INFO",
-            "propagate": True,
+        "loggers": {
+            "django": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": True,
+            },
+            "media_be": {  # Replace 'your_app_name' with the name of your Django app
+                "handlers": ["console"],
+                "level": "DEBUG",
+                "propagate": True,
+            },
         },
-        "media_be": {  # Replace 'your_app_name' with the name of your Django app
-            "handlers": ["console"],
-            "level": "DEBUG",
-            "propagate": True,
-        },
-    },
-}
+    }
 
 # core/settings.py
