@@ -12,3 +12,5 @@ WORKDIR /etc/nginx
 # The ENTRYPOINT or CMD can be set to run NGINX. This can be overridden in docker-compose if needed.
 CMD ["nginx", "-g", "daemon off;"]
 # Dockerfile.nginx
+
+# /Users/mshittu/programming-projects/python/django/media-be/Dockerfile.nginx
