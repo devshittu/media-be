@@ -9,3 +9,5 @@ done
 nginx -g "daemon off;"
 
 # nginx-conf/start-nginx.sh
+
+# /Users/mshittu/programming-projects/python/django/media-be/nginx-conf/start-nginx.sh
