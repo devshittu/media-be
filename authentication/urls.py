@@ -1,8 +1,5 @@
 from django.urls import path
 from users.views import UserSettingView
-from rest_framework_simplejwt.views import (
-    TokenVerifyView,
-)
 from .views import (
     RegisterView,
     CompleteSetupView,
@@ -17,6 +14,7 @@ from .views import (
     ResendVerificationLinkView,
     OTPVerificationOnlyView,
     LogoutView,
+    TokenVerifyView,
 )
 
 
