@@ -51,20 +51,21 @@ logger = logging.getLogger("media_be")  # Use the logger defined in settings.py
 
 class ObtainTokensView(APIView):
     def post(self, request):
-        # Get the origin of the request
-        origin = request.headers.get("Origin")
-        logger.info(f"Request origin: {origin}")
+        # logger.info(f"ObtainTokensView: log beginning token verification")
+        # # Get the origin of the request
+        # origin = request.headers.get("Origin")
+        # logger.info(f"Request origin: {origin}")
 
-        # Log request method and path
-        logger.info(f"Request Method: {request.method}")
-        logger.info(f"Request Path: {request.path}")
+        # # Log request method and path
+        # logger.info(f"Request Method: {request.method}")
+        # logger.info(f"Request Path: {request.path}")
 
-        # Log request headers
-        for header, value in request.headers.items():
-            logger.info(f"Request Header: {header} - Value: {value}")
+        # # Log request headers
+        # for header, value in request.headers.items():
+        #     logger.info(f"Request Header: {header} - Value: {value}")
 
-        # Log request body data (be cautious with sensitive data like passwords)
-        logger.info(f"Request Body: {request.data}")
+        # # Log request body data (be cautious with sensitive data like passwords)
+        # logger.info(f"Request Body: {request.data}")
 
         # Extract username (or email) and password from the request data
         username_or_email = request.data.get("username_or_email")
@@ -90,11 +91,12 @@ class ObtainTokensView(APIView):
 
         # Calculate expiration times
         access_token_expires_at = timezone.now() + refresh.access_token.lifetime
+        access_token_expires_at_timestamp = int(access_token_expires_at.timestamp())
 
         response = Response(
             {
                 "access_token": access_token,
-                "access_token_expires_at": access_token_expires_at,
+                "access_token_expires_at": access_token_expires_at_timestamp,
             }
         )
 
@@ -105,14 +107,24 @@ class ObtainTokensView(APIView):
 
 class TokenVerifyView(APIView):
     def post(self, request):
+        logger.info(f"TokenVerifyView: log beginning token verification")
         token = request.data.get("token")
 
+        logger.info(f"Request Body: {request.data}")
+
         if not token:
-            raise AuthenticationFailed("No token provided")
+            raise AuthenticationFailed(
+                {
+                    "code": ErrorCode.TOKEN_NOT_PROVIDED,
+                    "detail": "No token provided",
+                }
+            )
 
         try:
             AccessToken(token)  # This will validate the token
-            return Response({"token": "valid"})
+            # Explicitly return the expected response data
+            return Response({"status": "success", "token": "valid"})
+
         except TokenError:
             raise AuthenticationFailed(
                 {
@@ -124,6 +136,7 @@ class TokenVerifyView(APIView):
 
 class RefreshTokenView(APIView):
     def post(self, request):
+        logger.info(f"RefreshTokenView: log beginning token verification")
         refresh_token = request.COOKIES.get("refresh_token")
 
         if not refresh_token:
@@ -156,17 +169,12 @@ class RefreshTokenView(APIView):
 
         # Calculate expiration times
         access_token_expires_at = timezone.now() + refresh.access_token.lifetime
-        # refresh_token_expires_at = timezone.now() + refresh.lifetime
-
-        # # Calculate access token expiration time
-        # access_token_expires_at = int(
-        #     timezone.now().timestamp() + refresh.access_token.lifetime.total_seconds()
-        # )
+        access_token_expires_at_timestamp = int(access_token_expires_at.timestamp())
 
         return Response(
             {
                 "access_token": access_token,
-                "access_token_expires_at": access_token_expires_at,
+                "access_token_expires_at": access_token_expires_at_timestamp,
             }
         )
 
@@ -528,16 +536,16 @@ class LogoutView(APIView):
 
     def post(self, request):
         # Get the refresh token from the request's cookies
-        # refresh_token = request.COOKIES.get("refresh_token")
+        refresh_token = request.COOKIES.get("refresh_token")
 
-        # # Check if the refresh_token exists
-        # if not refresh_token:
-        #     return Response(
-        #         {"code": ErrorCode.LOGOUT_FAILED, "detail": "Refresh token not found."},
-        #         status=status.HTTP_400_BAD_REQUEST,
-        #     )
-        # # Blacklist the token
-        # BlacklistedToken.objects.create(token=refresh_token)
+        # Check if the refresh_token exists
+        if not refresh_token:
+            return Response(
+                {"code": ErrorCode.LOGOUT_FAILED, "detail": "Refresh token not found."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        # Blacklist the token
+        BlacklistedToken.objects.create(token=refresh_token)
 
         # Clear the refresh token cookie
         response = Response({"detail": "Successfully logged out."})
