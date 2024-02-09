@@ -113,6 +113,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "utils.middleware.LoggingMiddleware",
 ]
 
 TEMPLATES = [
@@ -225,9 +226,9 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    # "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     # TODO: for experimental purposes
-    # "ACCESS_TOKEN_LIFETIME": timedelta(seconds=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=20),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
     "ROTATE_REFRESH_TOKENS": False,
     "ALGORITHM": "HS256",
@@ -302,7 +303,7 @@ CELERY_TIMEZONE = "UTC"
 
 SEEDING = False
 
-if DEBUG: 
+if DEBUG:
     LOGGING = {
         "version": 1,
         "disable_existing_loggers": False,
@@ -318,6 +319,11 @@ if DEBUG:
                 "propagate": True,
             },
             "media_be": {  # Replace 'your_app_name' with the name of your Django app
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": True,
+            },
+            "global": {  # Replace 'your_app_name' with the name of your Django app
                 "handlers": ["console"],
                 "level": "DEBUG",
                 "propagate": True,
