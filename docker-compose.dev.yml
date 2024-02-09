@@ -123,11 +123,17 @@ services:
       - /Users/mshittu/programming-projects/javascript/react/media-fe/src:/app/src
       - /Users/mshittu/programming-projects/javascript/react/media-fe/public:/app/public
       - frontend-node-modules:/app/node_modules
-      # - /Users/mshittu/programming-projects/javascript/react/media-fe/node_modules:/app/node_modules
+      - ./nginx-conf/certs/mediaapp.local+1.pem:/etc/ssl/certs/mediaapp.local+1.pem
+      - ./nginx-conf/certs/mediaapp.local+1-key.pem:/etc/ssl/private/mediaapp.local+1-key.pem
+      - /Users/mshittu/Library/Application Support/mkcert/rootCA.pem:/usr/local/share/ca-certificates/rootCA.pem
+      - /Users/mshittu/Library/Application Support/mkcert/rootCA.pem:/usr/local/share/ca-certificates/rootCA.crt
+      
 
     restart: always
     ports:
       - 3000:3000
+    # extra_hosts:
+    #   - "api.mediaapp.local:10.82.41.93"
     networks:
       - my_media_network
     depends_on:
