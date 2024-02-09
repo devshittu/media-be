@@ -1,5 +1,3 @@
-# utils/custom_jwt_authentication.py
-
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import (
     TokenError,
@@ -7,15 +5,6 @@ from rest_framework_simplejwt.exceptions import (
 )  # Import the exceptions
 from rest_framework.exceptions import AuthenticationFailed
 from utils.error_codes import ErrorCode
-
-# utils/custom_jwt_authentication.py
-# utils/custom_jwt_authentication.py
-
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from rest_framework.exceptions import AuthenticationFailed
-from utils.error_codes import ErrorCode
-
 
 class CustomJWTAuthentication(JWTAuthentication):
     def authenticate(self, request):
@@ -43,12 +32,6 @@ class CustomJWTAuthentication(JWTAuthentication):
             error_detail = getattr(e, "detail", str(e))
             raise AuthenticationFailed({"code": error_code, "detail": error_detail})
 
-            # Parsing the error details from the exception
-            # error_detail = e.args[0] if e.args else {}
-            # error_code = error_detail.get("code", ErrorCode.TOKEN_NOT_PROVIDED)
-            # error_message = error_detail.get("detail", "Invalid token.")
-
-            # raise AuthenticationFailed({"code": error_code, "detail": error_message})
 
     def authenticate_header(self, request):
         header = super().authenticate_header(request)
