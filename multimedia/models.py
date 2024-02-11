@@ -1,11 +1,16 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from PIL import Image
-import imageio
-from pydub import AudioSegment
+
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from utils.models import SoftDeletableModel, TimestampedModel
 from django.core.files.storage import default_storage
+
+# from utils.validations import validate_json
+# import json
+from .tasks import (
+    process_multimedia,
+)
 
 
 def validate_file_size(value):
@@ -48,9 +53,7 @@ class Multimedia(SoftDeletableModel, TimestampedModel):
         null=True,
     )
     media_url = models.URLField(blank=True, null=True)  # URL for the file's avatar.
-    caption = models.CharField(
-        max_length=100, blank=True, null=True
-    )
+    caption = models.CharField(max_length=100, blank=True, null=True)
 
     thumbnail = models.ImageField(upload_to="thumbnails/", null=True, blank=True)
     media_type = models.CharField(max_length=10, choices=MEDIA_CHOICES)
@@ -58,51 +61,37 @@ class Multimedia(SoftDeletableModel, TimestampedModel):
     story = models.ForeignKey(
         "stories.Story", related_name="multimedia", on_delete=models.CASCADE
     )
+    metadata = models.JSONField(blank=True, null=True)
 
-    def optimize_multimedia(self):
-        """Optimize the multimedia file."""
-        if self.media_type == "photo":
-            with default_storage.open(self.file.name, "rb") as f:
-                img = Image.open(f)
-                img = img.convert("RGB")
-                if img.height > 3000 or img.width > 3000:
-                    output_size = (3000, 3000)
-                    img.thumbnail(output_size)
-                img.save(self.file.path, "JPEG")
+    # def save(self, *args, **kwargs):
+    #     # Flag to check if the instance is newly created
+    #     is_new = self._state.adding
+    #     super().save(*args, **kwargs)  # Save the instance first to get an ID
 
-        elif self.media_type == "audio":
-            audio = AudioSegment.from_file(self.file.path, format="mp3")
-            audio = audio.set_channels(1).set_frame_rate(22050)
-            audio.export(self.file.path, format="mp3", bitrate="64k")
-
-    def create_thumbnail(self):
-        """Generate a thumbnail for the multimedia."""
-        if self.media_type == "photo":
-            with default_storage.open(self.file.name, "rb") as f:
-                img = Image.open(f)
-                img.thumbnail((300, 300))
-                thumbnail_path = self.file.name.replace("media_files", "thumbnails")
-                img.save(default_storage.path(thumbnail_path), "JPEG")
-                self.thumbnail.save(
-                    thumbnail_path.split("/")[-1],
-                    default_storage.open(thumbnail_path, "rb"),
-                )
-
-        elif self.media_type == "video":
-            reader = imageio.get_reader(self.file.path)
-            img_array = reader.get_next_data()
-            img = Image.fromarray(img_array)
-            img.thumbnail((300, 300))
-            thumbnail_path = self.file.path.replace("media_files", "thumbnails")
-            img.save(thumbnail_path, "JPEG")
-            self.thumbnail.save(
-                thumbnail_path.split("/")[-1], open(thumbnail_path, "rb")
-            )
+    #     # If the media is newly added, process it accordingly
+    #     if is_new:
+    #         if self.media_type == "audio":
+    #             generate_waveform.delay(self.id)
+    #         # Call tasks for optimization and thumbnail generation
+    #         optimize_media.delay(self.id)
+    #         create_thumbnail.delay(self.id)
 
     def save(self, *args, **kwargs):
-        self.optimize_multimedia()
-        self.create_thumbnail()
+        is_new = self._state.adding
         super().save(*args, **kwargs)
+
+        if is_new:
+            process_multimedia.delay(self.id)
+
+            # Update media_url after multimedia processing is complete
+            self.media_url = self.get_media_url()
+            self.save(update_fields=["media_url"])  # Update only media_url field
+
+    def get_media_url(self):
+        if self.file:
+            return self.file.url
+            # return settings.BASE_URL + self.file.url
+        return None
 
     class Meta:
         verbose_name = "Story Multimedia"
