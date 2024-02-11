@@ -13,6 +13,11 @@ from utils.constants import DEFAULT_PAGE_SIZE
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+BASE_URL = config(
+    "APP_BASE_URL",
+    default="https://api.mediaapp.local/",
+    cast=str,
+)
 
 # Security
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -203,6 +208,12 @@ STATIC_URL = "static/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_URL = "/media/"
 
+# Limits for size of media files
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 20  # 20 MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 20  # 20 MB
+FILE_UPLOAD_MAX_SIZE = 1024 * 1024 * 20  # 20 MB
+
+
 # Authentication & Authorization
 AUTH_USER_MODEL = "authentication.CustomUser"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # For development
@@ -330,5 +341,6 @@ if DEBUG:
             },
         },
     }
+
 
 # core/settings.py
