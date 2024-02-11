@@ -16,17 +16,32 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include([
-        path('auth/', include('authentication.urls')),  # Include the authentication app's URLs
-        path('', include('stories.urls')),
-        path('users/', include('users.urls')),
-        path('analytics/', include('analytics.urls')),
-        path('feedbacks/', include('feedback.urls')),
-        path('support/', include('support.urls')),
-    ])),
+    path("admin/", admin.site.urls),
+    path(
+        "api/",
+        include(
+            [
+                path(
+                    "auth/", include("authentication.urls")
+                ),  # Include the authentication app's URLs
+                path("", include("stories.urls")),
+                path("users/", include("users.urls")),
+                path("analytics/", include("analytics.urls")),
+                path("feedbacks/", include("feedback.urls")),
+                path("support/", include("support.urls")),
+                # path("multimedia/", include("multimedia.urls")),
+            ]
+        ),
+    ),
     # path('auth/', include('rest_auth.urls')),  # URLs for dj-rest-auth
     # path('auth/registration/', include('rest_auth.registration.urls')),  # URLs for registration
-
 ]
+
+
+# Add the following line to serve media files during development
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
