@@ -51,6 +51,8 @@ services:
     command: celery -A core worker --loglevel=info
     volumes:
       - .:/code
+      - media_volume:/code/media  # Make sure to mount the media_volume here as well
+    
     depends_on:
       - db-postgres
       - redis
