@@ -30,6 +30,7 @@ develop-eggs/
 dist/
 downloads/
 # nginx-conf/*
+*-secret.yaml
 
 nginx-conf/default.conf
 eggs/
