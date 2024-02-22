@@ -97,7 +97,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Thirdparty Apps
-    "rest_framework",
+    "rest_framwork",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "django_extensions",
