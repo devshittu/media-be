@@ -21,7 +21,20 @@ SECRET_KEY = config(
     default="django-insecure-f8fzco37jytbzpl&kv6f(^fn^r*o4luzlttw7k@zfat)7#-q_0",
     cast=str,
 )
-DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
+
+
+# Identify the environment
+ENVIRONMENT = config("APP_MEDIA_ENVIRONMENT", default="development")
+
+# Example for toggling settings based on the environment
+if ENVIRONMENT == "production":
+    DEBUG = False
+    # Other production-specific settings
+else:
+    DEBUG = True
+    # Other development or test-specific settings
+
+# DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = [
     "web-app",
@@ -143,17 +156,21 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get(
-            "POSTGRES_DB", "mediabedb"
+        "NAME": config(
+            "POSTGRES_DB", default="mediabedb", cast=str
         ),  # Default value is 'mediabedb'
-        "USER": os.environ.get(
-            "POSTGRES_USER", "mediabeuser"
+        "USER": config(
+            "POSTGRES_USER", default="mediabeuser", cast=str
         ),  # Default value is 'mediabeuser'
-        "PASSWORD": os.environ.get(
-            "POSTGRES_PASSWORD", "mediabepassword"
+        "PASSWORD": config(
+            "POSTGRES_PASSWORD", default="mediabepassword", cast=str
         ),  # Default value is 'mediabepassword'
-        "HOST": "db-postgres",  # This should match the service name for Postgres in your docker-compose file
-        "PORT": "5432",  # Default port for PostgreSQL
+        "HOST": config(
+            "POSTGRES_HOST", default="db-postgres", cast=str
+        ),  # This should match the service name for Postgres in your docker-compose file
+        "PORT": config(
+            "POSTGRES_PORT", default="5432", cast=str
+        ),  # Default port for PostgreSQL
     }
 }
 
@@ -205,7 +222,28 @@ MEDIA_URL = "/media/"
 
 # Authentication & Authorization
 AUTH_USER_MODEL = "authentication.CustomUser"
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # For development
+
+
+# # Email configurations
+# EMAIL_BACKEND = config(
+#     "APP_MEDIA_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
+# )
+# Environment-specific settings
+if ENVIRONMENT == "development":
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    EMAIL_BACKEND = config(
+        "APP_MEDIA_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
+    )
+
+EMAIL_HOST = config("APP_MEDIA_EMAIL_HOST", default="smtp.gmail.com")
+EMAIL_USE_TLS = config("APP_MEDIA_EMAIL_USE_TLS", default=True, cast=bool)
+EMAIL_PORT = config("APP_MEDIA_EMAIL_PORT", default=587, cast=int)
+EMAIL_HOST_USER = config("APP_MEDIA_EMAIL_HOST_USER", default="mshittu.work@gmail.com")
+EMAIL_HOST_PASSWORD = config(
+    "APP_MEDIA_EMAIL_HOST_PASSWORD", default="your_email_password"
+)
+
 # Use email for authentication instead of usernames
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_UNIQUE_EMAIL = True
