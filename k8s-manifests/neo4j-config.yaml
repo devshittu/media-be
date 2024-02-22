@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: neo4j-init-script
+data:
+  start-neo4j.sh: |
+    #!/bin/bash
+    # Assuming NEOMODEL_NEO4J_AUTH_USERNAME and NEOMODEL_NEO4J_AUTH_PASSWORD are passed as environment variables
+    export NEO4J_AUTH="${NEOMODEL_NEO4J_AUTH_USERNAME}:${NEOMODEL_NEO4J_AUTH_PASSWORD}"
+
+    # Now, run the main container process
+    exec "$@"
+
+# k8s-manifests/neo4j-config.yaml
