@@ -1,0 +1,70 @@
+# neo4j-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: neo4j
+spec:
+  serviceName: "neo4j"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neo4j
+  template:
+    metadata:
+      labels:
+        app: neo4j
+    spec:
+      containers:
+      - name: neo4j
+        image: neo4j:latest
+        ports:
+        - containerPort: 7474
+          name: http
+        - containerPort: 7687
+          name: bolt
+        env:
+        - name: NEOMODEL_NEO4J_AUTH_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: NEOMODEL_NEO4J_AUTH_USERNAME
+        - name: NEOMODEL_NEO4J_AUTH_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: NEOMODEL_NEO4J_AUTH_PASSWORD
+        command: ["/bin/bash", "/neo4jdb/start-neo4j.sh"]
+        volumeMounts:
+        - name: neo4j-init-script-volume
+          mountPath: /neo4jdb
+      volumes:
+      - name: neo4j-init-script-volume
+        configMap:
+          name: neo4j-init-script
+
+  volumeClaimTemplates:
+  - metadata:
+      name: neo4j-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 2Gi
+---
+# neo4j-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: neo4j-service
+spec:
+  selector:
+    app: neo4j
+  ports:
+  - name: http
+    port: 7474
+    targetPort: 7474
+  - name: bolt
+    port: 7687
+    targetPort: 7687
+
+# k8s-manifests/neo4j-statefulset.yaml
