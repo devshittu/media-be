@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: backend-setup-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: django-setup
+        image: web-app-image:0.0.1
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          python manage.py makemigrations &&
+          python manage.py migrate &&
+          python manage.py autoseed &&
+          python manage.py install_labels &&
+          python manage.py importstories &&
+          echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('test@test.co', 'commonPassword=1')" | python manage.py shell
+        envFrom:
+        - configMapRef:
+            name: backend-config
+        - secretRef:
+            name: backend-secret
+      restartPolicy: Never
