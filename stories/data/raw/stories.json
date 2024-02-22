@@ -5104,7 +5104,177 @@
         }
     },
     "created_at": 519979200
-  }
+  },
 
+
+  {
+    "id": "171",
+    "title": "Policy Reform Debate",
+    "body": "The proposed policy reforms have sparked intense debates among policymakers and the public alike. Advocates argue for the necessity of change to address pressing issues, while critics express concerns about the potential ramifications. The ongoing discussions highlight the complexities of governance and the diversity of opinions within the political sphere.#Politics #PolicyReform #Debate #Advocacy #Criticism",
+    "slug": "policy-reform-debate",
+    "category_id": "3",
+    "updated_at": 1617000000,
+    "parent_stories": ["170"],
+    "children_stories": ["172"],
+    "user": {
+      "id": "8",
+      "username": "policy_analyst",
+      "email": "analyst@policyinsights.com",
+      "name": "Policy Analyst",
+      "created_at": "1607000000",
+      "updated_at": "1607000000",
+      "last_login": "1607000000",
+      "roles": ["editor"],
+      "avatar_url": "http://example.com/avatar_policy_analyst.png",
+      "news_channel": {
+          "id": "7",
+          "name": "Policy Insights",
+          "feedUrl": "http://www.policyinsights.com",
+          "logoUrl": "http://example.com/logo_policy_insights.png"
+      }
+    },
+    "created_at": 1617000000
+  },
+  {
+    "id": "172",
+    "title": "Foreign Relations Summit",
+    "body": "The recent summit on foreign relations brought together leaders from various nations to discuss diplomatic strategies and international cooperation. Key topics included trade agreements, security alliances, and climate initiatives. The summit concluded with commitments to strengthen ties and address global challenges through collective action.#Politics #ForeignRelations #Diplomacy #InternationalCooperation #GlobalChallenges",
+    "slug": "foreign-relations-summit",
+    "category_id": "3",
+    "updated_at": 1618000000,
+    "parent_stories": ["171"],
+    "children_stories": ["173"],
+    "user": {
+      "id": "9",
+      "username": "diplomatic_correspondent",
+      "email": "correspondent@diplomaticnews.com",
+      "name": "Diplomatic Correspondent",
+      "created_at": "1608000000",
+      "updated_at": "1608000000",
+      "last_login": "1608000000",
+      "roles": ["editor"],
+      "avatar_url": "http://example.com/avatar_diplomatic_correspondent.png",
+      "news_channel": {
+          "id": "8",
+          "name": "Diplomatic News",
+          "feedUrl": "http://www.diplomaticnews.com",
+          "logoUrl": "http://example.com/logo_diplomatic_news.png"
+      }
+    },
+    "created_at": 1618000000
+  },
+  {
+    "id": "173",
+    "title": "Legislative Reform Initiative",
+    "body": "The proposed legislative reform initiative aims to streamline governmental processes and enhance transparency and accountability. Stakeholders from diverse sectors have voiced support for the initiative, citing its potential to modernize governance and foster public trust. However, challenges remain in navigating political dynamics and securing bipartisan consensus.#Politics #LegislativeReform #Governance #Transparency #Accountability",
+    "slug": "legislative-reform-initiative",
+    "category_id": "3",
+    "updated_at": 1619000000,
+    "parent_stories": ["172"],
+    "children_stories": ["174"],
+    "user": {
+      "id": "10",
+      "username": "legislation_expert",
+      "email": "expert@legislationinsights.com",
+      "name": "Legislation Expert",
+      "created_at": "1609000000",
+      "updated_at": "1609000000",
+      "last_login": "1609000000",
+      "roles": ["editor"],
+      "avatar_url": "http://example.com/avatar_legislation_expert.png",
+      "news_channel": {
+          "id": "9",
+          "name": "Legislation Insights",
+          "feedUrl": "http://www.legislationinsights.com",
+          "logoUrl": "http://example.com/logo_legislation_insights.png"
+      }
+    },
+    "created_at": 1619000000
+  },
+  {
+    "id": "174",
+    "title": "Public Opinion Poll Results",
+    "body": "The latest public opinion poll results indicate shifting sentiments among voters regarding key political issues and leadership performance. Analysis of the data reveals trends and preferences that may influence upcoming elections and policy decisions. The findings underscore the importance of engaging with the electorate and addressing their concerns.#Politics #PublicOpinionPoll #VoterSentiments #LeadershipPerformance #ElectionImpact",
+    "slug": "public-opinion-poll-results",
+    "category_id": "3",
+    "updated_at": 1620000000,
+    "parent_stories": ["173"],
+    "children_stories": ["175"],
+    "user": {
+      "id": "11",
+      "username": "polling_analyst",
+      "email": "analyst@pollinginsights.com",
+      "name": "Polling Analyst",
+      "created_at": "1610000000",
+      "updated_at": "1610000000",
+      "last_login": "1610000000",
+      "roles": ["editor"],
+      "avatar_url": "http://example.com/avatar_polling_analyst.png",
+      "news_channel": {
+          "id": "10",
+          "name": "Polling Insights",
+          "feedUrl": "http://www.pollinginsights.com",
+          "logoUrl": "http://example.com/logo_polling_insights.png"
+      }
+    },
+    "created_at": 1620000000
+  },
+  {
+    "id": "175",
+    "title": "Government Accountability Report",
+    "body": "The recently released government accountability report sheds light on fiscal management, regulatory compliance, and ethical standards within the administration. The comprehensive analysis identifies areas of improvement and potential risks, providing valuable insights for policymakers and the public. Stakeholders are urged to review the findings and collaborate on corrective actions to uphold transparency and integrity in governance.#Politics #GovernmentAccountability #FiscalManagement #EthicalStandards #Transparency",
+    "slug": "government-accountability-report",
+    "category_id": "3",
+    "updated_at": 1621000000,
+    "parent_stories": ["174"],
+    "children_stories": [],
+    "user": {
+      "id": "12",
+      "username": "accountability_expert",
+      "email": "expert@govaccountability.com",
+      "name": "Accountability Expert",
+      "created_at": "1611000000",
+      "updated_at": "1611000000",
+      "last_login": "1611000000",
+      "roles": ["editor"],
+      "avatar_url": "http://example.com/avatar_accountability_expert.png",
+      "news_channel": {
+          "id": "11",
+          "name": "Government Accountability",
+          "feedUrl": "http://www.govaccountability.com",
+          "logoUrl": "http://example.com/logo_gov_accountability.png"
+      }
+    },
+    "created_at": 1621000000
+  },
+
+  {
+    "id": "176",
+    "title": "Election Upset",
+    "body": "The recent election results shocked the nation as the incumbent party lost to the opposition by a narrow margin. Voter turnout was record-breaking, reflecting heightened political engagement among citizens. The unexpected outcome has sparked debates and discussions across the country, reshaping the political landscape.#Politics #ElectionUpset #IncumbentParty #Opposition #PoliticalEngagement",
+    "slug": "election-upset",
+    "category_id": "3",
+    "updated_at": 1616000000,
+    "parent_stories": [],
+    "children_stories": ["171"],
+    "user": {
+      "id": "7",
+      "username": "political_editor",
+      "email": "editor@politicalnews.com",
+      "name": "Political Editor",
+      "created_at": "1606000000",
+      "updated_at": "1606000000",
+      "last_login": "1606000000",
+      "roles": ["editor"],
+      "avatar_url": "http://example.com/avatar_political_editor.png",
+      "news_channel": {
+          "id": "6",
+          "name": "Political News",
+          "feedUrl": "http://www.politicalnews.com",
+          "logoUrl": "http://example.com/logo_political_news.png"
+      }
+    },
+    "created_at": 1616000000
+  }
 
 ]
