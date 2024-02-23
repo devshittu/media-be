@@ -1,4 +1,4 @@
-# backend-config.yaml
+# ingress-config.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
