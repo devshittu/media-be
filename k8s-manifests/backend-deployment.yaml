@@ -29,6 +29,7 @@ spec:
       containers:
       - name: backend
         image: web-app-image:0.0.1
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
         envFrom:
