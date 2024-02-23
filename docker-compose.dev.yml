@@ -46,7 +46,8 @@ services:
   celery:
     container_name: celery-engine
     image: "celery"
-    platform: linux/amd64  # Specify the platform here
+    # platform: linux/amd64  # Specify the platform here
+    # platform: linux/amd64  # Specify the platform here
     build: .
     command: celery -A core worker --loglevel=info
     volumes:
