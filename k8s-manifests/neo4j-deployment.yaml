@@ -1,0 +1,59 @@
+# # neo4j-deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myneo4j
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myneo4j
+  template:
+    metadata:
+      labels:
+        app: myneo4j
+    spec:
+      containers:
+      - name: neo4jdb
+        image: neo4j:latest
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 7474
+          name: http
+        - containerPort: 7687
+          name: bolt
+        env:
+        - name: NEO4J_AUTH
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: NEO4J_AUTH
+
+        volumeMounts:
+        - name: neo4jdb
+          mountPath: /data
+      volumes:
+      - name: neo4jdb
+        persistentVolumeClaim:
+          claimName: neo4j-pvc
+
+
+---
+# neo4j-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: myneo4j-service
+spec:
+  selector:
+    app: myneo4j
+  type: NodePort
+  ports:
+  - name: http
+    port: 7474
+    targetPort: 7474
+  - name: bolt
+    port: 7687
+    targetPort: 7687
+# k8s-manifests/neo4j-deployment.yaml
