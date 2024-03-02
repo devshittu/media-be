@@ -3,10 +3,13 @@ kind: Job
 metadata:
   name: backend-setup-job
 spec:
+  backoffLimit: 1  
   template:
     spec:
       containers:
       - name: django-setup
+        securityContext:
+          runAsUser: 1000 
         image: web-app-image:0.0.1
         command: ["/bin/sh", "-c"]
         args:
@@ -14,7 +17,7 @@ spec:
           python manage.py makemigrations &&
           python manage.py migrate &&
           python manage.py autoseed &&
-          python manage.py install_labels &&
+          # python manage.py install_labels &&
           python manage.py importstories &&
           echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('test@test.co', 'commonPassword=1')" | python manage.py shell
         envFrom:
@@ -23,3 +26,5 @@ spec:
         - secretRef:
             name: backend-secret
       restartPolicy: Never
+
+# k8s-manifests/backend-setup-job.yaml
