@@ -22,3 +22,5 @@ spec:
             name: backend-config
         - secretRef:
             name: backend-secret
+
+# k8s-manifests/celery-deployment.yaml
