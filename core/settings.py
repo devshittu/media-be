@@ -97,7 +97,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Thirdparty Apps
-    "rest_framwork",
+    "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "django_extensions",
@@ -175,11 +175,24 @@ DATABASES = {
 }
 
 # Neo4j Configuration
-NEOMODEL_NEO4J_BOLT_URL = "bolt://neo4j:password@db-neo4j:7687"
-NEOMODEL_NEO4J_AUTH = (
-    config("NEOMODEL_NEO4J_AUTH_USERNAME", default="neo4j", cast=str),
-    config("NEOMODEL_NEO4J_AUTH_PASSWORD", default="password", cast=str),
+# NEOMODEL_NEO4J_BOLT_URL = "bolt://neo4j:password@db-neo4j:7687"
+# NEOMODEL_NEO4J_AUTH = (
+#     config("NEOMODEL_NEO4J_AUTH_USERNAME", default="neo4j", cast=str),
+#     config("NEOMODEL_NEO4J_AUTH_PASSWORD", default="password", cast=str),
+# )
+
+
+# Neo4J Database Configuration
+
+NEO4J_USERNAME = config("NEO4J_USERNAME", default="neo4j")
+NEO4J_PASSWORD = config("NEO4J_PASSWORD", default="password")
+NEO4J_HOST = config("NEO4J_HOST", default="db-neo4j") # default could also be 'localhost'
+NEO4J_PORT = config("NEO4J_PORT", default="7687")
+
+NEOMODEL_NEO4J_BOLT_URL = (
+    f"bolt://{NEO4J_USERNAME}:{NEO4J_PASSWORD}@{NEO4J_HOST}:{NEO4J_PORT}"
 )
+
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -219,6 +232,11 @@ USE_TZ = True
 STATIC_URL = "static/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_URL = "/media/"
+if ENVIRONMENT == "development":
+    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 
 # Authentication & Authorization
 AUTH_USER_MODEL = "authentication.CustomUser"
