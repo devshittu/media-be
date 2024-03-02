@@ -15,10 +15,13 @@ spec:
       containers:
       - name: redis
         image: redis:alpine
+        imagePullPolicy: "IfNotPresent"
         ports:
         - containerPort: 6379
+        envFrom:
+        - configMapRef:
+            name: backend-config
 ---
-# redis-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -26,6 +29,7 @@ metadata:
 spec:
   selector:
     app: redis
+  type: NodePort
   ports:
   - port: 6379
     targetPort: 6379
