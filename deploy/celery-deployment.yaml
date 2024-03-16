@@ -1,0 +1,43 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: celery
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: celery
+    spec:
+      containers:
+        - name: celery
+          image: web-app-image:0.0.1
+          resources:
+            requests:
+              memory: "512Mi"
+            limits:
+              memory: "1024Mi"
+          command: ["celery", "-A", "core", "worker", "--loglevel=info"]
+          # workingDir: /code
+          envFrom:
+          - configMapRef:
+              name: web-app-config
+          - secretRef:
+              name: web-app-secret
+
+          # volumeMounts:
+          #   - mountPath: /code
+          #     name: web-app-code
+      restartPolicy: Always
+      volumes:
+        - name: web-app-code
+          persistentVolumeClaim:
+            claimName: web-app-pvc
+
+# deploy/celery-deployment.yaml
