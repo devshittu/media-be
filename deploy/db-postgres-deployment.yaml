@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: db-postgres
+  name: db-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+      labels:
+        app: db-postgres
+    spec:
+      containers:
+        - image: postgres:13
+          name: db-postgresql
+          env:
+          - name: POSTGRES_DB
+            valueFrom: 
+              configMapKeyRef:
+                name: web-app-config
+                key: POSTGRES_DB
+          - name: POSTGRES_USER
+            valueFrom: 
+              configMapKeyRef:
+                name: web-app-config
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: web-app-secret
+                key: POSTGRES_PASSWORD
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-data
+      restartPolicy: Always
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data-pvc
+---
+# postgres-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  selector:
+    app: db-postgres
+  # type: NodePort
+  type: ClusterIP
+  ports:
+  - port: 5432
+    targetPort: 5432
+
+# deploy/db-postgres-deployment.yaml
