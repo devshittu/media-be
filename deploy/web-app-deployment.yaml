@@ -42,7 +42,7 @@ spec:
       #     echo "from django.contrib.auth.models import User; User.objects.create_superuser('test@test.co', 'commonPassword=1')" | python manage.py shell
       #   envFrom:
       #   - configMapRef:
-      #       name: web-app-config
+      #       name: web-app-configmap
       #   - secretRef:
       #       name: web-app-secret
       #   volumeMounts:
@@ -56,7 +56,7 @@ spec:
             - containerPort: 8000
           envFrom:
           - configMapRef:
-              name: web-app-config
+              name: web-app-configmap
           - secretRef:
               name: web-app-secret
       restartPolicy: Always
@@ -74,7 +74,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-app-svc
+  name: web-app-service
 spec:
   type: NodePort
   selector:
