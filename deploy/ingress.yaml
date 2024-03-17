@@ -26,7 +26,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: web-app-svc
+            name: web-app-service
             port:
               number: 8000
   - host: "app.mediaapp.local"
@@ -36,7 +36,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: frontend-app-svc
+            name: frontend-app-service
             port:
               number: 3000
 
