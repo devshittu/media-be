@@ -27,7 +27,7 @@ spec:
           # workingDir: /code
           envFrom:
           - configMapRef:
-              name: web-app-config
+              name: web-app-configmap
           - secretRef:
               name: web-app-secret
 
