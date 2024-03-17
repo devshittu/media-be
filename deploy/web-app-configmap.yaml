@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: web-app-config
+  name: web-app-configmap
 data:
   APP_NAME: 'Aproko'
   APP_CODE_NAME: 'media-be'
