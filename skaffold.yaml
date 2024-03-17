@@ -1,0 +1,93 @@
+apiVersion: skaffold/v2beta17
+kind: Config
+metadata:
+  name: media-app-development
+build:
+  tagPolicy:
+    envTemplate:
+      template: "{{.ENV.VERSION}}-{{.GIT_COMMIT}}"
+  artifacts:
+    - image: web-app-image
+      context: /Users/mshittu/programming-projects/python/django/media-be/
+      custom:
+        buildCommand:  >-
+          docker buildx build --platform linux/arm64 -t $IMAGE -f Dockerfile.dev . --load
+        # buildCommand:  >-
+        #   docker buildx build --platform linux/arm64 -t web-app-image:0.0.1 -f Dockerfile.dev . --load
+          
+    - image: frontend-app-image
+      context: /Users/mshittu/programming-projects/javascript/react/media-fe/
+      custom:
+        buildCommand: >-
+          docker buildx build --platform linux/arm64 -t $IMAGE -f Dockerfile.dev . --load
+        # buildCommand: >-
+        #   docker buildx build --platform linux/arm64 -t frontend-app-image:0.0.1 -f Dockerfile.dev . --load
+deploy:
+  kubectl:
+    manifests:
+      - /Users/mshittu/programming-projects/python/django/media-be/deploy/*.yaml
+      - /Users/mshittu/programming-projects/javascript/react/media-fe/deploy/*.yaml
+
+# skaffold.yaml
+
+
+
+
+
+# apiVersion: skaffold/v2beta26
+# kind: Config
+# metadata:
+#   name: media-app-development
+# build:
+#   local:
+#     useBuildkit: true
+#     push: false
+#   artifacts:
+#     - image: web-app-image
+#       context: /Users/mshittu/programming-projects/python/django/media-be
+#       docker:
+#         dockerfile: Dockerfile.dev
+#         buildArgs:
+#           platform: linux/arm64
+#       custom:
+#         buildCommand: |
+#           docker buildx build --platform linux/arm64 -t web-app-image:0.0.1 . --load --no-cache
+#     - image: frontend-app-image
+#       context: /Users/mshittu/programming-projects/javascript/react/media-fe
+#       docker:
+#         dockerfile: Dockerfile.dev
+#         buildArgs:
+#           platform: linux/arm64
+#       custom:
+#         buildCommand: |
+#           docker buildx build --platform linux/arm64 -t frontend-app-image:0.0.1 -f ./Dockerfile.dev . --load --no-cache
+# deploy:
+#   kubectl:
+#     manifests:
+#       - /Users/mshittu/programming-projects/python/django/media-be/deploy/*.yaml
+#       - /Users/mshittu/programming-projects/javascript/react/media-fe/deploy/*.yaml
+
+# profiles:
+#   - name: development
+#     build:
+#       local:
+#         useBuildkit: true
+#         push: false
+#       artifacts:
+#         - image: web-app-image
+#           context: /Users/mshittu/programming-projects/python/django/media-be
+#           docker:
+#             dockerfile: Dockerfile.dev
+#             buildArgs:
+#               platform: linux/arm64
+#         - image: frontend-app-image
+#           context: /Users/mshittu/programming-projects/javascript/react/media-fe
+#           docker:
+#             dockerfile: Dockerfile.dev
+#             buildArgs:
+#               platform: linux/arm64
+#     deploy:
+#       kubectl:
+#         manifests:
+#           - /Users/mshittu/programming-projects/python/django/media-be/deploy/*.yaml
+#           - /Users/mshittu/programming-projects/javascript/react/media-fe/deploy/*.yaml
