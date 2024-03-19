@@ -27,3 +27,5 @@ spec:
   resources:
     requests:
       storage: 500M
+
+# deploy/db-postgres-data-storage.yaml
