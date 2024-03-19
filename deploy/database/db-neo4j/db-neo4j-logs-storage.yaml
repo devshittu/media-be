@@ -26,3 +26,5 @@ spec:
   resources:
     requests:
       storage: 500M
+
+# deploy/db-neo4j-logs-storage.yaml
