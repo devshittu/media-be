@@ -38,6 +38,7 @@ else:
 
 ALLOWED_HOSTS = [
     "web-app",
+    "web-app-service",
     "127.0.0.1",
     "localhost",
     "*.mediaapp.local",
@@ -66,6 +67,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://api.mediaapp.local",
     "http://app.mediaapp.local",
     "https://app.mediaapp.local",
+    "http://frontend-app-service:3000",
+    "https://frontend-app-service:3000",
     "http://web-app:8000",
     "https://web-app:8000",
     "http://localhost:3000",
@@ -173,13 +176,6 @@ DATABASES = {
         ),  # Default port for PostgreSQL
     }
 }
-
-# Neo4j Configuration
-# NEOMODEL_NEO4J_BOLT_URL = "bolt://neo4j:password@db-neo4j:7687"
-# NEOMODEL_NEO4J_AUTH = (
-#     config("NEOMODEL_NEO4J_AUTH_USERNAME", default="neo4j", cast=str),
-#     config("NEOMODEL_NEO4J_AUTH_PASSWORD", default="password", cast=str),
-# )
 
 
 # Neo4J Database Configuration
@@ -374,12 +370,12 @@ if DEBUG:
                 "level": "INFO",
                 "propagate": True,
             },
-            "media_be": {  # Replace 'your_app_name' with the name of your Django app
+            "media_be": {
                 "handlers": ["console"],
                 "level": "INFO",
                 "propagate": True,
             },
-            "global": {  # Replace 'your_app_name' with the name of your Django app
+            "global": {
                 "handlers": ["console"],
                 "level": "DEBUG",
                 "propagate": True,
