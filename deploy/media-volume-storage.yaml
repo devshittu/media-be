@@ -27,3 +27,5 @@ spec:
   resources:
     requests:
       storage: 100Mi
+
+# deploy/media-volume-storage.yaml
