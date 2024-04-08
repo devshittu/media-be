@@ -28,4 +28,4 @@ spec:
       storage: 500M
 
 
-# deploy/db-neo4j-data-storage.yaml
+# deploy/database/db-neo4j/db-neo4j-data-storage.yaml
