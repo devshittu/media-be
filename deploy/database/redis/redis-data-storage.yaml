@@ -27,4 +27,4 @@ spec:
     requests:
       storage: 100Mi
 
-# deploy/redis-data-storage.yaml
+# deploy/database/redis/redis-data-storage.yaml
