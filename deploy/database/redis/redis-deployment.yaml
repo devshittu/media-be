@@ -13,7 +13,6 @@ spec:
     type: Recreate
   template:
     metadata:
-      annotations:
       labels:
         app: redis
     spec:
@@ -48,4 +47,4 @@ spec:
   selector:
     app: redis
 
-# deploy/redis-deployment.yaml
+# deploy/database/redis/redis-deployment.yaml
