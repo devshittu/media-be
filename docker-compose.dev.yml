@@ -13,11 +13,14 @@ services:
     volumes:
       - .:/code
       - media_volume:/code/media # Add this line
+      # - media_volume:/data # Add this line
     ports:
       - 8000:8000
     depends_on:
       - db-postgres
       - db-neo4j
+      # - minio
+      # - createbucket
     networks:
       - my_media_network
     logging:
@@ -49,9 +52,11 @@ services:
   celery:
     container_name: celery-engine
     image: "celery"
-    # platform: linux/amd64  # Specify the platform here
-    # platform: linux/amd64  # Specify the platform here
-    build: .
+    platform: linux/arm64  # Specify the platform here
+
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     command: celery -A core worker --loglevel=info
     volumes:
       - .:/code
@@ -107,6 +112,45 @@ services:
     networks:
       - my_media_network
 
+  # minio:
+  #   image: minio/minio:latest
+  #   container_name: minio
+  #   ports:
+  #     - "9000:9000"
+  #     - "9001:9001"
+  #   volumes:
+  #     - media_volume:/data
+  #   environment:
+  #     - "MINIO_ROOT_USER=user"
+  #     - "MINIO_ROOT_PASSWORD=password"
+  #   command: server /data --console-address :9001
+  #   networks:
+  #     - my_media_network
+
+  # createbucket:
+  #   container_name: createbucket
+  #   image: minio/mc:latest
+  #   depends_on:
+  #     - minio
+  #   entrypoint: >
+  #     /bin/sh -c "
+  #     /usr/bin/mc alias set minioLocal http://minio:9000 user password;
+  #     if /usr/bin/mc ls minioLocal/mybucket; then
+  #       echo 'Bucket already exists.';
+  #     else
+  #       /usr/bin/mc mb minioLocal/mybucket/ &&
+  #       sleep 5 &&  # Add this line
+  #       /usr/bin/mc anonymous set download minioLocal/mybucket;
+  #       /usr/bin/mc anonymous set public minioLocal/mybucket;
+  #     fi;
+  #     sleep 2;  # Another brief delay before any further operations
+  #     /usr/bin/mc ls minioLocal/mybucket;
+  #     "
+
+  #   networks:
+  #     - my_media_network
+
+
   frontend-app:
     container_name: frontend-app
     build:
@@ -131,13 +175,10 @@ services:
       - ./nginx-conf/certs/mediaapp.local+1-key.pem:/etc/ssl/private/mediaapp.local+1-key.pem
       - /Users/mshittu/Library/Application Support/mkcert/rootCA.pem:/usr/local/share/ca-certificates/rootCA.pem
       - /Users/mshittu/Library/Application Support/mkcert/rootCA.pem:/usr/local/share/ca-certificates/rootCA.crt
-      
 
     restart: always
     ports:
       - 3000:3000
-    # extra_hosts:
-    #   - "api.mediaapp.local:10.82.41.93"
     networks:
       - my_media_network
     depends_on:
