@@ -11,9 +11,8 @@ spec:
     type: Recreate
   template:
     metadata:
-      annotations:
-      labels:
-        app: web-app
+      labels: 
+          app: web-app
     spec:
       # initContainers:
       # - name: setup
@@ -84,4 +83,4 @@ spec:
       port: 8000
       targetPort: 8000
 
-# deploy/web-app-deployment.yaml
+# deploy/app/web-app-deployment.yaml
