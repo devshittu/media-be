@@ -2,15 +2,10 @@ from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, filters, status, serializers
 from django.db import IntegrityError
-from .pagination import CenteredPageNumberPagination
 from users.models import UserSetting
-
 from stories.neo_models import StoryNode
 from .models import Story, Like, Dislike, Bookmark, Category
 from .serializers import StorySerializer, BookmarkSerializer, CategorySerializer
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from utils.permissions import CustomIsAuthenticated
 from utils.mixins import SoftDeleteMixin
 from .serializers import (
