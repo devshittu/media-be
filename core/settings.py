@@ -86,7 +86,7 @@ CUSTOM_APPS = [
     "system_messaging",
     "multimedia",
     "stories",
-    "support"
+    "support",
     # "analytics",
     # ... any other custom apps ...
 ]
@@ -105,6 +105,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_extensions",
     "ckeditor",
+    
+    'storages',
     # 'ckeditor_uploader',  # If you want image uploading
     "django_neomodel",
     "corsheaders",
@@ -182,7 +184,9 @@ DATABASES = {
 
 NEO4J_USERNAME = config("NEO4J_USERNAME", default="neo4j")
 NEO4J_PASSWORD = config("NEO4J_PASSWORD", default="password")
-NEO4J_HOST = config("NEO4J_HOST", default="db-neo4j") # default could also be 'localhost'
+NEO4J_HOST = config(
+    "NEO4J_HOST", default="db-neo4j"
+)  # default could also be 'localhost'
 NEO4J_PORT = config("NEO4J_PORT", default="7687")
 
 NEOMODEL_NEO4J_BOLT_URL = (
@@ -225,13 +229,50 @@ USE_TZ = True
 # Static & Media Files
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
-MEDIA_URL = "/media/"
+
+# STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
 if ENVIRONMENT == "development":
     STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+
+# Static & Media Files
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+# TODO: this works without the minio
+STATIC_URL = "/staticfiles/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+
+
+MEDIA_URL = "/mediafiles/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
+# TODO: this works without the minio
+
+
+# # Assuming MinIO runs locally on port 9000 and you've set up a bucket named 'static'
+# AWS_ACCESS_KEY_ID = "user"  # Use your MinIO access key
+# AWS_SECRET_ACCESS_KEY = "password"  # Use your MinIO secret key
+# AWS_STORAGE_BUCKET_NAME = "mybucket"
+# # AWS_S3_ENDPOINT_URL = "http://minio:9000"# URL to your MinIO instance
+# # AWS_S3_CUSTOM_DOMAIN = f"minio:9000"  # Use the internal Docker network name
+
+
+# AWS_S3_ENDPOINT_URL = (
+#     "https://minio.mediaapp.local"  # NGINX proxies to MinIO over HTTPS
+# )
+# AWS_S3_CUSTOM_DOMAIN = f"minio.mediaapp.local"
+
+# AWS_S3_OBJECT_PARAMETERS = {
+#     "CacheControl": "max-age=86400",
+# }
+# AWS_S3_USE_SSL = True
+# AWS_LOCATION = "static"
+
+# # Static files settings
+# STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
+# STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 
 # Authentication & Authorization
@@ -239,9 +280,6 @@ AUTH_USER_MODEL = "authentication.CustomUser"
 
 
 # # Email configurations
-# EMAIL_BACKEND = config(
-#     "APP_MEDIA_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
-# )
 # Environment-specific settings
 if ENVIRONMENT == "development":
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
@@ -278,9 +316,9 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 SIMPLE_JWT = {
-    # "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     # TODO: for experimental purposes
-    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=20),
+    # "ACCESS_TOKEN_LIFETIME": timedelta(seconds=20),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
     "ROTATE_REFRESH_TOKENS": False,
     "ALGORITHM": "HS256",
@@ -313,9 +351,9 @@ DESCENDANTS_PER_PAGE = config("DESCENDANTS_PER_PAGE", default=5, cast=int)
 
 
 # AWS, Google Cloud & Twilio Configuration
-AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
+# AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
+# AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+# AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
 
 GS_BUCKET_NAME = config("GS_BUCKET_NAME")
 GS_CREDENTIALS = config("GS_CREDENTIALS")
