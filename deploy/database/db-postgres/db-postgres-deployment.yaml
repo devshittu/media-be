@@ -13,7 +13,6 @@ spec:
     type: Recreate
   template:
     metadata:
-      annotations:
       labels:
         app: db-postgres
     spec:
@@ -44,19 +43,5 @@ spec:
         - name: postgres-data
           persistentVolumeClaim:
             claimName: postgres-data-pvc
----
-# postgres-service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: postgres-service
-spec:
-  selector:
-    app: db-postgres
-  # type: NodePort
-  type: ClusterIP
-  ports:
-  - port: 5432
-    targetPort: 5432
 
-# deploy/db-postgres-deployment.yaml
+# deploy/database/db-postgres/db-postgres-deployment.yaml
