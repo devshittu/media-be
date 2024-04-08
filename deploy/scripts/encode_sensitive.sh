@@ -51,4 +51,4 @@ done
 # Call the processing function with the provided or default .env file
 process_env_file "${file_path:-.env}"
 
-# k8s-manifests/encode_sensitive.sh
+# deploy/encode_sensitive.sh
