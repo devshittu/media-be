@@ -27,3 +27,5 @@ spec:
   resources:
     requests:
       storage: 1Gi
+
+# deploy/app/web-app-pvc.yaml
