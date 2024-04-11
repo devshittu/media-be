@@ -35,8 +35,8 @@ WORKDIR /code
 
 # Copy project files
 COPY . .
-COPY deploy/scripts /code/deploy/scripts
-RUN chmod +x /code/deploy/scripts/init-web-app.sh
+COPY k8s/scripts /code/k8s/scripts
+RUN chmod +x /code/k8s/scripts/init-web-app.sh
 
 
 # Command to run the application
