@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../base/celery/
+
+patches:
+  - path: celery-deployment-patch.yaml
+    target:
+      kind: Deployment
+      name: celery
+
+images:
+  - name: web-app-image
+    newName: web-app-image
+    newTag: dev-0.0.1
+
+commonLabels:
+  app: celery
+
+# k8s/overlays/dev/app/kustomization.yaml
