@@ -1,0 +1,13 @@
+# ./k8s/overlays/dev/celery-deployment-patch.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery
+spec:
+  template:
+    spec:
+      containers:
+      - name: celery
+        image: web-app-image:0.0.1
+
+# k8s/overlays/dev/celery-deployment-patch.yaml
