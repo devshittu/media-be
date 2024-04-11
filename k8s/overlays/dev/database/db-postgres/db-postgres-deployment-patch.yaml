@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-postgres
+  labels:
+    app.kubernetes.io/name: "postgres"
+    app.kubernetes.io/component: "database"
+    app.kubernetes.io/managed-by: "kustomize"
+    app.kubernetes.io/environment: "development"
+    app.kubernetes.io/team: "backend-team"
+  annotations:
+    description: "PostgreSQL Database - Development Environment"
+    version: "latest"
+    operational-notes: "Development instance, not for production use"
+    contact: "backend-team@example.com"
+spec:
+  template:
+    metadata:
+      labels:
+        environment: development
+        managed-by: kustomize
+
+# k8s/overlays/dev/database/db-postgres/db-postgres-deployment-patch.yaml
