@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: db-postgres
+  name: db-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: db-postgres
+    spec:
+      containers:
+        - image: postgres:13
+          name: db-postgresql
+          env:
+          - name: POSTGRES_DB
+            valueFrom: 
+              configMapKeyRef:
+                name: web-app-configmap
+                key: POSTGRES_DB
+          - name: POSTGRES_USER
+            valueFrom: 
+              configMapKeyRef:
+                name: web-app-configmap
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: web-app-secret
+                key: POSTGRES_PASSWORD
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-data
+      restartPolicy: Always
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data-pvc
+
+# k8s/base/database/db-postgres/db-postgres-deployment.yaml
