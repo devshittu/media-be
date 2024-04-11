@@ -1,0 +1,34 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    spec:
+      containers:
+        - name: celery
+          image: web-app-image:0.0.1
+          resources:
+            requests:
+              memory: "512Mi"
+            limits:
+              memory: "1024Mi"
+          command: ["celery", "-A", "core", "worker", "--loglevel=info"]
+
+          envFrom:
+          - configMapRef:
+              name: web-app-configmap
+          - secretRef:
+              name: web-app-secret
+
+      restartPolicy: Always
+      volumes:
+        - name: web-app-code
+          persistentVolumeClaim:
+            claimName: web-app-pvc
+
+# k8s/base/app/celery-deployment.yaml
