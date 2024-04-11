@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-neo4j
+  labels:
+    app.kubernetes.io/name: "neo4j"
+    app.kubernetes.io/component: "database"
+    app.kubernetes.io/managed-by: "kustomize"
+    app.kubernetes.io/environment: "development"
+    app.kubernetes.io/team: "backend-team"
+  annotations:
+    description: "Neo4j graph database"
+    version: "latest"
+    operational-notes: "Development instance, not for production use"
+
+spec:
+  replicas: 1  # Assuming you want to adjust the number of replicas for development.
