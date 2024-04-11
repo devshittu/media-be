@@ -1,0 +1,14 @@
+# ./k8s/overlays/dev/web-app-deployment-patch.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+spec:
+  template:
+    spec:
+      containers:
+      - name: web-app
+        image: web-app-image:0.0.1
+
+# k8s/overlays/dev/app/web-app-deployment-patch.yaml
