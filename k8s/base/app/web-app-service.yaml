@@ -4,6 +4,8 @@ metadata:
   name: web-app-service
 spec:
   type: NodePort
+  selector:
+    app: web-app
   ports:
     - protocol: TCP
       port: 8000
