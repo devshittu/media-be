@@ -1,5 +1,3 @@
-# ./k8s/base/app/kustomization.yaml
-
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -8,11 +6,6 @@ resources:
   - web-app-pvc.yaml
   - web-app-secret.yaml
   - web-app-service.yaml
-commonLabels:
-  app: web-app
-  role: database
-  db: neo4j
-  app.kubernetes.io/instance: web-app-neo4j
 
 
 # k8s/base/app/kustomization.yaml
