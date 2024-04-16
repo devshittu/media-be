@@ -5,9 +5,15 @@ metadata:
   name: celery
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: celery
   strategy:
     type: Recreate
   template:
+    metadata:
+      labels:
+        app: celery
     spec:
       containers:
         - name: celery
