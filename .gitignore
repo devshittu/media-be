@@ -30,7 +30,8 @@ develop-eggs/
 dist/
 downloads/
 # nginx-conf/*
-*-secret.yaml
+**/*-secret.yaml
+
 
 nginx-conf/default.conf
 eggs/
@@ -46,6 +47,11 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+#  k8s
+**/secrets.env
+**/*.properties
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
