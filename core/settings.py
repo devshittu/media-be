@@ -44,6 +44,13 @@ ALLOWED_HOSTS = [
     "*.mediaapp.local",
     "api.mediaapp.local",
     "app.mediaapp.local",
+    "*.gong.ng",
+    "api.gong.ng",
+    "app.gong.ng",
+    "api.staging.gong.ng",
+    "app.staging.gong.ng",
+    "api.dev.gong.ng",
+    "app.dev.gong.ng",
 ]
 
 # Cross Origin Resource
@@ -67,6 +74,14 @@ CSRF_TRUSTED_ORIGINS = [
     "https://api.mediaapp.local",
     "http://app.mediaapp.local",
     "https://app.mediaapp.local",
+
+    "https://api.gong.ng",
+    "https://app.gong.ng",
+    "https://api.staging.gong.ng",
+    "https://app.staging.gong.ng",
+    "https://api.dev.gong.ng",
+    "https://app.dev.gong.ng",
+    
     "http://frontend-app-service:3000",
     "https://frontend-app-service:3000",
     "http://web-app:8000",
