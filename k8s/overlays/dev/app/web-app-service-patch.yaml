@@ -1,5 +1,3 @@
-# ./k8s/overlays/dev/web-app-deployment-patch.yaml
-
 apiVersion: apps/v1
 kind: Service
 metadata:
