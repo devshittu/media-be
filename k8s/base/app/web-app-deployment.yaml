@@ -4,9 +4,15 @@ metadata:
   name: web-app
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: web-app
   strategy:
     type: Recreate
   template:
+    metadata:
+      labels: 
+          app: web-app
     spec:
       # initContainers:
       # - name: setup
