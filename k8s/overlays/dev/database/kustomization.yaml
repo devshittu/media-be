@@ -11,6 +11,6 @@ commonLabels:
   app.kubernetes.io/version: "1.0"
   app.kubernetes.io/part-of: web-app
   app.kubernetes.io/managed-by: kustomize
-  app: web-app
+
 
 # k8s/overlays/dev/database/kustomization.yaml
