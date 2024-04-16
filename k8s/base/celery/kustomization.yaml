@@ -5,7 +5,5 @@ resources:
 commonLabels:
   app.kubernetes.io/managed-by: kustomize
   app.kubernetes.io/part-of: web-app
-  app: celery
-
 
 # k8s/base/app/kustomization.yaml
