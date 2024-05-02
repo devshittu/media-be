@@ -21,12 +21,12 @@ spec:
           name: db-postgresql
           env:
           - name: POSTGRES_DB
-            valueFrom: 
+            valueFrom:
               configMapKeyRef:
                 name: web-app-configmap
                 key: POSTGRES_DB
           - name: POSTGRES_USER
-            valueFrom: 
+            valueFrom:
               configMapKeyRef:
                 name: web-app-configmap
                 key: POSTGRES_USER
