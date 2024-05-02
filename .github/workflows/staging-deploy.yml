@@ -64,17 +64,19 @@ jobs:
       #   run: |
       #     kustomize build k8s/overlays/staging | kubectl apply -f -
 
+
       - name: Generate kustomization for deployment
         run: |
-          echo "images:" > kustomize_override.yaml
-          echo "  - name: web-app-image" >> kustomize_override.yaml
-          echo "    newName: ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image" >> kustomize_override.yaml
-          echo "    newTag: ${{ github.sha }}" >> kustomize_override.yaml
-          cat kustomize_override.yaml
+          echo "images:" > ./k8s/overlays/staging/app/kustomize_override.yaml
+          echo "  - name: web-app-image" >> ./k8s/overlays/staging/app/kustomize_override.yaml
+          echo "    newName: ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image" >> ./k8s/overlays/staging/app/kustomize_override.yaml
+          echo "    newTag: ${{ github.sha }}" >> ./k8s/overlays/staging/app/kustomize_override.yaml
+          cat ./k8s/overlays/staging/app/kustomize_override.yaml
 
       - name: Deploy to GKE
         run: |
-          kustomize build k8s/overlays/staging --load_restrictor=none | kubectl apply -f -
+          kustomize build ./k8s/overlays/staging/app | kubectl apply -f -
+
 
 
 
