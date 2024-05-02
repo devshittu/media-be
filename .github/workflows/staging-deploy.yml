@@ -5,6 +5,9 @@ on:
     branches:
       - staging  # This specifies that the workflow only runs on the staging branch
 
+  workflow_dispatch:
+
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -26,6 +29,17 @@ jobs:
       - name: Build Docker image
         run: docker build -t ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }} -f Dockerfile.dev .
 
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          credentials_json: ${{ secrets.GKE_KEY }}
+
+      - name: Configure Docker to use the gcloud command-line tool as a credential helper
+        run: gcloud auth configure-docker europe-west2-docker.pkg.dev
+
+
+
       - name: Push Docker image to Google Artifact Registry
         run: docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
 
@@ -36,3 +50,6 @@ jobs:
 
       - name: Verify Deployment
         run: kubectl rollout status deployment/web-app-deployment
+
+
+# .github/workflows/staging-deploy.yml
