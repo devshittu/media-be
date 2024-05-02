@@ -24,14 +24,14 @@ jobs:
         run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.ARTIFACT_REGISTRY }}/web-app:${{ github.sha }} -f Dockerfile.staging .
+        run: docker build -t ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }} -f Dockerfile.dev .
 
       - name: Push Docker image to Google Artifact Registry
-        run: docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app:${{ github.sha }}
+        run: docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
 
       - name: Deploy to GKE
         run: |
-          kubectl set image -f k8s/overlays/staging/app/web-app-deployment.yaml web-app=${{ secrets.ARTIFACT_REGISTRY }}/web-app:${{ github.sha }}
+          kubectl set image -f k8s/overlays/staging/app/web-app-deployment.yaml web-app=${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
           kubectl apply -k k8s/overlays/staging/
 
       - name: Verify Deployment
