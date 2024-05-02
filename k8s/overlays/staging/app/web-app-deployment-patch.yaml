@@ -1,0 +1,31 @@
+# ./k8s/overlays/staging/web-app-deployment-patch.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+spec:
+  template:
+    spec:
+      containers:
+      - name: web-app
+
+        # resources:
+        #   requests:
+        #     cpu: 250m  # Reduced from 500m
+        #     memory: 256Mi
+        #   limits:
+        #     cpu: 500m  # Reduced if necessary
+        #     memory: 512Mi
+
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "100Mi"
+          limits:
+            cpu: "200m"
+            memory: "400Mi"
+
+
+
+# k8s/overlays/staging/app/web-app-deployment-patch.yaml
