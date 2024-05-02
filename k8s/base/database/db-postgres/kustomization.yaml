@@ -4,3 +4,4 @@ resources:
   - db-postgres-data-storage.yaml
   - db-postgres-deployment.yaml
   - db-postgres-service.yaml
+# k8s/base/database/db-postgres/kustomization.yaml
