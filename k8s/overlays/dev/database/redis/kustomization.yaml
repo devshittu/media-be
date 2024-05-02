@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ../../../../base/database/redis/
+  - redis-data-pv.yaml
 patches:
   - target:
       group: apps
@@ -10,8 +11,13 @@ patches:
       name: redis
     path: redis-deployment-patch.yaml
 
+
 commonLabels:
   app.kubernetes.io/instance: web-app-redis
   app.kubernetes.io/component: cache
   role: cache
   db: redis
+
+namespace: development
+
+# k8s/overlays/dev/database/redis/kustomization.yaml
