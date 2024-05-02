@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: clear-postgres-data
+spec:
+  template:
+    spec:
+      containers:
+      - name: clear-data
+        image: busybox
+        command: ["sh", "-c", "rm -rf /var/lib/postgresql/data/pgdata_new/*"]
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data/pgdata_new
+      restartPolicy: Never
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: postgres-data-pvc
