@@ -58,6 +58,7 @@ jobs:
         run: |
           kustomize edit set image web-app-image=${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
           cat kustomization.yaml  # Optional: for debugging to see the changes in the file
+        working-directory: ${{ github.workspace }}
 
       - name: Deploy to GKE
         run: |
