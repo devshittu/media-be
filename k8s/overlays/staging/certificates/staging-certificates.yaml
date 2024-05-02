@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gong-ng-staging-tls
+  namespace: cert-manager
+spec:
+  secretName: gong-ng-staging-tls-secret
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: "api.staging.gong.ng"
+  dnsNames:
+    - "api.staging.gong.ng"
+    - "app.staging.gong.ng"
+    - "www.api.staging.gong.ng"
+    - "www.app.staging.gong.ng"
+
+
+# k8s/overlays/staging/certificates/staging-certificates.yaml
