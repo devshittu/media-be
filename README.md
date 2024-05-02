@@ -109,3 +109,14 @@ To reset the database, remove all migrations, and data in Docker, you can follow
    ```
 
 After these steps, your database should be reset, and all the previous data and migrations will be removed. You'll have a fresh database to work with.
+
+### Building for dev
+
+``` bash
+docker buildx build -t europe-west2-docker.pkg.dev/media-app-418813/media-app-repo/web-app-image:dev-0.0.1 -f ./Dockerfile.dev . --load 
+```
+### Building for production
+
+``` bash
+docker build --platform linux/amd64  -t europe-west2-docker.pkg.dev/media-app-418813/media-app-repo/web-app-image:staging-0.0.1 -f ./Dockerfile.dev . --load
+```
