@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: neo4j-logs-pv
+  labels:
+    app: neo4j-logs-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 500M
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/mnt/data" ## the volume is at /mnt/data on the cluster's node
+
+# k8s/overlays/dev/database/db-neo4j/neo4j-logs-pv.yaml
