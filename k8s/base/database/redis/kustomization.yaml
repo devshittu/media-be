@@ -4,3 +4,4 @@ resources:
   - redis-data-storage.yaml
   - redis-deployment.yaml
   - redis-service.yaml
+# k8s/base/database/redis/kustomization.yaml
