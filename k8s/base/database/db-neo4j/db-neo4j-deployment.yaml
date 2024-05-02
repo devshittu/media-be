@@ -29,10 +29,10 @@ spec:
           name: db-neo4j
           ports:
             - containerPort: 7474
-              hostPort: 7474
+              # hostPort: 7474
               protocol: TCP
             - containerPort: 7687
-              hostPort: 7687
+              # hostPort: 7687
               protocol: TCP
           volumeMounts:
             - mountPath: /data
