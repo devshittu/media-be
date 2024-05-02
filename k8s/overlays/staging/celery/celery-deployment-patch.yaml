@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery
+spec:
+  template:
+    spec:
+      containers:
+      - name: celery
+        # image: europe-west2-docker.pkg.dev/media-app-418813/media-app-repo/celery:staging-0.0.1
+
+
+# k8s/overlays/staging/celery-deployment-patch.yaml
