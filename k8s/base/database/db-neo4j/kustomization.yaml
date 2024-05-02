@@ -5,3 +5,5 @@ resources:
   - db-neo4j-deployment.yaml
   - db-neo4j-logs-storage.yaml
   - db-neo4j-service.yaml
+
+# k8s/base/database/db-neo4j/kustomization.yaml
