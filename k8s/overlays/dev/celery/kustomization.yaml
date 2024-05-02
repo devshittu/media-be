@@ -11,7 +11,7 @@ patches:
 
 images:
   - name: web-app-image
-    newName: web-app-image
+    newName: europe-west2-docker.pkg.dev/media-app-418813/media-app-repo/web-app-image
     newTag: dev-0.0.1
 
 commonLabels:
