@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app.kubernetes.io/name: "redis"
+    app.kubernetes.io/component: "database"
+    app.kubernetes.io/managed-by: "kustomize"
+    app.kubernetes.io/environment: "development"
+    app.kubernetes.io/team: "backend-team"
+  annotations:
+    description: "Redis Deployment - Development Environment"
+    version: "latest"
+    operational-notes: "Development instance, not for production use"
+    contact: "backend-team@example.com"
+spec:
+  template:
+    metadata:
+      labels:
+        environment: staging
+        managed-by: kustomize
+    spec:
+      containers:
+      - name: db-redis
+        image: redis:alpine  # Ensure using a specific version if needed
+
+        resources:
+          requests:
+            cpu: "25m"
+            memory: "50Mi"
+          limits:
+            cpu: "100m"
+            memory: "200Mi"
+
+
+        ports:
+        - containerPort: 6379
