@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-data-pvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi  # Adjusted for more realistic database size needs
+
+# k8s/overlays/staging/database/db-postgres/db-postgres-pvc-patch.yaml
