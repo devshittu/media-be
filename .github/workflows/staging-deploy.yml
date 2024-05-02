@@ -54,30 +54,32 @@ jobs:
       #   working-directory: ${{ github.workspace }}
 
 
-      # - name: Set new image in kustomize
+
+      # - name: Generate kustomization for deployment
       #   run: |
-      #     kustomize edit set image web-app-image=${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
-      #     cat kustomization.yaml  # Optional: for debugging to see the changes in the file
-      #   working-directory: ${{ github.workspace }}
+      #     echo "images:" > ./k8s/overlays/staging/app/kustomize_override.yaml
+      #     echo "  - name: web-app-image" >> ./k8s/overlays/staging/app/kustomize_override.yaml
+      #     echo "    newName: ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image" >> ./k8s/overlays/staging/app/kustomize_override.yaml
+      #     echo "    newTag: ${{ github.sha }}" >> ./k8s/overlays/staging/app/kustomize_override.yaml
+      #     cat ./k8s/overlays/staging/app/kustomize_override.yaml
 
       # - name: Deploy to GKE
       #   run: |
-      #     kustomize build k8s/overlays/staging | kubectl apply -f -
+      #     kustomize build ./k8s/overlays/staging/app | kubectl apply -f -
 
 
-      - name: Generate kustomization for deployment
+
+      - name: Update Kustomize image tag
         run: |
-          echo "images:" > ./k8s/overlays/staging/app/kustomize_override.yaml
-          echo "  - name: web-app-image" >> ./k8s/overlays/staging/app/kustomize_override.yaml
-          echo "    newName: ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image" >> ./k8s/overlays/staging/app/kustomize_override.yaml
-          echo "    newTag: ${{ github.sha }}" >> ./k8s/overlays/staging/app/kustomize_override.yaml
-          cat ./k8s/overlays/staging/app/kustomize_override.yaml
+          cd k8s/overlays/staging/app/
+          kustomize edit set image web-app-image=${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
+          cat kustomization.yaml  # Display the file to verify changes
+
 
       - name: Deploy to GKE
         run: |
+          gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
           kustomize build ./k8s/overlays/staging/app | kubectl apply -f -
-
-
 
 
 
