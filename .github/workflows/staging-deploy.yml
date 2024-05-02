@@ -43,10 +43,15 @@ jobs:
       - name: Push Docker image to Google Artifact Registry
         run: docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
 
+      - name: List files in the k8s directory
+        run: ls -R k8s/overlays/staging/app/
+        working-directory: ${{ github.workspace }}
+
       - name: Deploy to GKE
         run: |
           kubectl set image -f k8s/overlays/staging/app/web-app-deployment.yaml web-app=${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
           kubectl apply -k k8s/overlays/staging/
+        working-directory: ${{ github.workspace }}
 
       - name: Verify Deployment
         run: kubectl rollout status deployment/web-app-deployment
