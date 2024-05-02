@@ -14,4 +14,16 @@ metadata:
     operational-notes: "Development instance, not for production use"
 
 spec:
-  replicas: 1  # Assuming you want to adjust the number of replicas for development.
+  template:
+    spec:
+      containers:
+      - name: db-neo4j
+        ports:
+        - containerPort: 7474
+          hostPort: 7474
+          protocol: TCP
+        - containerPort: 7687
+          hostPort: 7687
+          protocol: TCP
+          
+# k8s/overlays/dev/database/db-neo4j/db-neo4j-deployment-patch.yaml 
