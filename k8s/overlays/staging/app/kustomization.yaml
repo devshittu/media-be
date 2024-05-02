@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../base/app/
+
+patches:
+  - path: web-app-deployment-patch.yaml
+    target:
+      group: apps
+      kind: Deployment
+      name: web-app
+  - path: web-app-service-patch.yaml
+    target:
+      group: ""
+      kind: Service
+      name: web-app-service
+  - path: web-app-pvc-patch.yaml
+    target:
+      group: ""
+      kind: PersistentVolumeClaim
+      name: web-app-pvc
+
+images:
+  - name: web-app-image
+    newName: europe-west2-docker.pkg.dev/media-app-418813/media-app-repo/web-app-image
+    newTag: staging-0.0.1
+
+commonLabels:
+  app: web-app
+
+# k8s/overlays/staging/app/kustomization.yaml
