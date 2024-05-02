@@ -12,5 +12,6 @@ commonLabels:
   app.kubernetes.io/part-of: web-app
   app.kubernetes.io/managed-by: kustomize
 
+namespace: development
 
 # k8s/overlays/dev/database/kustomization.yaml
