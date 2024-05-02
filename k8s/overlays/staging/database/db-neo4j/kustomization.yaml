@@ -1,0 +1,32 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../../base/database/db-neo4j/
+patches:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: db-neo4j
+    path: db-neo4j-deployment-patch.yaml
+  - target:
+      group: ""
+      version: v1
+      kind: PersistentVolumeClaim
+      name: neo4j-data-pvc
+    path: neo4j-pvc-data-patch.yaml
+  - target:
+      group: ""
+      version: v1
+      kind: PersistentVolumeClaim
+      name: neo4j-logs-pvc
+    path: neo4j-pvc-logs-patch.yaml
+
+
+commonLabels:
+  app.kubernetes.io/instance: web-app-neo4j
+  app.kubernetes.io/component: database
+  role: database
+  db: neo4j
+
+# k8s/overlays/staging/database/kustomization.yaml
