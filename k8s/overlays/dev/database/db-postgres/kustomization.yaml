@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ../../../../base/database/db-postgres/
+  - db-postgres-data-pv.yaml
 patches:
   - target:
       group: apps
@@ -10,8 +11,14 @@ patches:
       name: db-postgres
     path: db-postgres-deployment-patch.yaml
 
+
 commonLabels:
   app.kubernetes.io/instance: web-app-postgres
   app.kubernetes.io/component: database
   role: database
   db: postgres
+
+
+namespace: development
+
+# k8s/overlays/dev/database/db-postgres/kustomization.yaml
