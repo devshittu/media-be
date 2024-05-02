@@ -19,3 +19,12 @@ spec:
       labels:
         environment: development
         managed-by: kustomize
+    spec:
+      containers:
+      - name: db-redis
+        ports:
+        - containerPort: 6379
+          hostPort: 6379
+          protocol: TCP
+
+# k8s/overlays/dev/database/redis/redis-deployment-patch.yaml
