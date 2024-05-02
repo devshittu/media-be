@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-postgres
+  labels:
+    app.kubernetes.io/name: "postgres"
+    app.kubernetes.io/component: "database"
+    app.kubernetes.io/managed-by: "kustomize"
+    app.kubernetes.io/environment: "development"
+    app.kubernetes.io/team: "backend-team"
+  annotations:
+    description: "PostgreSQL Database - Development Environment"
+    version: "latest"
+    operational-notes: "Development instance, not for production use"
+    contact: "backend-team@example.com"
+spec:
+  template:
+    metadata:
+      labels:
+        environment: staging
+        managed-by: kustomize
+    spec:
+
+      initContainers:
+      - name: init-db
+        image: busybox
+  
+        command:
+        - sh
+        - -c
+        - |
+          if [ -z "$(ls -A /var/lib/postgresql/data/pgdata_mounted)" ]; then
+            echo "Data directory is empty";
+          else
+            echo "Data directory is not empty, clearing directory";
+            rm -rf /var/lib/postgresql/data/pgdata_mounted/*;
+          fi
+
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data/pgdata_mounted
+
+      containers:
+      - name: db-postgresql
+
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data/pgdata_mounted # Use a subdirectory
+        env:
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata_mounted # Set PGDATA to the subdirectory
+
+        # resources:
+        #   requests:
+        #     memory: "512Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "1Gi"
+        #     cpu: "500m"
+        
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "200Mi"
+          limits:
+            cpu: "500m"
+            memory: "1Gi"
+        ports:
+        - containerPort: 5432
+
+# k8s/overlays/staging/database/db-postgres/db-postgres-deployment-patch.yaml
