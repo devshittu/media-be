@@ -54,15 +54,27 @@ jobs:
       #   working-directory: ${{ github.workspace }}
 
 
-      - name: Set new image in kustomize
+      # - name: Set new image in kustomize
+      #   run: |
+      #     kustomize edit set image web-app-image=${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
+      #     cat kustomization.yaml  # Optional: for debugging to see the changes in the file
+      #   working-directory: ${{ github.workspace }}
+
+      # - name: Deploy to GKE
+      #   run: |
+      #     kustomize build k8s/overlays/staging | kubectl apply -f -
+
+      - name: Generate kustomization for deployment
         run: |
-          kustomize edit set image web-app-image=${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
-          cat kustomization.yaml  # Optional: for debugging to see the changes in the file
-        working-directory: ${{ github.workspace }}
+          echo "images:" > kustomize_override.yaml
+          echo "  - name: web-app-image" >> kustomize_override.yaml
+          echo "    newName: ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image" >> kustomize_override.yaml
+          echo "    newTag: ${{ github.sha }}" >> kustomize_override.yaml
+          cat kustomize_override.yaml
 
       - name: Deploy to GKE
         run: |
-          kustomize build k8s/overlays/staging | kubectl apply -f -
+          kustomize build k8s/overlays/staging --load_restrictor=none | kubectl apply -f -
 
 
 
