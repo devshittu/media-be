@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-neo4j
+  labels:
+    app.kubernetes.io/name: "neo4j"
+    app.kubernetes.io/component: "database"
+    app.kubernetes.io/managed-by: "kustomize"
+    app.kubernetes.io/environment: "development"
+    app.kubernetes.io/team: "backend-team"
+  annotations:
+    description: "Neo4j graph database"
+    version: "latest"
+    operational-notes: "Development instance, not for production use"
+
+spec:
+  template:
+    spec:
+      containers:
+      - name: db-neo4j
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "200Mi"
+          limits:
+            cpu: "200m"
+            memory: "500Mi"
+            
+        ports:
+          - containerPort: 7474
+          - containerPort: 7687
+        volumeMounts:
+          - mountPath: /data
+            name: neo4j-data
+          - mountPath: /logs
+            name: neo4j-logs
