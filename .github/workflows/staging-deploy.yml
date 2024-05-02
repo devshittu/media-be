@@ -47,12 +47,26 @@ jobs:
         run: ls -R k8s/overlays/staging/app/
         working-directory: ${{ github.workspace }}
 
+      # - name: Deploy to GKE
+      #   run: |
+      #     kubectl set image -f k8s/overlays/staging/app/web-app-deployment.yaml web-app=${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
+      #     kubectl apply -k k8s/overlays/staging/
+      #   working-directory: ${{ github.workspace }}
+
+
+      - name: Set new image in kustomize
+        run: |
+          kustomize edit set image web-app-image=${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
+          cat kustomization.yaml  # Optional: for debugging to see the changes in the file
+
       - name: Deploy to GKE
         run: |
-          kubectl set image -f k8s/overlays/staging/app/web-app-deployment.yaml web-app=${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
-          kubectl apply -k k8s/overlays/staging/
-        working-directory: ${{ github.workspace }}
+          kustomize build k8s/overlays/staging | kubectl apply -f -
 
+
+
+
+            
       - name: Verify Deployment
         run: kubectl rollout status deployment/web-app-deployment
 
