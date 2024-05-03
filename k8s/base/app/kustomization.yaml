@@ -4,7 +4,7 @@ resources:
   - web-app-configmap.yaml
   - web-app-deployment.yaml
   - web-app-pvc.yaml
-  - web-app-secret.yaml
+  # - web-app-secret.yaml
   - web-app-service.yaml
 
 
