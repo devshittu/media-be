@@ -173,6 +173,9 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v0.4.0
         with:
@@ -180,6 +183,9 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }} -f Dockerfile.dev .
+        # Make sure the Dockerfile.dev path is correct; add subdirectory path if it's not in the root
+
+
 
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker europe-west2-docker.pkg.dev
