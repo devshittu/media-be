@@ -120,8 +120,11 @@ jobs:
           gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
           kustomize build ./k8s/overlays/staging/app | kubectl apply -f -
 
+      # - name: Verify Deployment
+      #   run: kubectl rollout status deployment/web-app
+      
       - name: Verify Deployment
-        run: kubectl rollout status deployment/web-app
+        run: kubectl rollout status deployment/web-app -n staging
 
 
 # .github/workflows/staging-deploy.yml
