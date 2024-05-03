@@ -28,4 +28,6 @@ images:
 commonLabels:
   app: web-app
 
+namespace: staging
+
 # k8s/overlays/staging/app/kustomization.yaml
