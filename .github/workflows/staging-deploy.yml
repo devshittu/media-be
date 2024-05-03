@@ -28,12 +28,22 @@ jobs:
           service_account_key: ${{ secrets.GKE_KEY }}
           export_default_credentials: true
 
+      # To retain the authentication for gke accounts.
       - name: Install gke-gcloud-auth-plugin
         run: |
           gcloud components install gke-gcloud-auth-plugin
 
       - name: Configure kubectl
         run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
+
+      - name: Create Namespace
+        run: kubectl apply -f k8s/overlays/staging/namespace.yaml
+
+      - name: Set Default Namespace
+        run: kubectl config set-context --current --namespace=staging
+
+      - name: Check kubectl configuration
+        run: kubectl cluster-info
 
       - name: Build Docker image
         run: docker build -t ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }} -f Dockerfile.dev .
@@ -67,9 +77,6 @@ jobs:
         run: |
           sed -i "s|newTag: .*|newTag: ${{ github.sha }}|" ./k8s/overlays/staging/app/kustomization.yaml
           cat ./k8s/overlays/staging/app/kustomization.yaml  # Display the file to verify changes
-
-      - name: Check kubectl configuration
-        run: kubectl cluster-info
 
       - name: Create Kubernetes Secrets
         run: |
@@ -115,4 +122,6 @@ jobs:
 
       - name: Verify Deployment
         run: kubectl rollout status deployment/web-app-deployment
+
+
 # .github/workflows/staging-deploy.yml
