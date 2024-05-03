@@ -15,11 +15,11 @@ configMapGenerator:
     behavior: merge
     envs:
       - app/staging.properties
-secretGenerator:
-  - name: web-app-secret
-    behavior: merge
-    envs:
-      - app/secrets.env
+# secretGenerator:
+#   - name: web-app-secret
+#     behavior: merge
+#     envs:
+#       - app/secrets.env
 commonLabels:
   environment: staging
 
