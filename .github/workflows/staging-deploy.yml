@@ -32,6 +32,9 @@ jobs:
       - name: Configure kubectl
         run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
 
+      - name: Check kubectl configuration
+        run: kubectl cluster-info
+
       - name: Create Kubernetes Secrets
         run: |
           kubectl create secret generic web-app-secret \
