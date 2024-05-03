@@ -31,6 +31,41 @@ jobs:
 
       - name: Configure kubectl
         run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
+      
+      
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }} -f Dockerfile.dev .
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          credentials_json: ${{ secrets.GKE_KEY }}
+
+      - name: Configure Docker to use the gcloud command-line tool as a credential helper
+        run: gcloud auth configure-docker europe-west2-docker.pkg.dev
+
+      - name: Push Docker image to Google Artifact Registry
+        run: docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
+
+  # deploy-to-gke:
+  #   needs: build-and-push
+  #   runs-on: ubuntu-latest
+  #   steps:
+      - name: List files in the k8s directory
+        run: ls -R k8s/overlays/staging/app/
+        working-directory: ${{ github.workspace }}
+
+
+      # - name: Update Kustomize image tag
+      #   run: |
+      #     cd k8s/overlays/staging/app/
+      #     kustomize edit set image web-app-image=${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
+      #     cat kustomization.yaml  # Display the file to verify changes
+
+      - name: Update Kustomize image tag
+        run: |
+          sed -i "s|newTag: .*|newTag: ${{ github.sha }}|" ./k8s/overlays/staging/app/kustomization.yaml
+          cat ./k8s/overlays/staging/app/kustomization.yaml  # Display the file to verify changes
 
       - name: Check kubectl configuration
         run: kubectl cluster-info
@@ -72,39 +107,6 @@ jobs:
             --from-literal=APP_MEDIA_SENDGRID_API_KEY='${{ secrets.APP_MEDIA_SENDGRID_API_KEY }}' \
             --dry-run=client -o yaml | kubectl apply -f -
 
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }} -f Dockerfile.dev .
-
-      - name: Authenticate with Google Cloud
-        uses: google-github-actions/auth@v0.4.0
-        with:
-          credentials_json: ${{ secrets.GKE_KEY }}
-
-      - name: Configure Docker to use the gcloud command-line tool as a credential helper
-        run: gcloud auth configure-docker europe-west2-docker.pkg.dev
-
-      - name: Push Docker image to Google Artifact Registry
-        run: docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
-
-  # deploy-to-gke:
-  #   needs: build-and-push
-  #   runs-on: ubuntu-latest
-  #   steps:
-      - name: List files in the k8s directory
-        run: ls -R k8s/overlays/staging/app/
-        working-directory: ${{ github.workspace }}
-
-
-      # - name: Update Kustomize image tag
-      #   run: |
-      #     cd k8s/overlays/staging/app/
-      #     kustomize edit set image web-app-image=${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
-      #     cat kustomization.yaml  # Display the file to verify changes
-
-      - name: Update Kustomize image tag
-        run: |
-          sed -i "s|newTag: .*|newTag: ${{ github.sha }}|" ./k8s/overlays/staging/app/kustomization.yaml
-          cat ./k8s/overlays/staging/app/kustomization.yaml  # Display the file to verify changes
 
 
       - name: Deploy to GKE
