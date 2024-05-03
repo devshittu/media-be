@@ -17,7 +17,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repo
+      - name: Checkout the repository
         uses: actions/checkout@v2
 
       - name: Set up Google Cloud SDK
@@ -29,11 +29,11 @@ jobs:
           export_default_credentials: true
 
       # To retain the authentication for gke accounts.
-      - name: Install gke-gcloud-auth-plugin
+      - name: Install GKE gcloud auth plugin
         run: |
           gcloud components install gke-gcloud-auth-plugin
 
-      - name: Configure kubectl
+      - name: Configure kubectl for GKE
         run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
 
       - name: Create Namespace
@@ -52,17 +52,15 @@ jobs:
         uses: google-github-actions/auth@v0.4.0
         with:
           credentials_json: ${{ secrets.GKE_KEY }}
-
-      - name: Configure Docker to use the gcloud command-line tool as a credential helper
+      
+      # Configure Docker to use the gcloud command-line tool as a credential helper
+      - name: Configure Docker for Artifact Registry 
         run: gcloud auth configure-docker europe-west2-docker.pkg.dev
 
-      - name: Push Docker image to Google Artifact Registry
+      - name: Push Docker image to Artifact Registry
         run: docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
 
-      # deploy-to-gke:
-      #   needs: build-and-push
-      #   runs-on: ubuntu-latest
-      #   steps:
+
       - name: List files in the k8s directory
         run: ls -R k8s/overlays/staging/app/
         working-directory: ${{ github.workspace }}
@@ -115,14 +113,11 @@ jobs:
             --from-literal=APP_MEDIA_SENDGRID_API_KEY='${{ secrets.APP_MEDIA_SENDGRID_API_KEY }}' \
             --dry-run=client -o yaml | kubectl apply -f -
 
-      - name: Deploy to GKE
+      - name: Deploy to Kubernetes
         run: |
           gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
           kustomize build ./k8s/overlays/staging/app | kubectl apply -f -
 
-      # - name: Verify Deployment
-      #   run: kubectl rollout status deployment/web-app
-      
       - name: Verify Deployment
         run: kubectl rollout status deployment/web-app -n staging
 
