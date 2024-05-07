@@ -187,7 +187,6 @@ jobs:
       - name: Push Docker image to Artifact Registry
         run: docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
 
-
   database-update:
     name: Database Update
     needs: setup
@@ -196,12 +195,12 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
-      
+
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v0.4.0
         with:
           credentials_json: ${{ secrets.GKE_KEY }}
-      
+
       - name: Run Database Migrations
         run: |
           kubectl apply -f ./k8s/jobs/db-migration-job.yaml
@@ -249,8 +248,6 @@ jobs:
             echo ""   # Add a newline for better readability in the logs
           done
 
-
-
       - name: Create Kubernetes Secrets
         run: |
           kubectl create secret generic web-app-secret \
@@ -288,10 +285,19 @@ jobs:
             --from-literal=APP_MEDIA_SENDGRID_API_KEY='${{ secrets.APP_MEDIA_SENDGRID_API_KEY }}' \
             --dry-run=client -o yaml | kubectl apply -f -
 
+      # - name: Deploy to Kubernetes
+      #   run: |
+      #     gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
+      #     kustomize build ./k8s/overlays/staging/app | kubectl apply -f -
+
       - name: Deploy to Kubernetes
         run: |
           gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
-          kustomize build ./k8s/overlays/staging/app | kubectl apply -f -
+          for dir in ./k8s/overlays/staging/app ./k8s/overlays/staging/celery
+          do
+            echo "Deploying configuration from $dir"
+            kustomize build $dir | kubectl apply -f -
+          done
 
       - name: Verify Deployment
         run: kubectl rollout status deployment/web-app -n staging
