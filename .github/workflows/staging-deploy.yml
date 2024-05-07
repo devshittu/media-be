@@ -293,6 +293,7 @@ jobs:
             --from-literal=APP_MEDIA_SENDGRID_API_KEY_NAME='media-app-access' \
             --from-literal=APP_MEDIA_SENDGRID_API_KEY_ID='${{ secrets.APP_MEDIA_SENDGRID_API_KEY_ID }}' \
             --from-literal=APP_MEDIA_SENDGRID_API_KEY='${{ secrets.APP_MEDIA_SENDGRID_API_KEY }}' \
+            --namespace staging \
             --dry-run=client -o yaml | kubectl apply -f -
 
       # - name: Deploy to Kubernetes
