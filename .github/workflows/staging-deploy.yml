@@ -187,6 +187,26 @@ jobs:
       - name: Push Docker image to Artifact Registry
         run: docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
 
+
+  database-update:
+    name: Database Update
+    needs: setup
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.event.pull_request.merged == true || github.event_name != 'pull_request') && contains(github.event.head_commit.message, '[db-update]')
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+      
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          credentials_json: ${{ secrets.GKE_KEY }}
+      
+      - name: Run Database Migrations
+        run: |
+          kubectl apply -f ./k8s/jobs/db-migration-job.yaml
+          # Ensure the job is monitored and completed
+
   deploy:
     name: Deploy to GKE
     needs: build-and-push
