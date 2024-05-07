@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - app/
   - celery/
-  - database/
+  # - database/
   - ingress/
 
 # k8s/base/kustomization.yaml
