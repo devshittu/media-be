@@ -27,12 +27,18 @@ SECRET_KEY = config(
 ENVIRONMENT = config("APP_MEDIA_ENVIRONMENT", default="development")
 
 # Example for toggling settings based on the environment
+# Environment-specific settings
 if ENVIRONMENT == "production":
     DEBUG = False
-    # Other production-specific settings
-else:
+    # Add more production-specific settings
+elif ENVIRONMENT == "staging":
+    DEBUG = False
+    # Staging environment may mimic production but could have less restrictive settings
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+else:  # Development and other cases
     DEBUG = True
-    # Other development or test-specific settings
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    # Add more development-specific settings
 
 # DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 
@@ -52,6 +58,9 @@ ALLOWED_HOSTS = [
     "api.dev.gong.ng",
     "app.dev.gong.ng",
 ]
+ALLOWED_HOSTS = config(
+    "DJANGO_ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")]
+)
 
 # Cross Origin Resource
 CORS_ORIGIN_ALLOW_ALL = True
@@ -395,12 +404,21 @@ TEST_RUNNER = "pytest_django.runner.DjangoTestSuiteRunner"
 
 
 # Celery configurations
-CELERY_BROKER_URL = config(
-    "CELERY_BROKER_URL", default="redis://redis:6379/0", cast=str
-)
-CELERY_RESULT_BACKEND = config(
-    "CELERY_RESULT_BACKEND", default="redis://redis:6379/0", cast=str
-)
+# Fetch Redis password from environment, defaulting to an empty string if not found
+REDIS_PASSWORD = config('REDIS_PASSWORD', default='')
+
+# Construct Redis URL
+if REDIS_PASSWORD:
+    CELERY_BROKER_URL = f"redis://:{REDIS_PASSWORD}@redis-service:6379/0"
+    CELERY_RESULT_BACKEND = f"redis://:{REDIS_PASSWORD}@redis-service:6379/0"
+else:
+    CELERY_BROKER_URL = config(
+        "CELERY_BROKER_URL", default="redis://redis:6379/0", cast=str
+    )
+    CELERY_RESULT_BACKEND = config(
+        "CELERY_RESULT_BACKEND", default="redis://redis:6379/0", cast=str
+    )
+
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
