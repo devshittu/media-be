@@ -234,10 +234,22 @@ jobs:
       - name: Configure kubectl for GKE
         run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
 
-      - name: Update Kustomize image tag
+      # - name: Update Kustomize image tag
+      #   run: |
+      #     sed -i "s|newTag: .*|newTag: ${{ github.sha }}|" ./k8s/overlays/staging/app/kustomization.yaml
+      #     cat ./k8s/overlays/staging/app/kustomization.yaml  # Display the file to verify changes
+
+      - name: Update Kustomize image tags
         run: |
-          sed -i "s|newTag: .*|newTag: ${{ github.sha }}|" ./k8s/overlays/staging/app/kustomization.yaml
-          cat ./k8s/overlays/staging/app/kustomization.yaml  # Display the file to verify changes
+          for file in ./k8s/overlays/staging/app/kustomization.yaml ./k8s/overlays/staging/celery/kustomization.yaml
+          do
+            sed -i "s|newTag: .*|newTag: ${{ github.sha }}|" $file
+            echo "Updated $file:"
+            cat $file  # Display the file to verify changes
+            echo ""   # Add a newline for better readability in the logs
+          done
+
+
 
       - name: Create Kubernetes Secrets
         run: |
