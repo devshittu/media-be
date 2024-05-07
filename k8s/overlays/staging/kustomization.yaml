@@ -3,9 +3,9 @@ kind: Kustomization
 resources:
   - namespace.yaml
   # - ../../cluster-wide/cluster-issuer/cluster-issuer-staging.yaml
-  - app/
-  - celery/
-  - database/
+  # - app/
+  # - celery/
+  # - database/
   - ingress/
   # - certificates/
 namespace: staging
@@ -20,6 +20,10 @@ configMapGenerator:
 #     behavior: merge
 #     envs:
 #       - app/secrets.env
+secretGenerator:
+- name: web-app-secret
+  files:
+    - app/secrets.env
 commonLabels:
   environment: staging
 
