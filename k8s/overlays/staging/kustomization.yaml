@@ -10,16 +10,21 @@ resources:
   # - certificates/
 namespace: staging
 
-configMapGenerator:
-  - name: web-app-configmap
-    behavior: merge
-    envs:
-      - app/staging.properties
+
+# configMapGenerator:
+#   - name: web-app-configmap
+#     behavior: merge
+#     envs:
+#       - app/staging.properties
 # secretGenerator:
 #   - name: web-app-secret
 #     behavior: merge
 #     envs:
 #       - app/secrets.env
+configMapGenerator:
+  - name: web-app-configmap
+    files:
+      - app/staging.properties
 secretGenerator:
 - name: web-app-secret
   files:
