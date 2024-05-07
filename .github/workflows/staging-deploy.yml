@@ -141,6 +141,7 @@ jobs:
   setup:
     name: Setup and Configure Environment
     runs-on: ubuntu-latest
+    environment: staging
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
@@ -164,6 +165,11 @@ jobs:
 
       - name: Set Default Namespace
         run: kubectl config set-context --current --namespace=staging # Sets the default namespace for subsequent kubectl commands
+      - name: Debug secrets
+        run: |
+          echo "Length of DJANGO_SECRET_KEY: ${#DJANGO_SECRET_KEY}"
+          echo "Length of POSTGRES_PASSWORD: ${#POSTGRES_PASSWORD}"
+          # Add similar echo statements for other secrets
 
   build-and-push:
     name: Build and Push Docker Image
@@ -211,6 +217,7 @@ jobs:
     name: Deploy to GKE
     needs: build-and-push
     runs-on: ubuntu-latest
+    environment: staging
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
