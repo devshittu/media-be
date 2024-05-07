@@ -42,22 +42,22 @@ else:  # Development and other cases
 
 # DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = [
-    "web-app",
-    "web-app-service",
-    "127.0.0.1",
-    "localhost",
-    "*.mediaapp.local",
-    "api.mediaapp.local",
-    "app.mediaapp.local",
-    "*.gong.ng",
-    "api.gong.ng",
-    "app.gong.ng",
-    "api.staging.gong.ng",
-    "app.staging.gong.ng",
-    "api.dev.gong.ng",
-    "app.dev.gong.ng",
-]
+# ALLOWED_HOSTS = [
+#     "web-app",
+#     "web-app-service",
+#     "127.0.0.1",
+#     "localhost",
+#     "*.mediaapp.local",
+#     "api.mediaapp.local",
+#     "app.mediaapp.local",
+#     "*.gong.ng",
+#     "api.gong.ng",
+#     "app.gong.ng",
+#     "api.staging.gong.ng",
+#     "app.staging.gong.ng",
+#     "api.dev.gong.ng",
+#     "app.dev.gong.ng",
+# ]
 ALLOWED_HOSTS = config(
     "DJANGO_ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")]
 )
