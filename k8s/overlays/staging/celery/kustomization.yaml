@@ -17,4 +17,6 @@ images:
 commonLabels:
   app: celery
 
-# k8s/overlays/staging/app/kustomization.yaml
+namespace: staging
+
+# k8s/overlays/staging/celery/kustomization.yaml
