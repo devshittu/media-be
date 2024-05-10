@@ -141,7 +141,6 @@ jobs:
           # Setting an environment variable with the value of a configuration variable
           env_var: ${{ vars.ENV_CONTEXT_VAR }}
 
-
         run: |
           echo "repository variable : $REPOSITORY_VAR"
           echo "organization variable : $ORGANIZATION_VAR"
@@ -154,16 +153,16 @@ jobs:
       - name: Create Kubernetes Secrets
         run: |
           kubectl create secret generic web-app-secret \
-            --from-literal=APP_NAME='${{ secrets.APP_NAME }}' \
-            --from-literal=APP_CODE_NAME='${{ secrets.APP_CODE_NAME }}' \
-            --from-literal=APP_VERSION='${{ secrets.APP_VERSION }}' \
-            --from-literal=APP_DESCRIPTION='${{ secrets.APP_DESCRIPTION }}' \
-            --from-literal=APP_FRONTEND_DOMAIN='${{ secrets.APP_FRONTEND_DOMAIN }}' \
-            --from-literal=APP_BASE_URL='${{ secrets.APP_BASE_URL }}' \
+            --from-literal=APP_NAME='${{ vars.APP_NAME }}' \
+            --from-literal=APP_CODE_NAME='${{ vars.APP_CODE_NAME }}' \
+            --from-literal=APP_VERSION='${{ vars.APP_VERSION }}' \
+            --from-literal=APP_DESCRIPTION='${{ vars.APP_DESCRIPTION }}' \
+            --from-literal=APP_FRONTEND_DOMAIN='${{ vars.APP_FRONTEND_DOMAIN }}' \
+            --from-literal=APP_BASE_URL='${{ vars.APP_BASE_URL }}' \
             --from-literal=DJANGO_SECRET_KEY='${{ secrets.DJANGO_SECRET_KEY }}' \
             --from-literal=DJANGO_DEBUG='${{ secrets.DJANGO_DEBUG }}' \
-            --from-literal=DJANGO_ALLOWED_HOSTS='${{ secrets.DJANGO_ALLOWED_HOSTS }}' \
-            --from-literal=APP_MEDIA_ENVIRONMENT='${{ secrets.APP_MEDIA_ENVIRONMENT }}' \
+            --from-literal=DJANGO_ALLOWED_HOSTS='${{ vars.DJANGO_ALLOWED_HOSTS }}' \
+            --from-literal=APP_MEDIA_ENVIRONMENT='${{ vars.APP_MEDIA_ENVIRONMENT }}' \
             --from-literal=TWILIO_ACCOUNT_SID='${{ secrets.TWILIO_ACCOUNT_SID }}' \
             --from-literal=TWILIO_AUTH_TOKEN='${{ secrets.TWILIO_AUTH_TOKEN }}' \
             --from-literal=TWILIO_PHONE_NUMBER='${{ secrets.TWILIO_PHONE_NUMBER }}' \
@@ -171,11 +170,11 @@ jobs:
             --from-literal=POSTGRES_DB='${{ secrets.POSTGRES_DB }}' \
             --from-literal=POSTGRES_USER='${{ secrets.POSTGRES_USER }}' \
             --from-literal=POSTGRES_PASSWORD='${{ secrets.POSTGRES_PASSWORD }}' \
-            --from-literal=POSTGRES_HOST='${{ secrets.POSTGRES_HOST }}' \
-            --from-literal=POSTGRES_PORT='${{ secrets.POSTGRES_PORT }}' \
+            --from-literal=POSTGRES_HOST='${{ vars.POSTGRES_HOST }}' \
+            --from-literal=POSTGRES_PORT='${{ vars.POSTGRES_PORT }}' \
             --from-literal=NEO4J_USERNAME='${{ secrets.NEO4J_USERNAME }}' \
             --from-literal=NEO4J_PASSWORD='${{ secrets.NEO4J_PASSWORD }}' \
-            --from-literal=NEO4J_HOST='${{ secrets.NEO4J_HOST }}' \
+            --from-literal=NEO4J_HOST='${{ vars.NEO4J_HOST }}' \
             --from-literal=NEO4J_PORT='7687' \
             --from-literal=REDIS_PASSWORD='${{ secrets.REDIS_PASSWORD }}' \
             --from-literal=CELERY_BROKER_URL='redis://redis-service:6379/0' \
@@ -189,12 +188,12 @@ jobs:
             --from-literal=APP_MEDIA_SENDGRID_API_KEY_NAME='media-app-access' \
             --from-literal=APP_MEDIA_SENDGRID_API_KEY_ID='${{ secrets.APP_MEDIA_SENDGRID_API_KEY_ID }}' \
             --from-literal=APP_MEDIA_SENDGRID_API_KEY='${{ secrets.APP_MEDIA_SENDGRID_API_KEY }}' \
-            --from-literal=GS_BUCKET_NAME='${{ secrets.GS_BUCKET_NAME }}' \
+            --from-literal=GS_BUCKET_NAME='${{ vars.GS_BUCKET_NAME }}' \
             --from-literal=GS_CREDENTIALS='${{ secrets.GS_CREDENTIALS }}' \
             --from-literal=GS_PROJECT_ID='${{ secrets.GS_PROJECT_ID }}' \
-            --from-literal=POSTS_PER_PAGE='${{ secrets.POSTS_PER_PAGE }}' \
-            --from-literal=ANCESTORS_PER_PAGE='${{ secrets.ANCESTORS_PER_PAGE }}' \
-            --from-literal=DESCENDANTS_PER_PAGE='${{ secrets.DESCENDANTS_PER_PAGE }}' \
+            --from-literal=POSTS_PER_PAGE='${{ vars.POSTS_PER_PAGE }}' \
+            --from-literal=ANCESTORS_PER_PAGE='${{ vars.ANCESTORS_PER_PAGE }}' \
+            --from-literal=DESCENDANTS_PER_PAGE='${{ vars.DESCENDANTS_PER_PAGE }}' \
             --namespace staging \
             --dry-run=client -o yaml | kubectl apply -f -
 
@@ -214,6 +213,4 @@ jobs:
 
       - name: Verify Deployment
         run: kubectl rollout status deployment/web-app -n staging
-
-
 # .github/workflows/staging-deploy.yml
