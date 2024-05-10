@@ -148,7 +148,8 @@ jobs:
           echo "POSTS_PER_PAGE variable : $POSTS_PER_PAGE"
           echo "variable from shell environment : $env_var"
           echo "variable from shell environment vars.POSTGRES_HOST : ${{ vars.POSTGRES_HOST }}"
-          echo "variable from shell environment vars.JOB_NAME : ${{ vars.JOB_NAME }}"
+          echo "variables from shell environment vars.JOB_NAME : ${{ vars.JOB_NAME }}"
+          echo "all variables from shell environment vars : ${{ vars }}"
 
       - name: Create Kubernetes Secrets
         run: |
