@@ -25,6 +25,18 @@ spec:
           limits:
             cpu: "200m"
             memory: "400Mi"
+        env:
+          - name: DJANGO_ALLOWED_HOSTS
+            valueFrom:
+              secretKeyRef:
+                name: web-app-secret
+                key: DJANGO_ALLOWED_HOSTS
+                
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: web-app-secret
+                key: POSTGRES_PASSWORD
 
 
 
