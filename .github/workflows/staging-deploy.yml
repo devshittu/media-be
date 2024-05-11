@@ -151,6 +151,19 @@ jobs:
           echo "variables from shell environment vars.JOB_NAME : ${{ vars.JOB_NAME }}"
           echo "all variables from shell environment vars : ${{ vars }}"
 
+      # TODO: Remove as it is for debugging
+      - name: Display all environment variables
+        run: |
+          for var in $(compgen -e); do
+            echo "$var = ${!var}"
+          done
+
+      - name: Display relevant environment variables
+        run: |
+          for var in $(compgen -e | grep '^APP_'); do
+            echo "$var = ${!var}"
+          done
+
       - name: Create Kubernetes Secrets
         run: |
           kubectl create secret generic web-app-secret \
