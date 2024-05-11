@@ -31,7 +31,7 @@ spec:
               secretKeyRef:
                 name: web-app-secret
                 key: DJANGO_ALLOWED_HOSTS
-                
+
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -39,5 +39,18 @@ spec:
                 key: POSTGRES_PASSWORD
 
 
+          - name: POSTGRES_DB
+            value: "mediabedb"
+          - name: POSTGRES_USER
+            value: "mediabeuser"
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: web-app-secret
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_HOST
+            value: "db-postgres-postgresql"
+          - name: POSTGRES_PORT
+            value: "5432"
 
 # k8s/overlays/staging/app/web-app-deployment-patch.yaml
