@@ -9,15 +9,6 @@ spec:
     spec:
       containers:
       - name: web-app
-
-        # resources:
-        #   requests:
-        #     cpu: 250m  # Reduced from 500m
-        #     memory: 256Mi
-        #   limits:
-        #     cpu: 500m  # Reduced if necessary
-        #     memory: 512Mi
-
         resources:
           requests:
             cpu: "50m"
@@ -48,9 +39,28 @@ spec:
               secretKeyRef:
                 name: web-app-secret
                 key: POSTGRES_PASSWORD
-          - name: POSTGRES_HOST
-            value: "db-postgres-postgresql"
+          # - name: POSTGRES_HOST
+          #   value: "db-postgres-postgresql"
           - name: POSTGRES_PORT
             value: "5432"
+# TODO: DELETE till end IF POSTGRES SQL DOES NOT WORK  
+          - name: POSTGRES_HOST
+            value: 127.0.0.1  # Point to the local Cloud SQL Proxy sidecar
+
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.16
+        command:
+          - "/cloud_sql_proxy"
+          - "-instances=media-app-418813:europe-west2:mediabedb=tcp:5432"
+          - "-credential_file=/secrets/cloudsql/credentials.json"
+        volumeMounts:
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+
+      volumes:
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
 
 # k8s/overlays/staging/app/web-app-deployment-patch.yaml
