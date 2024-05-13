@@ -30,19 +30,19 @@ spec:
                 key: POSTGRES_PASSWORD
 
 
-          - name: POSTGRES_DB
-            value: "mediabedb"
-          - name: POSTGRES_USER
-            value: "mediabeuser"
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: web-app-secret
-                key: POSTGRES_PASSWORD
-          # - name: POSTGRES_HOST
-          #   value: "db-postgres-postgresql"
-          - name: POSTGRES_PORT
-            value: "5432"
+          # - name: POSTGRES_DB
+          #   value: "mediabedb"
+          # - name: POSTGRES_USER
+          #   value: "mediabeuser"
+          # - name: POSTGRES_PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: web-app-secret
+          #       key: POSTGRES_PASSWORD
+          # # - name: POSTGRES_HOST
+          # #   value: "db-postgres-postgresql"
+          # - name: POSTGRES_PORT
+          #   value: "5432"
 # TODO: DELETE till end IF POSTGRES SQL DOES NOT WORK  
       #     - name: POSTGRES_HOST
       #       value: 127.0.0.1  # Point to the local Cloud SQL Proxy sidecar
