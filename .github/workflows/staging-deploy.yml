@@ -181,7 +181,7 @@ jobs:
             --from-literal=TWILIO_AUTH_TOKEN='${{ secrets.TWILIO_AUTH_TOKEN }}' \
             --from-literal=TWILIO_PHONE_NUMBER='${{ secrets.TWILIO_PHONE_NUMBER }}' \
             --from-literal=SECRET_KEY='${{ secrets.SECRET_KEY }}' \
-            --from-literal=POSTGRES_DB='${{ secrets.POSTGRES_DB }}' \
+            --from-literal=POSTGRES_DB='${{ vars.POSTGRES_DB }}' \
             --from-literal=POSTGRES_USER='${{ secrets.POSTGRES_USER }}' \
             --from-literal=POSTGRES_PASSWORD='${{ vars.POSTGRES_PASSWORD }}' \
             --from-literal=POSTGRES_HOST='${{ vars.POSTGRES_HOST }}' \
