@@ -186,10 +186,10 @@ jobs:
             --from-literal=POSTGRES_PASSWORD='${{ vars.POSTGRES_PASSWORD }}' \
             --from-literal=POSTGRES_HOST='${{ vars.POSTGRES_HOST }}' \
             --from-literal=POSTGRES_PORT='${{ vars.POSTGRES_PORT }}' \
-            --from-literal=NEO4J_USERNAME='${{ secrets.NEO4J_USERNAME }}' \
-            --from-literal=NEO4J_PASSWORD='${{ secrets.NEO4J_PASSWORD }}' \
+            --from-literal=NEO4J_USERNAME='${{ vars.NEO4J_USERNAME }}' \
+            --from-literal=NEO4J_PASSWORD='${{ vars.NEO4J_PASSWORD }}' \
             --from-literal=NEO4J_HOST='${{ vars.NEO4J_HOST }}' \
-            --from-literal=NEO4J_PORT='7687' \
+            --from-literal=NEO4J_PORT='${{ vars.NEO4J_PORT }}' \
             --from-literal=REDIS_PASSWORD='${{ secrets.REDIS_PASSWORD }}' \
             --from-literal=CELERY_BROKER_URL='redis://redis-service:6379/0' \
             --from-literal=CELERY_RESULT_BACKEND='redis://redis-service:6379/0' \
