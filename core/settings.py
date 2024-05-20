@@ -83,14 +83,12 @@ CSRF_TRUSTED_ORIGINS = [
     "https://api.mediaapp.local",
     "http://app.mediaapp.local",
     "https://app.mediaapp.local",
-
     "https://api.gong.ng",
     "https://app.gong.ng",
     "https://api.staging.gong.ng",
     "https://app.staging.gong.ng",
     "https://api.dev.gong.ng",
     "https://app.dev.gong.ng",
-    
     "http://frontend-app-service:3000",
     "https://frontend-app-service:3000",
     "http://web-app:8000",
@@ -129,8 +127,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_extensions",
     "ckeditor",
-    
-    'storages',
+    "storages",
     # 'ckeditor_uploader',  # If you want image uploading
     "django_neomodel",
     "corsheaders",
@@ -405,9 +402,9 @@ TEST_RUNNER = "pytest_django.runner.DjangoTestSuiteRunner"
 
 # Celery configurations
 # Fetch Redis password from environment, defaulting to an empty string if not found
-REDIS_PASSWORD = config('REDIS_PASSWORD', default='')
+REDIS_PASSWORD = config("REDIS_PASSWORD", default="")
 
-REDIS_HOST = config("REDIS_HOST", default="redis-service")
+REDIS_HOST = config("REDIS_HOST", default="redis-service-x")
 REDIS_PORT = config("REDIS_PORT", default="6379")
 # Construct Redis URL
 if REDIS_PASSWORD:
