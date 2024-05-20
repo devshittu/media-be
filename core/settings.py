@@ -407,10 +407,12 @@ TEST_RUNNER = "pytest_django.runner.DjangoTestSuiteRunner"
 # Fetch Redis password from environment, defaulting to an empty string if not found
 REDIS_PASSWORD = config('REDIS_PASSWORD', default='')
 
+REDIS_HOST = config("REDIS_HOST", default="redis-service")
+REDIS_PORT = config("REDIS_PORT", default="6379")
 # Construct Redis URL
 if REDIS_PASSWORD:
-    CELERY_BROKER_URL = f"redis://:{REDIS_PASSWORD}@redis-service:6379/0"
-    CELERY_RESULT_BACKEND = f"redis://:{REDIS_PASSWORD}@redis-service:6379/0"
+    CELERY_BROKER_URL = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0"
+    CELERY_RESULT_BACKEND = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0"
 else:
     CELERY_BROKER_URL = config(
         "CELERY_BROKER_URL", default="redis://redis:6379/0", cast=str
