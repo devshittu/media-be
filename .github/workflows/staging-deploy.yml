@@ -190,7 +190,9 @@ jobs:
             --from-literal=NEO4J_PASSWORD='${{ vars.NEO4J_PASSWORD }}' \
             --from-literal=NEO4J_HOST='${{ vars.NEO4J_HOST }}' \
             --from-literal=NEO4J_PORT='${{ vars.NEO4J_PORT }}' \
-            --from-literal=REDIS_PASSWORD='${{ secrets.REDIS_PASSWORD }}' \
+            --from-literal=REDIS_PASSWORD='${{ vars.REDIS_PASSWORD }}' \
+            --from-literal=REDIS_HOST='${{ vars.REDIS_HOST }}' \
+            --from-literal=REDIS_PORT='${{ vars.REDIS_PORT }}' \
             --from-literal=CELERY_BROKER_URL='redis://redis-service:6379/0' \
             --from-literal=CELERY_RESULT_BACKEND='redis://redis-service:6379/0' \
             --from-literal=APP_MEDIA_EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend' \
