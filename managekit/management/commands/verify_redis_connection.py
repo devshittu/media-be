@@ -14,3 +14,6 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS("Connection to Redis successful!"))
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"Connection to Redis failed: {e}"))
+
+# python manage.py verify_redis_connection
+# managekit/management/commands/verify_redis_connection.py
