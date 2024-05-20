@@ -404,7 +404,7 @@ TEST_RUNNER = "pytest_django.runner.DjangoTestSuiteRunner"
 # Fetch Redis password from environment, defaulting to an empty string if not found
 REDIS_PASSWORD = config("REDIS_PASSWORD", default="")
 
-REDIS_HOST = config("REDIS_HOST", default="redis-service-x")
+REDIS_HOST = config("REDIS_HOST", default="redis-service")
 REDIS_PORT = config("REDIS_PORT", default="6379")
 # Construct Redis URL
 if REDIS_PASSWORD:
