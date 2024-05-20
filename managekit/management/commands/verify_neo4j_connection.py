@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from neomodel import config, db
 from django.conf import settings
+import os
 
 
 class Command(BaseCommand):
