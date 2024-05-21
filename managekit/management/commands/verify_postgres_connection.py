@@ -41,5 +41,5 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR(f"Connection to PostgreSQL failed: {e}"))
 
 
-# Save this as managekit/management/commands/verify_postgres_connection.py
 # Usage: python manage.py verify_postgres_connection
+# Save this as managekit/management/commands/verify_postgres_connection.py
