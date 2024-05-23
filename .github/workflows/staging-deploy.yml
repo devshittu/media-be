@@ -175,6 +175,12 @@ jobs:
             --from-literal=APP_BASE_URL='${{ vars.APP_BASE_URL }}' \
             --from-literal=DJANGO_SECRET_KEY='${{ secrets.DJANGO_SECRET_KEY }}' \
             --from-literal=DJANGO_DEBUG='${{ secrets.DJANGO_DEBUG }}' \
+            --from-literal=DJANGO_SUPERUSER_EMAIL='${{ vars.DJANGO_SUPERUSER_EMAIL }}' \
+            --from-literal=DJANGO_SUPERUSER_PASSWORD='${{ vars.DJANGO_SUPERUSER_PASSWORD }}' \
+            --from-literal=DJANGO_SUPERUSER_USERNAME='${{ vars.DJANGO_SUPERUSER_USERNAME }}' \
+            --from-literal=DJANGO_SUPERUSER_DISPLAY_NAME='${{ vars.DJANGO_SUPERUSER_DISPLAY_NAME }}' \
+            --from-literal=DJANGO_SUPERUSER_AVATAR_URL='${{ vars.DJANGO_SUPERUSER_AVATAR_URL }}' \
+            --from-literal=DJANGO_SUPERUSER_HAS_COMPLETED_SETUP='${{ vars.DJANGO_SUPERUSER_HAS_COMPLETED_SETUP }}' \
             --from-literal=DJANGO_ALLOWED_HOSTS='${{ vars.DJANGO_ALLOWED_HOSTS }}' \
             --from-literal=APP_MEDIA_ENVIRONMENT='${{ vars.APP_MEDIA_ENVIRONMENT }}' \
             --from-literal=TWILIO_ACCOUNT_SID='${{ secrets.TWILIO_ACCOUNT_SID }}' \
