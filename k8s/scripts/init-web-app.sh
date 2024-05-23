@@ -1,21 +1,7 @@
 #!/bin/sh
-
-# Wait for PostgreSQL to be ready
-# echo "Waiting for PostgreSQL database..."
-# while ! nc -z db-postgres 5432; do
-#     sleep 1
-# done
-# echo "PostgreSQL database is ready!"
-
-# # Wait for Neo4j to be ready
-# echo "Waiting for Neo4j database..."
-# while ! nc -z db-neo4j 7687; do
-#     sleep 1
-# done
-# echo "Neo4j database is ready!"
-
 # Run Django setup commands
 echo "Running Django setup commands..."
+python manage.py makemigrations
 python manage.py migrate
 echo "--== Completed migration successfully ==--"
 echo "..."
@@ -28,10 +14,11 @@ python manage.py autoseed
 echo "..."
 echo "--== Completed autoseed successfully ==--"
 
-# Create superuser - Use environment variables for username and password
+# Create superuser - Use environment variables for email and password
 echo "Creating superuser..."
-echo "from django.contrib.auth import get_user_model; CustomUser = get_user_model(); CustomUser.objects.create_superuser('${DJANGO_SUPERUSER_EMAIL}', '${DJANGO_SUPERUSER_PASSWORD}')" | python manage.py shell
+echo "from django.contrib.auth import get_user_model; CustomUser = get_user_model(); CustomUser.objects.create_superuser(email='${DJANGO_SUPERUSER_EMAIL}', password='${DJANGO_SUPERUSER_PASSWORD}', username='superuser', display_name='Super User', avatar_url='https://picsum.photos/200', has_completed_setup=True)" | python manage.py shell
 
 echo "Setup completed successfully!"
 
-# deploy/scripts/init-web-app.sh
+
+# k8s/scripts/init-web-app.sh
