@@ -16,9 +16,8 @@ echo "--== Completed autoseed successfully ==--"
 
 # Create superuser - Use environment variables for email and password
 echo "Creating superuser..."
-echo "from django.contrib.auth import get_user_model; CustomUser = get_user_model(); CustomUser.objects.create_superuser(email='${DJANGO_SUPERUSER_EMAIL}', password='${DJANGO_SUPERUSER_PASSWORD}', username='superuser', display_name='Super User', avatar_url='https://picsum.photos/200', has_completed_setup=True)" | python manage.py shell
+echo "from django.contrib.auth import get_user_model; CustomUser = get_user_model(); CustomUser.objects.create_superuser(email='${DJANGO_SUPERUSER_EMAIL}', password='${DJANGO_SUPERUSER_PASSWORD}', username='${DJANGO_SUPERUSER_USERNAME}', display_name='${DJANGO_SUPERUSER_DISPLAY_NAME}', avatar_url='${DJANGO_SUPERUSER_AVATAR_URL}', has_completed_setup=${DJANGO_SUPERUSER_HAS_COMPLETED_SETUP})" | python manage.py shell
 
 echo "Setup completed successfully!"
-
 
 # k8s/scripts/init-web-app.sh
