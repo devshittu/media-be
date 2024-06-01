@@ -9,7 +9,7 @@ terraform {
 }
 
 provider "google" {
-  credentials = file("./media-app-terraform-key.json")
+  credentials = file("./media-app-terraform-service-key.json")
   project     = "media-app-418813"
   region      = "europe-west2"
 }
