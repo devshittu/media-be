@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.celery.name }}
+  namespace: {{ .Values.namespace.name }}
+  labels: 
+  {{- toYaml .Values.deployment.celery.labels | nindent 4 }}
+spec:
+  replicas: {{ .Values.deployment.celery.replicas }}
+  selector:
+    matchLabels:
+      app: celery
+      environment: staging
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: celery
+        environment: staging
+    spec:
+      containers:
+      - name: celery
+        image: "{{ .Values.deployment.celery.image.repository }}:{{ .Values.deployment.celery.image.tag }}"
+        command: 
+{{- toYaml .Values.deployment.celery.command | nindent 8 }}
+        resources:
+          limits:
+            memory: {{ .Values.deployment.celery.resources.limits.memory }}
+          requests:
+            memory: {{ .Values.deployment.celery.resources.requests.memory }}
+        envFrom:
+{{- range .Values.deployment.celery.envFrom }}
+          {{- if .configMapRefName }}
+          - configMapRef:
+              name: {{ .configMapRefName }}
+          {{- end }}
+          {{- if .secretRefName }}
+          - secretRef:
+              name: {{ .secretRefName }}
+          {{- end }}
+{{- end }}
+
+# k8s/web-app/templates/deployment-celery.yaml
