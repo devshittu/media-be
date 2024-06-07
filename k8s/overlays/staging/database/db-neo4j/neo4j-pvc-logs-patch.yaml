@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: neo4j-logs-pvc
-spec:
-  resources:
-    requests:
-      storage: "100M"  # Significantly reduced as detailed logs may not be needed
-# k8s/overlays/staging/database/db-neo4j/neo4j-pvc-logs-patch.yaml
