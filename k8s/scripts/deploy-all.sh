@@ -17,6 +17,9 @@ metadata:
     environment: staging
 EOF
 
+# TODO:
+# Download web-app-secret and configmap is provided in the helm chart so no need of provisioning again
+
 # Deploy Redis
 echo "Deploying Redis..."
 helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -29,13 +32,15 @@ helm install db-postgres bitnami/postgresql -f ./k8s/helms/dbs/postgres-values.y
 
 # Deploy Neo4j
 echo "Deploying Neo4j..."
-kubectl apply -k k8s/overlays/staging/database/db-neo4j/
+# kubectl apply -k k8s/overlays/staging/database/db-neo4j/ TODO: using kustomize.
+kubectl apply -f kubectl apply -f k8s/helms/shared/db-neo4j-configmap.yaml
+helm install neo4j ./k8s/helms/neo4j --namespace staging
 
 # Deploy Web App
-echo "Deploying Web App..."
-helm install web-app ./k8s/web-app --namespace staging --set deployment.webApp.image.tag=$COMMIT_HASH
+# echo "Deploying Web App..."
+# helm install web-app ./k8s/web-app --namespace staging --set deployment.webApp.image.tag=$COMMIT_HASH
 
 echo "All services deployed successfully."
 
-
+# ./deploy-all.sh
 # k8s/scripts/deploy-all.sh
