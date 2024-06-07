@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.webApp.name }}
+  namespace: {{ .Values.namespace.name }}
+  labels:
+{{- toYaml .Values.deployment.webApp.labels | nindent 4 }}
+spec:
+  replicas: {{ .Values.deployment.webApp.replicas }}
+  selector:
+    matchLabels:
+      app: web-app
+      environment: staging
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: web-app
+        environment: staging
+    spec:
+      containers:
+      - name: web-app
+        image: "{{ .Values.shared.image.repository }}:{{ .Values.shared.image.tag }}"
+        imagePullPolicy: {{ .Values.shared.image.pullPolicy }}
+        ports:
+        {{- range .Values.deployment.webApp.ports }}
+        - containerPort: {{ .containerPort }}
+        {{- end }}
+        {{- include "shared.resources" . | nindent 8 }}
+        envFrom:
+{{- include "shared.envFrom" . | nindent 8 }}
+        {{- include "shared.volumeMounts" . | nindent 8 }}
+        volumes:
+        - name: web-app-pvc
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.name }}
+
+# k8s/web-app/templates/deployment-web-app.yaml
