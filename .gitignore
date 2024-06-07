@@ -52,6 +52,10 @@ MANIFEST
 **/secrets.env
 **/*.properties
 
+#  helm
+**/values/values-*.yaml
+**/values.yaml
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
