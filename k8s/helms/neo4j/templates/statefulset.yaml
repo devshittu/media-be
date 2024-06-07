@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.statefulSet.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: db-neo4j
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+    helm.sh/resource-policy: keep
+spec:
+  serviceName: {{ .Values.service.name }}
+  replicas: {{ .Values.statefulSet.replicas }}
+  selector:
+    matchLabels:
+      app: db-neo4j
+  template:
+    metadata:
+      labels:
+        app: db-neo4j
+    spec:
+      containers:
+      - name: neo4j
+        image: {{ .Values.statefulSet.image }}
+        ports:
+        - containerPort: 7474
+          name: http
+        - containerPort: 7687
+          name: bolt
+        env:
+{{- range .Values.statefulSet.env }}
+        - name: {{ .name }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ $.Values.statefulSet.secretName }}
+              key: {{ .key }}
+{{- end }}
+        volumeMounts:
+        {{- range .Values.statefulSet.volumeMounts }}
+        - name: {{ .name }}
+          mountPath: {{ .mountPath }}
+        {{- end }}
+      volumes:
+      {{- range .Values.statefulSet.volumes }}
+      - name: {{ .name }}
+        configMap:
+          name: {{ .configMapName }}
+      {{- end }}
+  volumeClaimTemplates:
+  {{- range .Values.statefulSet.volumeClaimTemplates }}
+  - metadata:
+      name: {{ .name }}
+    spec:
+      accessModes:
+      {{- range .accessModes }}
+      - {{ . }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{ .storage }}
+  {{- end }}
