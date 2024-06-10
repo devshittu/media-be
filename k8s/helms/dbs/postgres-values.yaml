@@ -1,0 +1,32 @@
+# postgres-values.yaml
+global:
+  storageClass: "standard"  # Ensure this is available in your GKE cluster
+
+auth:
+  database: mediabedb
+  username: mediabeuser
+  password: mediabepassword
+#   # postgresPassword: mediabepassword
+  enablePostgresUser: false
+image: 
+  tag: 13
+
+service:
+  type: ClusterIP
+  port: 5432
+  name: "db-postgres-service"
+
+primary:
+  persistence:
+    enabled: true
+    size: "1Gi"  # Adjust size based on your requirements
+
+# Run with 
+# helm install db-postgres bitnami/postgresql -f ./k8s/helms/dbs/postgres-values.yaml --namespace staging
+ # Upgrade PostgreSQL
+# `helm upgrade db-postgres bitnami/postgresql -f ./k8s/helms/dbs/postgres-values.yaml --namespace staging`
+# helm uninstall db-postgres -n staging
+
+# helm upgrade db-postgres bitnami/postgresql -f ./k8s/helms/dbs/postgres-values.yaml --namespace staging
+# mediabepassword
+# k8s/helms/dbs/postgres-values.yaml
