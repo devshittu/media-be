@@ -3,21 +3,21 @@
 SERVICE_ACCOUNT="terraform-admin@media-app-418813.iam.gserviceaccount.com"
 PROJECT="media-app-418813"
 
-gcloud projects add-iam-policy-binding $PROJECT \
-    --member="serviceAccount:$SERVICE_ACCOUNT" \
-    --role="roles/compute.admin"
+# gcloud projects add-iam-policy-binding $PROJECT \
+#     --member="serviceAccount:$SERVICE_ACCOUNT" \
+#     --role="roles/compute.admin"
 
-gcloud projects add-iam-policy-binding $PROJECT \
-    --member="serviceAccount:$SERVICE_ACCOUNT" \
-    --role="roles/container.admin"
+# gcloud projects add-iam-policy-binding $PROJECT \
+#     --member="serviceAccount:$SERVICE_ACCOUNT" \
+#     --role="roles/container.admin"
 
-gcloud projects add-iam-policy-binding $PROJECT \
-    --member="serviceAccount:$SERVICE_ACCOUNT" \
-    --role="roles/iam.serviceAccountUser"
+# gcloud projects add-iam-policy-binding $PROJECT \
+#     --member="serviceAccount:$SERVICE_ACCOUNT" \
+#     --role="roles/iam.serviceAccountUser"
 
-gcloud projects add-iam-policy-binding $PROJECT \
-    --member="serviceAccount:$SERVICE_ACCOUNT" \
-    --role="roles/dns.admin"
+# gcloud projects add-iam-policy-binding $PROJECT \
+#     --member="serviceAccount:$SERVICE_ACCOUNT" \
+#     --role="roles/dns.admin"
 
 
 
@@ -59,6 +59,7 @@ assign_role "roles/viewer"
 assign_role "roles/container.clusterViewer"
 assign_role "roles/container.clusterAdmin"
 assign_role "roles/container.viewer"
+assign_role "roles/edgecontainer.admin"
 
 # Create a key for the service account
 echo "Creating key file for the service account..."
