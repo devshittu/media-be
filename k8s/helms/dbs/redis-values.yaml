@@ -1,0 +1,47 @@
+# redis-values.yaml
+# usePassword: true
+# password: "password"  # Use a secret management approach to replace this
+# existingSecret: web-app-secret
+# passwordKey: REDIS_PASSWORD
+# existingSecretPasswordKey: redis-password
+
+architecture: standalone
+auth: 
+  enabled: true
+  password: "password" 
+
+master:
+  service:
+    name: "redis-service"
+  persistence:
+    size: 2Gi
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "100Mi"
+    limits:
+      cpu: "200m"
+      memory: "200Mi"
+service:
+  type: ClusterIP
+  port: 6379
+
+metrics:
+  enabled: true
+  service:
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9127"
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "50Mi"
+    limits:
+      cpu: "100m"
+      memory: "100Mi"
+
+#  Run with: `helm install db-redis bitnami/redis -f ./k8s/helms/dbs/redis-values.yaml --namespace staging`
+#  helm uninstall db-redis -n staging
+# helm upgrade db-redis bitnami/redis -f ./k8s/helms/dbs/redis-values.yaml --namespace staging
+
+# k8s/helms/dbs/redis-values.yaml
