@@ -61,14 +61,19 @@ jobs:
           credentials_json: ${{ secrets.GKE_KEY }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }} -f Dockerfile.dev .
+        run: |
+            docker build -t ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }} -t ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:latest -f Dockerfile.dev .
         # Make sure the Dockerfile.dev path is correct; add subdirectory path if it's not in the root
 
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker europe-west2-docker.pkg.dev
 
       - name: Push Docker image to Artifact Registry
-        run: docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
+        run: |
+          docker tag ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }} ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:latest
+          docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
+          docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:latest
+
 
   database-update:
     name: Database Update
