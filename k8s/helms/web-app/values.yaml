@@ -2,6 +2,10 @@ namespace:
   name: staging
   labels:
     environment: staging
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: web-app
+    meta.helm.sh/release-namespace: staging
 
 configMap:
   name: web-app-configmap
