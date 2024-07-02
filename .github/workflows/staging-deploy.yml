@@ -158,6 +158,7 @@ jobs:
               --from-literal=POSTGRES_PORT='${{ vars.POSTGRES_PORT }}' \
               --from-literal=NEO4J_USERNAME='${{ vars.NEO4J_USERNAME }}' \
               --from-literal=NEO4J_PASSWORD='${{ vars.NEO4J_PASSWORD }}' \
+              --from-literal=NEO4J_AUTH='${{ vars.NEO4J_AUTH }}' \
               --from-literal=NEO4J_HOST='${{ vars.NEO4J_HOST }}' \
               --from-literal=NEO4J_PORT='${{ vars.NEO4J_PORT }}' \
               --from-literal=REDIS_PASSWORD='${{ vars.REDIS_PASSWORD }}' \
@@ -222,6 +223,10 @@ jobs:
 
       - name: Configure kubectl for GKE
         run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
+
+      - name: Deploy Web App PVC
+        run: |
+          helm upgrade --install web-app-pvc ./k8s/helms/web-app --namespace staging --set pvc.name=web-app-pvc
 
       - name: Deploy Web App
         run: |
