@@ -4,5 +4,7 @@ metadata:
   name: {{ .Values.namespace.name }}
   labels: 
 {{- toYaml .Values.namespace.labels | nindent 4 }}
+  annotations:
+{{ toYaml .Values.namespace.annotations | indent 4 }}
 
 # k8s/web-app/templates/namespace.yaml
