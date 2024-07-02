@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: neo4j-config
+data:
+    neo4j.conf: |
+      dbms.default_listen_address=0.0.0.0
+      dbms.default_advertised_address=db-neo4j-service
+      dbms.connector.bolt.enabled=true
+      dbms.connector.bolt.listen_address=0.0.0.0:7687
+      dbms.connector.http.enabled=true
+      dbms.connector.http.listen_address=0.0.0.0:7474
+      dbms.security.auth_enabled=true
+# k8s/helms/shared/db-neo4j-configmap.yaml
