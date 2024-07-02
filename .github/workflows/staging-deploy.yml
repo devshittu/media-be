@@ -90,7 +90,7 @@ jobs:
 
   deploy-databases:
       name: Deploy Databases
-      needs: setup
+      needs: build-and-push
       runs-on: ubuntu-latest
       steps:
         - name: Checkout the repository
@@ -222,7 +222,7 @@ jobs:
 
   database-update:
     name: Database Update
-    needs: setup
+    needs: deploy-application
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && (github.event.pull_request.merged == true || github.event_name != 'pull_request') && contains(github.event.head_commit.message, '[db-update]')
     steps:
