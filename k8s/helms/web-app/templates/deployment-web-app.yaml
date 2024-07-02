@@ -5,6 +5,9 @@ metadata:
   namespace: {{ .Values.namespace.name }}
   labels:
 {{- toYaml .Values.deployment.webApp.labels | nindent 4 }}
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.deployment.webApp.replicas }}
   selector:
@@ -18,6 +21,9 @@ spec:
       labels:
         app: web-app
         environment: staging
+      annotations:
+        meta.helm.sh/release-name: {{ .Release.Name }}
+        meta.helm.sh/release-namespace: {{ .Release.Namespace }}
     spec:
       containers:
       - name: web-app

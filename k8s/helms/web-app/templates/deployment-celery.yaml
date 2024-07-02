@@ -5,6 +5,9 @@ metadata:
   namespace: {{ .Values.namespace.name }}
   labels:
 {{- toYaml .Values.deployment.celery.labels | nindent 4 }}
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.deployment.celery.replicas }}
   selector:
@@ -18,6 +21,9 @@ spec:
       labels:
         app: celery
         environment: staging
+      annotations:
+        meta.helm.sh/release-name: {{ .Release.Name }}
+        meta.helm.sh/release-namespace: {{ .Release.Namespace }}
     spec:
       containers:
       - name: celery

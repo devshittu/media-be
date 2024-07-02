@@ -5,6 +5,10 @@ metadata:
   namespace: {{ .Values.namespace.name }}
   labels:
 {{- toYaml .Values.configMap.labels | nindent 4 }}
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+    "helm.sh/hook": pre-install,pre-upgrade
 data:
 {{- range $key, $value := .Values.configMap.data }}
   {{ $key }}: {{ $value | quote }}

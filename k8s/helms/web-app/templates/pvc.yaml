@@ -5,6 +5,9 @@ metadata:
   namespace: {{ .Values.namespace.name }}
   labels: 
 {{- toYaml .Values.pvc.labels | nindent 4 }}
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
 spec:
   accessModes:
 {{- toYaml .Values.pvc.accessModes | nindent 2 }}
