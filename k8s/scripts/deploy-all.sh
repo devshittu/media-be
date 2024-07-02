@@ -7,15 +7,18 @@ COMMIT_HASH=$(git rev-parse --short HEAD)
 echo "Using commit hash: $COMMIT_HASH"
 
 # Create Namespace
-echo "Creating namespace..."
-kubectl apply -f - <<EOF
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: staging
-  labels:
-    environment: staging
-EOF
+# echo "Creating namespace..."
+# kubectl apply -f - <<EOF
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: staging
+#   labels:
+#     app.kubernetes.io/managed-by: "Helm"
+#   annotations:
+#     meta.helm.sh/release-name: "web-app"
+#     meta.helm.sh/release-namespace: "staging"
+# EOF
 
 # TODO:
 # Download web-app-secret and configmap is provided in the helm chart so no need of provisioning again
@@ -33,7 +36,7 @@ helm install db-postgres bitnami/postgresql -f ./k8s/helms/dbs/postgres-values.y
 # Deploy Neo4j
 echo "Deploying Neo4j..."
 # kubectl apply -k k8s/overlays/staging/database/db-neo4j/ TODO: using kustomize.
-kubectl apply -f kubectl apply -f k8s/helms/shared/db-neo4j-configmap.yaml
+# kubectl apply -f k8s/helms/shared/db-neo4j-configmap.yaml
 helm install neo4j ./k8s/helms/neo4j --namespace staging
 
 # Deploy Web App
