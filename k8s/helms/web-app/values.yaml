@@ -183,7 +183,7 @@ ingress:
         - app.staging.gong.ng
       secretName: gong-ng-staging-tls-secret
 
-
+# k8s/helms/web-app/values.yaml
 
 redis:
   enabled: true
@@ -235,3 +235,4 @@ neo4j:
   port: 7687
   env:
     NEO4J_AUTH: "neo4j/password"
+
