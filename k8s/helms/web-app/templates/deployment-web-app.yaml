@@ -12,34 +12,59 @@ spec:
   replicas: {{ .Values.deployment.webApp.replicas }}
   selector:
     matchLabels:
-      app: web-app
+      app: {{ .Values.deployment.webApp.name }}
       environment: staging
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: web-app
+        app: {{ .Values.deployment.webApp.name }}
         environment: staging
       annotations:
         meta.helm.sh/release-name: {{ .Release.Name }}
         meta.helm.sh/release-namespace: {{ .Release.Namespace }}
     spec:
       containers:
-      - name: web-app
+      - name: {{ .Values.deployment.webApp.name }}
         image: "{{ .Values.shared.image.repository }}:{{ .Values.shared.image.tag }}"
         imagePullPolicy: {{ .Values.shared.image.pullPolicy }}
         ports:
         {{- range .Values.deployment.webApp.ports }}
         - containerPort: {{ .containerPort }}
         {{- end }}
-        {{- include "shared.resources" . | nindent 8 }}
-        envFrom:
-{{- include "shared.envFrom" . | nindent 8 }}
-        {{- include "shared.volumeMounts" . | nindent 8 }}
-        volumes:
-        - name: web-app-pvc
-          persistentVolumeClaim:
-            claimName: {{ .Values.pvc.name }}
 
+        resources:
+          limits:
+            cpu: {{ .Values.shared.resources.limits.cpu }}
+            memory: {{ .Values.shared.resources.limits.memory }}
+          requests:
+            cpu: {{ .Values.shared.resources.requests.cpu }}
+            memory: {{ .Values.shared.resources.requests.memory }}
+        env:
+        - name: DJANGO_ALLOWED_HOSTS
+          valueFrom:
+            secretKeyRef:
+              key: DJANGO_ALLOWED_HOSTS
+              name: {{ .Values.secretName }}
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_PASSWORD
+              name: {{ .Values.secretName }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.configMapName }}
+        - secretRef:
+            name: {{ .Values.secretName }}
+        volumeMounts:
+        - name: web-app-pvc
+          mountPath: /var/lib/webapp
+      restartPolicy: Always
+      volumes:
+      - name: web-app-pvc
+        persistentVolumeClaim:
+          claimName: {{ .Values.pvc.name }}
+      - name: media-volume
+        emptyDir: {}
 # k8s/web-app/templates/deployment-web-app.yaml

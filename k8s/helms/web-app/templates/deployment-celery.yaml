@@ -30,10 +30,29 @@ spec:
         image: "{{ .Values.shared.image.repository }}:{{ .Values.shared.image.tag }}"
         command:
 {{- toYaml .Values.deployment.celery.command | nindent 8 }}
-        {{- include "shared.resources" . | nindent 8 }}
-        envFrom:
-{{- include "shared.envFrom" . | nindent 8 }}
-        {{- include "shared.volumeMounts" . | nindent 8 }}
 
+
+        resources:
+          limits:
+            cpu: {{ .Values.shared.resources.limits.cpu }}
+            memory: {{ .Values.shared.resources.limits.memory }}
+          requests:
+            cpu: {{ .Values.shared.resources.requests.cpu }}
+            memory: {{ .Values.shared.resources.requests.memory }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.configMapName }}
+        - secretRef:
+            name: {{ .Values.secretName }}
+        volumeMounts:
+        - name: web-app-pvc
+          mountPath: /var/lib/webapp
+      restartPolicy: Always
+      volumes:
+      - name: web-app-pvc
+        persistentVolumeClaim:
+          claimName: {{ .Values.pvcName }}
+      - name: media-volume
+        emptyDir: {}
 
 # k8s/web-app/templates/deployment-celery.yaml
