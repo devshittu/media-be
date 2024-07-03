@@ -223,8 +223,8 @@ jobs:
 
       - name: Deploy Web App
         run: |
-          helm upgrade --install web-app ./k8s/helms/web-app --namespace staging --set deployment.webApp.image.tag=${{ github.sha }}
-
+          helm upgrade --install web-app ./k8s/helms/web-app --namespace staging --set shared.image.tag=${{ github.sha }}
+          
       - name: Verify Deployment
         run: kubectl rollout status deployment/web-app -n staging
 
