@@ -1,0 +1,10 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: managed-cert
+spec:
+  domains:
+    - api.staging.gong.ng
+    - app.staging.gong.ng
+
+# k8s/helms/web-app/templates/managed-cert.yaml
