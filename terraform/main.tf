@@ -19,31 +19,20 @@ provider "google" {
 
 resource "google_artifact_registry_repository" "media-app-dev-repo" {
 
-  project    = var.project
-  location   = var.region
+  project       = var.project
+  location      = var.region
   repository_id = var.artifact_registry_name
-  description = "Docker repository"
-  format     = "DOCKER"
+  description   = "Docker repository"
+  format        = "DOCKER"
 }
-
-# resource "google_artifact_registry_repository_iam_member" "artifact_registry_admin" {
-#   provider = google
-
-#   project    = var.project
-#   location   = var.region
-#   repository = google_artifact_registry_repository.artifact_registry.repository_id
-
-#   role   = "roles/artifactregistry.admin"
-#   member = "serviceAccount:${var.terraform_service_account}"
-# }
 
 
 resource "google_container_cluster" "autopilot_cluster" {
-  name               = var.cluster_name
-  location           = var.region
-  project            = var.project
+  name     = var.cluster_name
+  location = var.region
+  project  = var.project
   // Autopilot configuration
-  enable_autopilot   = true
+  enable_autopilot    = true
   deletion_protection = false
 }
 
@@ -70,6 +59,7 @@ resource "google_dns_managed_zone" "custom_domain_gong_ng" {
   project = var.project
 }
 
+
 resource "google_dns_record_set" "api_staging_a" {
   name         = "api.staging.${var.dns_name}"
   type         = "A"
@@ -79,36 +69,14 @@ resource "google_dns_record_set" "api_staging_a" {
   project      = var.project
 }
 
-resource "google_dns_record_set" "gong_ng_soa" {
-  name         = var.dns_name
-  type         = "SOA"
-  ttl          = 21600
-  managed_zone = google_dns_managed_zone.custom_domain_gong_ng.name
-  rrdatas      = ["ns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"]
-  project      = var.project
-}
 
 resource "google_dns_record_set" "gong_ng_a" {
   name         = var.dns_name
   type         = "A"
   ttl          = 300
   managed_zone = google_dns_managed_zone.custom_domain_gong_ng.name
-  rrdatas      = ["34.49.110.1"]
+  rrdatas      = [google_compute_address.static_ip_media_be.address]
   project      = var.project
-}
-
-resource "google_dns_record_set" "gong_ng_ns" {
-  name         = var.dns_name
-  type         = "NS"
-  ttl          = 21600
-  managed_zone = google_dns_managed_zone.custom_domain_gong_ng.name
-  rrdatas      = [
-    "ns-cloud-d1.googledomains.com.",
-    "ns-cloud-d2.googledomains.com.",
-    "ns-cloud-d3.googledomains.com.",
-    "ns-cloud-d4.googledomains.com."
-  ]
-  project = var.project
 }
 
 resource "google_dns_record_set" "www_gong_ng_cname" {
