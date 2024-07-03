@@ -1,6 +1,7 @@
 #!/bin/sh
 # Run Django setup commands
 echo "Running Django setup commands..."
+python manage.py collectstatic
 python manage.py makemigrations
 python manage.py migrate
 echo "--== Completed migration successfully ==--"
