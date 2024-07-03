@@ -17,7 +17,7 @@ jobs:
   setup:
     name: Setup and Configure Environment
     runs-on: ubuntu-latest
-    # environment: staging
+    environment: staging
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
@@ -26,7 +26,6 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
           project_id: ${{ secrets.GKE_PROJECT }}
-          service_account_email: ${{ secrets.GKE_EMAIL }}
           service_account_key: ${{ secrets.GKE_KEY }}
           export_default_credentials: true
 
@@ -62,6 +61,7 @@ jobs:
     name: Build and Push Docker Image
     needs: setup
     runs-on: ubuntu-latest
+    environment: staging
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
@@ -85,13 +85,11 @@ jobs:
           docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:${{ github.sha }}
           docker push ${{ secrets.ARTIFACT_REGISTRY }}/web-app-image:latest
 
-
-
-
   deploy-databases:
       name: Deploy Databases
       needs: build-and-push
       runs-on: ubuntu-latest
+      environment: staging
       steps:
         - name: Checkout the repository
           uses: actions/checkout@v2
@@ -200,7 +198,6 @@ jobs:
           run: |
             helm upgrade --install neo4j ./k8s/helms/neo4j --namespace staging
 
-
   deploy-application:
     name: Deploy Application
     needs: [build-and-push, deploy-databases]
@@ -235,6 +232,7 @@ jobs:
     name: Database Update
     needs: deploy-application
     runs-on: ubuntu-latest
+    environment: staging
     if: github.event_name == 'push' && (github.event.pull_request.merged == true || github.event_name != 'pull_request') && contains(github.event.head_commit.message, '[db-update]')
     steps:
       - name: Checkout the repository
