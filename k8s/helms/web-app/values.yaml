@@ -36,46 +36,53 @@ configMap:
     CELERY_BROKER_URL: 'redis://redis-service:6379/0'
     CELERY_RESULT_BACKEND: 'redis://redis-service:6379/0'
 
-secret:
-  name: web-app-secret
-  labels:
-    environment: staging
-  data:
-    # Encoded values
-    DJANGO_SECRET_KEY: ZGphbmdvLWluc2VjdXJlLWh2MShlMHJAdjRuNG02Z3FkeiVkbig2MG89ZHN5OCZAMF9sYnM4cC12M3VhYmM0KXhs
-    DJANGO_DEBUG: VHJ1ZQ==
-    DJANGO_ALLOWED_HOSTS: d2ViLWFwcCx3ZWItYXBwLXNlcnZpY2UsMTI3LjAuMC4xLGxvY2FsaG9zdCwqLm1lZGlhYXBwLmxvY2FsLGFwaS5tZWRpYWFwcC5sb2NhbCxhcHAubWVkaWFhcHAubG9jYWwsKi5nb25nLm5nLGFwaS5nb25nLm5nLGFwcC5nb25nLm5nLGFwaS5zdGFnaW5nLmdvbmcubmcsYXBwLnN0YWdpbmcuZ29uZy5uZyxhcGkuZGV2LmdvbmcubmcsYXBwLmRldi5nb25nLm5n
-    TWILIO_ACCOUNT_SID: eW91cl9hY2NvdW50X3NpZF9oZXJl
-    TWILIO_AUTH_TOKEN: eW91cl9hdXRoX3Rva2VuX2hlcmU=
-    TWILIO_PHONE_NUMBER: eW91cl90d2lsaW9fcGhvbmVfbnVtYmVyX2hlcmU=
-    SECRET_KEY: ZjhmemNvMzdqeXRienBsJmt2NmYoXmZuXnIqbzRsdXpsdHR3N2tAemZhdCk3Iy1xXzA=
+# resources names
+
+secretName: web-app-secret
+configMapName: web-app-configmap
+pvcName: web-app-pvc
+serviceName: web-app-service
+
+# secret:
+#   name: web-app-secret
+#   labels:
+#     environment: staging
+#   data:
+#     # Encoded values
+#     DJANGO_SECRET_KEY: ZGphbmdvLWluc2VjdXJlLWh2MShlMHJAdjRuNG02Z3FkeiVkbig2MG89ZHN5OCZAMF9sYnM4cC12M3VhYmM0KXhs
+#     DJANGO_DEBUG: VHJ1ZQ==
+#     DJANGO_ALLOWED_HOSTS: d2ViLWFwcCx3ZWItYXBwLXNlcnZpY2UsMTI3LjAuMC4xLGxvY2FsaG9zdCwqLm1lZGlhYXBwLmxvY2FsLGFwaS5tZWRpYWFwcC5sb2NhbCxhcHAubWVkaWFhcHAubG9jYWwsKi5nb25nLm5nLGFwaS5nb25nLm5nLGFwcC5nb25nLm5nLGFwaS5zdGFnaW5nLmdvbmcubmcsYXBwLnN0YWdpbmcuZ29uZy5uZyxhcGkuZGV2LmdvbmcubmcsYXBwLmRldi5nb25nLm5n
+#     TWILIO_ACCOUNT_SID: eW91cl9hY2NvdW50X3NpZF9oZXJl
+#     TWILIO_AUTH_TOKEN: eW91cl9hdXRoX3Rva2VuX2hlcmU=
+#     TWILIO_PHONE_NUMBER: eW91cl90d2lsaW9fcGhvbmVfbnVtYmVyX2hlcmU=
+#     SECRET_KEY: ZjhmemNvMzdqeXRienBsJmt2NmYoXmZuXnIqbzRsdXpsdHR3N2tAemZhdCk3Iy1xXzA=
     
-    POSTGRES_DB: bWVkaWFiZWRi
-    POSTGRES_USER: bWVkaWFiZXVzZXI=
-    POSTGRES_PASSWORD: bWVkaWFiZXBhc3N3b3Jk
-    POSTGRES_HOST: ZGItcG9zdGdyZXMtc2VydmljZQ==
-    POSTGRES_PORT: NTQzMg==
+#     POSTGRES_DB: bWVkaWFiZWRi
+#     POSTGRES_USER: bWVkaWFiZXVzZXI=
+#     POSTGRES_PASSWORD: bWVkaWFiZXBhc3N3b3Jk
+#     POSTGRES_HOST: ZGItcG9zdGdyZXMtc2VydmljZQ==
+#     POSTGRES_PORT: NTQzMg==
 
-    NEO4J_USERNAME: bmVvNGo=
-    NEO4J_PASSWORD: cGFzc3dvcmQ=
-    NEO4J_HOST: ZGItbmVvNGotc2VydmljZQ==
-    NEO4J_PORT: NzY4Nw==
-    NEO4J_AUTH: bmVvNGovcGFzc3dvcmQ=
+#     NEO4J_USERNAME: bmVvNGo=
+#     NEO4J_PASSWORD: cGFzc3dvcmQ=
+#     NEO4J_HOST: ZGItbmVvNGotc2VydmljZQ==
+#     NEO4J_PORT: NzY4Nw==
+#     NEO4J_AUTH: bmVvNGovcGFzc3dvcmQ=
 
-    REDIS_PASSWORD: cGFzc3dvcmQ=
-    REDIS_HOST: ZGItcmVkaXMtbWFzdGVy
-    REDIS_PORT: NjM3OQ==
-    CELERY_BROKER_URL: cmVkaXM6Ly9yZWRpcy1zZXJ2aWNlOjYzNzkvMA==
-    CELERY_RESULT_BACKEND: cmVkaXM6Ly9yZWRpcy1zZXJ2aWNlOjYzNzkvMA==
-    APP_MEDIA_EMAIL_BACKEND: ZGphbmdvLmNvcmUubWFpbC5iYWNrZW5kcy5zbXRwLkVtYWlsQmFja2VuZA==
-    APP_MEDIA_EMAIL_HOST: c210cC5nbWFpbC5jb20=
-    APP_MEDIA_EMAIL_USE_TLS: VHJ1ZQ==
-    APP_MEDIA_EMAIL_PORT: NTg3
-    APP_MEDIA_EMAIL_HOST_USER: bXNoaXR0dS53b3JrQGdtYWlsLmNvbQ==
-    APP_MEDIA_EMAIL_HOST_PASSWORD: d2tldG5ucG50ZXZncg==
-    APP_MEDIA_SENDGRID_API_KEY_NAME: bWVkaWEtYXBwLWFjY2Vzcw==
-    APP_MEDIA_SENDGRID_API_KEY_ID: Q3lFenE0VFNrQ3hyUV9nOVE=
-    APP_MEDIA_SENDGRID_API_KEY: U0cuQ3lDeHJRX2c5US5BbmxZYWdfekJIS1EyazQ3Q1hzbFFHbUl1TW03MTlBbUpJZDg4dkJ6Ums=
+#     REDIS_PASSWORD: cGFzc3dvcmQ=
+#     REDIS_HOST: ZGItcmVkaXMtbWFzdGVy
+#     REDIS_PORT: NjM3OQ==
+#     CELERY_BROKER_URL: cmVkaXM6Ly9yZWRpcy1zZXJ2aWNlOjYzNzkvMA==
+#     CELERY_RESULT_BACKEND: cmVkaXM6Ly9yZWRpcy1zZXJ2aWNlOjYzNzkvMA==
+#     APP_MEDIA_EMAIL_BACKEND: ZGphbmdvLmNvcmUubWFpbC5iYWNrZW5kcy5zbXRwLkVtYWlsQmFja2VuZA==
+#     APP_MEDIA_EMAIL_HOST: c210cC5nbWFpbC5jb20=
+#     APP_MEDIA_EMAIL_USE_TLS: VHJ1ZQ==
+#     APP_MEDIA_EMAIL_PORT: NTg3
+#     APP_MEDIA_EMAIL_HOST_USER: bXNoaXR0dS53b3JrQGdtYWlsLmNvbQ==
+#     APP_MEDIA_EMAIL_HOST_PASSWORD: d2tldG5ucG50ZXZncg==
+#     APP_MEDIA_SENDGRID_API_KEY_NAME: bWVkaWEtYXBwLWFjY2Vzcw==
+#     APP_MEDIA_SENDGRID_API_KEY_ID: Q3lFenE0VFNrQ3hyUV9nOVE=
+#     APP_MEDIA_SENDGRID_API_KEY: U0cuQ3lDeHJRX2c5US5BbmxZYWdfekJIS1EyazQ3Q1hzbFFHbUl1TW03MTlBbUpJZDg4dkJ6Ums=
 
 
 service:
@@ -104,7 +111,7 @@ pvc:
 
 shared:
   image:
-    repository: europe-west2-docker.pkg.dev/media-app-418813/media-app-repo/web-app-image
+    repository: europe-west2-docker.pkg.dev/media-app-v0-427519/media-app-repo/web-app-image
     tag: "latest"
     pullPolicy: IfNotPresent
   resources:
@@ -184,55 +191,4 @@ ingress:
       secretName: gong-ng-staging-tls-secret
 
 # k8s/helms/web-app/values.yaml
-
-redis:
-  enabled: true
-  name: redis-service
-  image:
-    repository: redis
-    tag: 6.0.9
-  resources:
-    requests:
-      memory: "100Mi"
-      cpu: "100m"
-    limits:
-      memory: "200Mi"
-      cpu: "200m"
-  port: 6379
-
-postgresql:
-  enabled: true
-  name: db-postgres-service
-  image:
-    repository: postgres
-    tag: "13"
-  resources:
-    requests:
-      memory: "500Mi"
-      cpu: "500m"
-    limits:
-      memory: "1000Mi"
-      cpu: "1000m"
-  port: 5432
-  env:
-    POSTGRES_DB: mediabedb
-    POSTGRES_USER: mediabeuser
-    POSTGRES_PASSWORD: "{{ .Values.secret.data.POSTGRES_PASSWORD | b64dec }}"
-
-neo4j:
-  enabled: true
-  name: db-neo4j-service
-  image:
-    repository: neo4j
-    tag: "4.0"
-  resources:
-    requests:
-      memory: "1000Mi"
-      cpu: "1000m"
-    limits:
-      memory: "2000Mi"
-      cpu: "2000m"
-  port: 7687
-  env:
-    NEO4J_AUTH: "neo4j/password"
 
