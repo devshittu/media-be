@@ -42,6 +42,7 @@ helm install neo4j ./k8s/helms/neo4j --namespace staging
 # Deploy Web App
 # echo "Deploying Web App..."
 # helm install web-app ./k8s/web-app --namespace staging --set deployment.webApp.image.tag=$COMMIT_HASH
+# helm uninstall web-app --namespace staging
 
 echo "All services deployed successfully."
 
