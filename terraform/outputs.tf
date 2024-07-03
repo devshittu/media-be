@@ -10,3 +10,12 @@ output "media_be_ip_address" {
 output "artifact_registry_url" {
   value = "europe-west2-docker.pkg.dev/${var.project}/${var.artifact_registry_name}"
 }
+
+
+output "soa_record" {
+  value = data.google_dns_record_set.soa_record.rrdatas
+}
+
+output "ns_record" {
+  value = data.google_dns_record_set.ns_record.rrdatas
+}
