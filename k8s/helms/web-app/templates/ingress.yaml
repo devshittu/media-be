@@ -26,5 +26,9 @@ spec:
               number: {{ .service.port }}
       {{- end }}
   {{- end }}
-
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts: {{ .hosts | toYaml | nindent 6 }}
+      secretName: {{ .secretName }}
+    {{- end }}
 # k8s/web-app/templates/ingress.yaml
