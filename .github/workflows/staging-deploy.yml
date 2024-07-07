@@ -182,8 +182,6 @@ jobs:
               --namespace staging \
               --dry-run=client -o yaml | kubectl apply -f -
 
-
-
         - name: Deploy Redis
           run: |
             helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -220,6 +218,18 @@ jobs:
 
       - name: Configure kubectl for GKE
         run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --zone ${{ secrets.GKE_ZONE }} --project ${{ secrets.GKE_PROJECT }}
+
+
+      - name: Add certificate manager 
+        run: |
+          # Add the Jetstack Helm repository
+          helm repo add jetstack https://charts.jetstack.io
+
+          # Update your Helm repositories
+          helm repo update
+
+          # Install cert-manager
+          helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.15.1 --set installCRDs=true
 
       - name: Deploy Web App
         run: |
