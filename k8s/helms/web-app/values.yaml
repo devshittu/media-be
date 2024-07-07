@@ -125,6 +125,7 @@ ingress:
     # nginx.org/websocket-services: frontend-app-service
 
     kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.allow-http: "true"
     kubernetes.io/ingress.global-static-ip-name: "media-be-ip"
     networking.gke.io/managed-certificates: managed-cert
     networking.gke.io/v1beta1.FrontendConfig: "http-to-https"
@@ -150,5 +151,7 @@ ingress:
   #       - app.staging.gong.ng
   #     secretName: gong-ng-staging-tls-secret
 
+
+  # ingressClassName: "nginx"
 # k8s/helms/web-app/values.yaml
 
