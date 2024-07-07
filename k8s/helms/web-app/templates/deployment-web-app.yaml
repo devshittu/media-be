@@ -9,8 +9,6 @@ metadata:
   annotations:
     meta.helm.sh/release-name: {{ .Release.Name }}
     meta.helm.sh/release-namespace: {{ .Release.Namespace }}
-    "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
 spec:
   replicas: {{ .Values.deployment.webApp.replicas }}
   selector:
