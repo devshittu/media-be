@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: media-app-ssl
+type: kubernetes.io/tls
+data:
+  # Your base64 encoded tls.crt and tls.key
+  tls.crt: ""
+  tls.key: ""
+
+# k8s/base/ingress/mediaapp-local-certs-secret.yaml
