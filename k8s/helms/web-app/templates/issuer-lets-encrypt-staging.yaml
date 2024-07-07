@@ -12,4 +12,7 @@ spec:
     solvers:
     - http01:
         ingress:
-          name: media-app-ingress
+          name: gce
+
+
+          # k8s/helms/web-app/templates/issuer-lets-encrypt-staging.yaml
