@@ -37,13 +37,13 @@ jobs:
 
     - name: Build Docker image
       run: |
-            docker build -t ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}/web-app-image:${{ github.sha }} -t ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}/web-app-image:latest -f Dockerfile.dev .
+            docker build -t ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}:${{ github.sha }} -t ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}:latest -f Dockerfile.dev .
       # Make sure the Dockerfile.dev path is correct; add subdirectory path if it's not in the root
 
     - name: Push Docker image to Docker Hub 
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}/web-app-image:${{ github.sha }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}/web-app-image:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}:${{ github.sha }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}:latest
 
     
     - name: Deploy to VM
