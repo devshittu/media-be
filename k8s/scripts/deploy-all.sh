@@ -31,17 +31,27 @@ helm install db-redis bitnami/redis -f ./k8s/helms/dbs/redis-values.yaml --names
 
 # Deploy Postgres
 echo "Deploying Postgres..."
-helm install db-postgres bitnami/postgresql -f ./k8s/helms/dbs/postgres-values.yaml --namespace staging
+helm upgrade --install db-postgres bitnami/postgresql -f ./k8s/helms/dbs/postgres-values.yaml --namespace staging
 
 # Deploy Neo4j
+# Encode the new value without newline
+NEW_NEO4J_AUTH=$(echo -n 'neo4j/password' | base64 | tr -d '\n')
+
+# Patch the secret
+kubectl patch secret web-app-secret -n staging --type=json -p='[{"op": "replace", "path": "/data/NEO4J_AUTH", "value": "'"$NEW_NEO4J_AUTH"'"}]'
+
+# Verify the update
+kubectl get secret web-app-secret -n staging -o jsonpath="{.data.NEO4J_AUTH}" | base64 --decode
+
+
 echo "Deploying Neo4j..."
 # kubectl apply -k k8s/overlays/staging/database/db-neo4j/ TODO: using kustomize.
 # kubectl apply -f k8s/helms/shared/db-neo4j-configmap.yaml
-helm install neo4j ./k8s/helms/neo4j --namespace staging
+helm upgrade --install neo4j ./k8s/helms/neo4j --namespace staging
 
 # Deploy Web App
 # echo "Deploying Web App..."
-# helm install web-app ./k8s/web-app --namespace staging --set deployment.webApp.image.tag=$COMMIT_HASH
+helm upgrade --install web-app ./k8s/helms/web-app --namespace staging --set deployment.webApp.image.tag=$COMMIT_HASH
 # helm uninstall web-app --namespace staging
 
 echo "All services deployed successfully."
