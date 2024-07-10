@@ -1,0 +1,197 @@
+services:
+  web-app:
+    container_name: backend-app
+    # build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: devshittu/mediaapp/web-app-image:latest
+    # command: gunicorn core.wsgi -b 0.0.0.0:8000  # new
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+      - media_volume:/code/media # Add this line
+      # - media_volume:/data # Add this line
+    ports:
+      - 8000:8000
+    depends_on:
+      - db-postgres
+      - db-neo4j
+      # - minio
+      # - createbucket
+    networks:
+      - my_media_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    # environment:
+    #   - "DJANGO_SECRET_KEY=django-insecure-hv1(e0r@v4n4m6gqdz%dn(60o=dsy8&@0_lbs8p-v3u^bs4)xl"
+    #   - "DJANGO_DEBUG=True"
+    # - "DJANGO_SECURE_SSL_REDIRECT=False"  # new
+    # - "DJANGO_SECURE_HSTS_SECONDS=0"  # new
+    # - "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS=False"  # new
+    # - "DJANGO_SECURE_HSTS_PRELOAD=False"  # new
+    # - "DJANGO_SESSION_COOKIE_SECURE=False"  # new
+    # - "DJANGO_CSRF_COOKIE_SECURE=False"  # new
+
+  redis:
+    container_name: db-redis
+    image: "redis:alpine"
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - my_media_network
+
+  celery:
+    container_name: celery-engine
+    image: "celery"
+    platform: linux/arm64 # Specify the platform here
+
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: celery -A core worker --loglevel=info
+    volumes:
+      - .:/code
+    depends_on:
+      - db-postgres
+      - redis
+    networks:
+      - my_media_network
+
+  db-postgres:
+    container_name: db-postgresql
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+      - "POSTGRES_DB=mediabedb"
+      - "POSTGRES_USER=mediabeuser"
+      - "POSTGRES_PASSWORD=mediabepassword"
+    networks:
+      - my_media_network
+
+  db-neo4j:
+    container_name: db-neo4j
+    image: neo4j:latest
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    networks:
+      - my_media_network
+
+  nginx:
+    container_name: nginx-engine
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-conf:/etc/nginx
+    command: ./start-nginx.sh
+    depends_on:
+      - db-neo4j
+      - web-app
+      - frontend-app
+    networks:
+      - my_media_network
+
+  # minio:
+  #   image: minio/minio:latest
+  #   container_name: minio
+  #   ports:
+  #     - "9000:9000"
+  #     - "9001:9001"
+  #   volumes:
+  #     - media_volume:/data
+  #   environment:
+  #     - "MINIO_ROOT_USER=user"
+  #     - "MINIO_ROOT_PASSWORD=password"
+  #   command: server /data --console-address :9001
+  #   networks:
+  #     - my_media_network
+
+  # createbucket:
+  #   container_name: createbucket
+  #   image: minio/mc:latest
+  #   depends_on:
+  #     - minio
+  #   entrypoint: >
+  #     /bin/sh -c "
+  #     /usr/bin/mc alias set minioLocal http://minio:9000 user password;
+  #     if /usr/bin/mc ls minioLocal/mybucket; then
+  #       echo 'Bucket already exists.';
+  #     else
+  #       /usr/bin/mc mb minioLocal/mybucket/ &&
+  #       sleep 5 &&  # Add this line
+  #       /usr/bin/mc anonymous set download minioLocal/mybucket;
+  #       /usr/bin/mc anonymous set public minioLocal/mybucket;
+  #     fi;
+  #     sleep 2;  # Another brief delay before any further operations
+  #     /usr/bin/mc ls minioLocal/mybucket;
+  #     "
+
+  #   networks:
+  #     - my_media_network
+
+  frontend-app:
+    container_name: frontend-app
+    build:
+      context: /Users/mshittu/programming-projects/javascript/react/media-fe/
+      dockerfile: Dockerfile.dev
+
+    image: frontend-app-image:0.0.1
+    # Set environment variables directly in the docker-compose file
+    environment:
+      ENV_VARIABLE: ${ENV_VARIABLE}
+      NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+
+    # Set envrionment variables based on the .env file
+    env_file:
+      - /Users/mshittu/programming-projects/javascript/react/media-fe/.env
+
+    volumes:
+      - /Users/mshittu/programming-projects/javascript/react/media-fe/src:/app/src
+      - /Users/mshittu/programming-projects/javascript/react/media-fe/public:/app/public
+      - frontend-node-modules:/app/node_modules
+      - ./nginx-conf/certs/mediaapp.local+1.pem:/etc/ssl/certs/mediaapp.local+1.pem
+      - ./nginx-conf/certs/mediaapp.local+1-key.pem:/etc/ssl/private/mediaapp.local+1-key.pem
+      - /Users/mshittu/Library/Application Support/mkcert/rootCA.pem:/usr/local/share/ca-certificates/rootCA.pem
+      - /Users/mshittu/Library/Application Support/mkcert/rootCA.pem:/usr/local/share/ca-certificates/rootCA.crt
+
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - my_media_network
+    depends_on:
+      - web-app
+
+volumes:
+  postgres_data:
+  media_volume:
+  neo4j_data:
+  neo4j_logs:
+  redis_data:
+  frontend-node-modules:
+
+networks:
+  my_media_network:
+    external: true
+# docker-compose.staging.yml
+
+# /Users/mshittu/programming-projects/python/django/media-be/docker-compose.staging.yml
