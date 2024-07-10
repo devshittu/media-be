@@ -1,9 +1,9 @@
 name: Deploy to Staging on GKE
 
 on:
-  push:
-    branches:
-      - staging # Triggers the workflow on pushes to the staging branch
+  # push:
+  #   branches:
+  #     - staging # Triggers the workflow on pushes to the staging branch
   workflow_dispatch: # Allows manual triggering of the workflow from GitHub UI
 
 env:
