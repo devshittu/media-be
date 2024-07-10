@@ -1,0 +1,59 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches:
+      - staging
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+  DJANGO_ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
+  REPOSITORY_NAME: mediaapp
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Build Docker image
+      run: |
+            docker build -t ${{ secrets.DOCKER_USERNAME }}/$REPOSITORY_NAME/web-app-image:${{ github.sha }} -t ${{ secrets.DOCKER_USERNAME }}/$REPOSITORY_NAME/web-app-image:latest -f Dockerfile.dev .
+      # Make sure the Dockerfile.dev path is correct; add subdirectory path if it's not in the root
+
+    - name: Push Docker image to Docker Hub 
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/$REPOSITORY_NAME/web-app-image:${{ github.sha }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/$REPOSITORY_NAME/web-app-image:latest
+
+    
+    - name: Deploy to VM
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.VM_HOST }}
+        username: ${{ secrets.VM_USER }}
+        key: ${{ secrets.VM_KEY }}
+        port: 22
+        script: |
+          cd /path/to/your/docker-compose/directory
+          docker-compose pull
+          docker-compose up -d --build
