@@ -35,15 +35,15 @@ jobs:
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    - name: Build Docker image
+    # Build and Push Backend
+    - name: Build Backend Docker image
       run: |
-            docker build -t ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}:${{ github.sha }} -t ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}:latest -f Dockerfile.dev .
-      # Make sure the Dockerfile.dev path is correct; add subdirectory path if it's not in the root
-
-    - name: Push Docker image to Docker Hub 
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-${{ github.sha }} -t ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-latest -f Dockerfile.dev .
+    
+    - name: Push Backend Docker image to Docker Hub 
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}:${{ github.sha }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-${{ github.sha }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-latest
 
     
     - name: Deploy to VM
