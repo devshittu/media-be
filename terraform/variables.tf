@@ -42,3 +42,31 @@ variable "terraform_service_account" {
   description = "The account to use for the terraform service"
   type        = string
 }
+
+variable "instance_name" {
+  description = "Name of the VM instance"
+  type        = string
+  default     = "media-app-instance"
+}
+
+variable "instance_zone" {
+  description = "The zone in which the VM instance will be created"
+  type        = string
+  default     = "us-central1-a"
+}
+
+variable "machine_type" {
+  description = "The machine type to use for the VM instance"
+  type        = string
+  default     = "e2-medium"
+}
+
+variable "ssh_username" {
+  description = "The SSH username"
+  type        = string
+}
+
+variable "ssh_public_key" {
+  description = "The SSH public key"
+  type        = string
+}

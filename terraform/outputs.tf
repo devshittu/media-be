@@ -19,3 +19,8 @@ output "soa_record" {
 output "ns_record" {
   value = data.google_dns_record_set.ns_record.rrdatas
 }
+
+
+output "instance_ip" {
+  value = google_compute_instance.media_app_instance.network_interface.0.access_config.0.nat_ip
+}

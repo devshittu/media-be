@@ -8,3 +8,9 @@ cluster_name        = "gliese-autopilot-cluster"
 artifact_registry_name = "media-app-repo"
 terraform_service_account = "terraform-admin@media-app-v0-427519.iam.gserviceaccount.com"
 
+instance_name   = "media-app-instance"
+instance_zone   = "us-central1-a"
+machine_type    = "e2-medium"
+
+ssh_username = "mediavmuser"
+ssh_public_key = "ssh-ed25519 AAAAC3Nz_Sample_key devshittu@gmail.com"

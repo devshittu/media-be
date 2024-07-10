@@ -88,6 +88,63 @@ resource "google_dns_record_set" "www_gong_ng_cname" {
   project      = var.project
 }
 
+# VM
+
+
+resource "google_compute_instance" "media_app_instance" {
+  name         = var.instance_name
+  machine_type = var.machine_type
+  zone         = var.instance_zone
+  project      = var.project
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-10-buster-v20210721"
+      size  = 50
+    }
+  }
+
+  network_interface {
+    network = "default"
+    access_config {
+      // Ephemeral IP
+    }
+  }
+
+
+  metadata = {
+    ssh-keys = "${var.ssh_username}:${var.ssh_public_key}"
+  }
+
+
+  tags = ["http-server", "https-server"]
+
+  service_account {
+    email  = "default"
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+  }
+
+
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = var.ssh_username
+      private_key = file("~/.ssh/id_ed25519") // Ensure you use the private key corresponding to the public key
+      host        = google_compute_instance.media_app_instance.network_interface.0.access_config.0.nat_ip
+    }
+
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y docker.io docker-compose",
+      "sudo usermod -aG docker $$USER",
+
+      "sudo systemctl enable docker",
+      "sudo systemctl start docker"
+    ]
+  }
+}
+
 # # Grant Compute Admin role
 # gcloud projects add-iam-policy-binding gong-ng \
 #     --member="serviceAccount:terraform-admin@gong-ng.iam.gserviceaccount.com" \
