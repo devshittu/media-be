@@ -66,6 +66,20 @@ variable "ssh_username" {
   type        = string
 }
 
+
+variable "regular_vm_user_username" {
+  description = "The less privileged user name to use for the VM instance"
+  type        = string
+}
+
+
+variable "regular_vm_user_password" {
+  description = "The less privileged user password to use for the VM instance"
+  type        = string
+}
+
+
+
 variable "ssh_public_key" {
   description = "The SSH public key"
   type        = string
