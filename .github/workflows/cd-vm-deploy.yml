@@ -1,0 +1,33 @@
+name: CD Pipeline
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      #   - name: Deploy to Staging
+      #     run: |
+      #         ./scripts/deploy_staging.sh
+      #     shell: bash
+
+      #   - name: Log in to Docker Hub
+      #     run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+      - name: Pull Docker image
+        run: sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/mediaapp:web-app-latest
+
+      - name: Delete Old docker container for web app
+        run: sudo docker compose -f docker-compose.staging.yml down web-app || true
+
+      - name: Run Docker Container for web app
+        run: sudo docker compose -f docker-compose.staging.yml up -d
+# .github/workflows/ci-docker-hub.yml
