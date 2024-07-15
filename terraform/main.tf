@@ -99,7 +99,7 @@ resource "google_compute_instance" "media_app_instance" {
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-10-buster-v20210721"
+      image = "ubuntu-os-cloud/ubuntu-2204-lts"
       size  = 50
     }
   }
@@ -107,13 +107,21 @@ resource "google_compute_instance" "media_app_instance" {
   network_interface {
     network = "default"
     access_config {
-      // Ephemeral IP
+      nat_ip = google_compute_address.static_ip_media_be.address // Use the existing external IP
     }
   }
 
 
   metadata = {
     ssh-keys = "${var.ssh_username}:${var.ssh_public_key}"
+    
+    startup-script = <<-EOF
+      #!/bin/bash
+      echo 'export DOCKER_HUB_TOKEN=${var.docker_hub_token}' >> /etc/profile.d/docker_env.sh
+      echo 'export DOCKER_HUB_USERNAME=${var.docker_hub_username}' >> /etc/profile.d/docker_env.sh
+      chmod +x /etc/profile.d/docker_env.sh
+      source /etc/profile.d/docker_env.sh
+    EOF
   }
 
 
@@ -125,6 +133,17 @@ resource "google_compute_instance" "media_app_instance" {
   }
 
 
+  provisioner "file" {
+    source      = "./scripts/install_docker.sh"
+    destination = "/home/${var.ssh_username}/install_docker.sh"
+
+    connection {
+      type        = "ssh"
+      user        = var.ssh_username
+      private_key = file("~/.ssh/id_ed25519")
+      host        = google_compute_instance.media_app_instance.network_interface.0.access_config.0.nat_ip
+    }
+  }
 
   provisioner "remote-exec" {
     connection {
@@ -134,14 +153,26 @@ resource "google_compute_instance" "media_app_instance" {
       host        = google_compute_instance.media_app_instance.network_interface.0.access_config.0.nat_ip
     }
 
-    inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y docker.io docker-compose",
-      "sudo usermod -aG docker $$USER",
 
-      "sudo systemctl enable docker",
-      "sudo systemctl start docker"
+    inline = [
+      "echo 'Welcome to Google Compute'",
+
+      "sudo adduser --disabled-password --gecos '' ${var.regular_vm_user_username}",
+      "echo '${var.regular_vm_user_username}:${var.regular_vm_user_password}' | sudo chpasswd",
+      "sudo usermod -aG sudo ${var.regular_vm_user_username}",
+      "echo '${var.regular_vm_user_username} ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/${var.regular_vm_user_username}",
+      "sudo mkdir -p /home/${var.regular_vm_user_username}/.ssh",
+      "sudo cp /home/${var.ssh_username}/.ssh/authorized_keys /home/${var.regular_vm_user_username}/.ssh/",
+      "sudo chown -R ${var.regular_vm_user_username}:${var.regular_vm_user_username} /home/${var.regular_vm_user_username}/.ssh",
+      "sudo chmod 700 /home/${var.regular_vm_user_username}/.ssh",
+      "sudo chmod 600 /home/${var.regular_vm_user_username}/.ssh/authorized_keys",
+      "sudo chmod +x /home/${var.ssh_username}/install_docker.sh",
+      "sudo /home/${var.ssh_username}/install_docker.sh"
+
+      # // Log in to Docker Hub (ensure environment variables are set)
+      # "echo ${var.docker_hub_token} | docker login --username ${var.docker_hub_username} --password-stdin"
     ]
+
   }
 }
 
