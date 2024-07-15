@@ -12,6 +12,9 @@ on:
       - staging
   workflow_dispatch:
 
+env:
+  DOCKER_INTERNAL_NETWORK_NAME: "my_media_network"
+
 jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -21,7 +24,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.workflow_run.head_branch }}  # Dynamically checkout the branch that triggered the workflow
+          ref: ${{ github.event.workflow_run.head_branch }} # Dynamically checkout the branch that triggered the workflow
       #   - name: Deploy to Staging
       #     run: |
       #         ./scripts/deploy_staging.sh
@@ -30,6 +33,11 @@ jobs:
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
+      - name: Create Docker network if not exists
+        run: |
+          if ! sudo docker network ls | grep -q ${{ env.DOCKER_INTERNAL_NETWORK_NAME }}; then
+            sudo docker network create ${{ env.DOCKER_INTERNAL_NETWORK_NAME }};
+          fi
       - name: Pull Docker image
         run: sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/mediaapp:web-app-latest
 
