@@ -38,4 +38,7 @@ jobs:
 
       - name: Run Docker Container for web app
         run: sudo docker compose -f docker-compose.staging.yml up -d
+
+      - name: Remove Untagged Docker Images
+        run: sudo docker rmi $(docker images -f "dangling=true" -q)
 # .github/workflows/cd-vm-deploy.yml
