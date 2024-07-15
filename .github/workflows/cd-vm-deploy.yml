@@ -47,13 +47,13 @@ jobs:
       - name: Run Docker Container for web app
         run: sudo docker compose -f docker-compose.staging.yml up -d
 
-      - name: Remove Untagged Docker Images
-        run: |
-          dangling_images=$(sudo docker images -f "dangling=true" -q)
-          if [ -n "$dangling_images" ]; then
-            sudo docker rmi $dangling_images
-          else
-            echo "No dangling images to remove"
-          fi
+    #   - name: Remove Untagged Docker Images
+    #     run: |
+    #       dangling_images=$(sudo docker images -f "dangling=true" -q)
+    #       if [ -n "$dangling_images" ]; then
+    #         sudo docker rmi $dangling_images
+    #       else
+    #         echo "No dangling images to remove"
+    #       fi
 
 # .github/workflows/cd-vm-deploy.yml
