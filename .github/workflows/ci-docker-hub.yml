@@ -37,11 +37,14 @@ jobs:
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-
       # Build and Push Backend
       - name: Build Backend Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-${{ github.sha }} -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-latest -f Dockerfile.dev .
+          docker build --platform linux/amd64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-${{ github.sha }} -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-latest -f Dockerfile.dev .
+      # # Build and Push Backend
+      # - name: Build Backend Docker image
+      #   run: |
+      #     docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-${{ github.sha }} -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-latest -f Dockerfile.dev .
 
       - name: Push Backend Docker image to Docker Hub
         run: |
