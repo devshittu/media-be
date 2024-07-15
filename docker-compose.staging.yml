@@ -50,7 +50,7 @@ services:
   celery:
     container_name: celery-engine
     image: "celery"
-    platform: linux/arm64 # Specify the platform here
+    # platform: linux/arm64 # Specify the platform here
 
     build:
       context: .
