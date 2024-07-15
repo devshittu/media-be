@@ -145,6 +145,31 @@ resource "google_compute_instance" "media_app_instance" {
     }
   }
 
+
+
+  provisioner "file" {
+    source      = "./scripts/startup-script.sh"
+    destination = "/home/${var.ssh_username}/startup-script.sh"  // Temporary location
+
+    connection {
+      type        = "ssh"
+      user        = var.ssh_username
+      private_key = file("~/.ssh/id_ed25519")
+      host        = google_compute_instance.media_app_instance.network_interface.0.access_config.0.nat_ip
+    }
+  }
+
+  provisioner "file" {
+    source      = "./scripts/startup-script.service"
+    destination = "/home/${var.ssh_username}/startup-script.service"  // Temporary location
+
+    connection {
+      type        = "ssh"
+      user        = var.ssh_username
+      private_key = file("~/.ssh/id_ed25519")
+      host        = google_compute_instance.media_app_instance.network_interface.0.access_config.0.nat_ip
+    }
+  }
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
@@ -170,7 +195,9 @@ resource "google_compute_instance" "media_app_instance" {
       "sudo /home/${var.ssh_username}/install_docker.sh",
 
 
-      "chmod +x /usr/local/bin/startup-script.sh",
+      "sudo mv /home/${var.ssh_username}/startup-script.sh /usr/local/bin/startup-script.sh",
+      "sudo chmod +x /usr/local/bin/startup-script.sh",
+      "sudo mv /home/${var.ssh_username}/startup-script.service /etc/systemd/system/startup-script.service",
       "sudo systemctl daemon-reload",
       "sudo systemctl enable startup-script.service",
       "sudo systemctl start startup-script.service"
