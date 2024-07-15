@@ -37,6 +37,8 @@ sudo systemctl start docker
 # Step 10: Log in to Docker Hub using environment variables
 echo "$DOCKER_HUB_TOKEN" | docker login --username "$DOCKER_HUB_USERNAME" --password-stdin
 
+# Step 11: Add the current user to the Docker group
+sudo usermod -aG docker $USER
 
 # Print completion message
 echo "Docker installation script completed."
