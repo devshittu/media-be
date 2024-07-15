@@ -2,7 +2,8 @@ name: CD Pipeline
 
 on:
   workflow_run:
-    workflows: ["CI Pipeline"]
+    workflows: 
+      - "CI Pipeline"
     branches: 
       - staging
     types:
@@ -10,7 +11,7 @@ on:
 
 jobs:
   deploy:
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: self-hosted
 
     steps:
@@ -21,9 +22,6 @@ jobs:
       #     run: |
       #         ./scripts/deploy_staging.sh
       #     shell: bash
-
-      #   - name: Log in to Docker Hub
-      #     run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
       - name: Pull Docker image
         run: sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/mediaapp:web-app-latest
