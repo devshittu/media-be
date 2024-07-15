@@ -8,6 +8,7 @@ on:
 
 jobs:
   deploy:
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: self-hosted
 
     steps:
@@ -30,4 +31,6 @@ jobs:
 
       - name: Run Docker Container for web app
         run: sudo docker compose -f docker-compose.staging.yml up -d
-# .github/workflows/ci-docker-hub.yml
+
+
+# .github/workflows/cd-vm-deploy.yml
