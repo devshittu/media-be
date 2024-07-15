@@ -167,7 +167,13 @@ resource "google_compute_instance" "media_app_instance" {
       "sudo chmod 700 /home/${var.regular_vm_user_username}/.ssh",
       "sudo chmod 600 /home/${var.regular_vm_user_username}/.ssh/authorized_keys",
       "sudo chmod +x /home/${var.ssh_username}/install_docker.sh",
-      "sudo /home/${var.ssh_username}/install_docker.sh"
+      "sudo /home/${var.ssh_username}/install_docker.sh",
+
+
+      "chmod +x /usr/local/bin/startup-script.sh",
+      "sudo systemctl daemon-reload",
+      "sudo systemctl enable startup-script.service",
+      "sudo systemctl start startup-script.service"
 
       # // Log in to Docker Hub (ensure environment variables are set)
       # "echo ${var.docker_hub_token} | docker login --username ${var.docker_hub_username} --password-stdin"
