@@ -106,7 +106,7 @@ services:
     depends_on:
       - db-neo4j
       - web-app
-      - frontend-app
+      # - frontend-app
     networks:
       - my_media_network
 

@@ -21,8 +21,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: staging # Ensure the staging branch is checked out
-
+          ref: ${{ github.event.workflow_run.head_branch }}  # Dynamically checkout the branch that triggered the workflow
       #   - name: Deploy to Staging
       #     run: |
       #         ./scripts/deploy_staging.sh
