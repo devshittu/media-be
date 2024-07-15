@@ -70,3 +70,14 @@ variable "ssh_public_key" {
   description = "The SSH public key"
   type        = string
 }
+
+variable "docker_hub_username" {
+  description = "The docker hub username"
+  type        = string
+  default = "devshittu"
+}
+
+variable "docker_hub_token" {
+  description = "The docker hub token"
+  type        = string
+}
