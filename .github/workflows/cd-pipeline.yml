@@ -3,10 +3,11 @@ name: CD Deploy Action
 on:
   workflow_run:
     workflows: ["CI Pipeline"]
-    branches: 
+    branches:
       - staging
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   deploy:
