@@ -25,6 +25,10 @@ jobs:
       #         ./scripts/deploy_staging.sh
       #     shell: bash
 
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
       - name: Pull Docker image
         run: sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/mediaapp:web-app-latest
 
