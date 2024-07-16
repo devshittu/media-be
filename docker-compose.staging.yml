@@ -133,24 +133,24 @@ services:
     networks:
       - my_media_network
 
-  nginx:
-    container_name: nginx-engine
-    build:
-      context: .
-      dockerfile: Dockerfile.nginx
-    image: nginx:latest
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx-conf:/etc/nginx
-    command: ./start-nginx.sh
-    depends_on:
-      - db-neo4j
-      - web-app
-      # - frontend-app
-    networks:
-      - my_media_network
+  # nginx:
+  #   container_name: nginx-engine
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.nginx
+  #   image: nginx:latest
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx-conf:/etc/nginx
+  #   command: ./start-nginx.sh
+  #   depends_on:
+  #     - db-neo4j
+  #     - web-app
+  #     # - frontend-app
+    # networks:
+    #   - my_media_network
 
   # frontend-app:
   #   container_name: frontend-app
