@@ -65,16 +65,6 @@ services:
     env_file:
       - .env.docker-compose
 
-    # environment:
-    #   - "DJANGO_SECRET_KEY=django-insecure-hv1(e0r@v4n4m6gqdz%dn(60o=dsy8&@0_lbs8p-v3u^bs4)xl"
-    #   - "DJANGO_DEBUG=True"
-    # - "DJANGO_SECURE_SSL_REDIRECT=False"  # new
-    # - "DJANGO_SECURE_HSTS_SECONDS=0"  # new
-    # - "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS=False"  # new
-    # - "DJANGO_SECURE_HSTS_PRELOAD=False"  # new
-    # - "DJANGO_SESSION_COOKIE_SECURE=False"  # new
-    # - "DJANGO_CSRF_COOKIE_SECURE=False"  # new
-
   celery:
     container_name: celery-engine
     image: devshittu/mediaapp:web-app-latest
@@ -133,59 +123,6 @@ services:
       - NEO4J_AUTH=neo4j/password
     networks:
       - my_media_network
-
-  # nginx:
-  #   container_name: nginx-engine
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.nginx
-  #   image: nginx:latest
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   volumes:
-  #     - ./nginx-conf:/etc/nginx
-  #   command: ./start-nginx.sh
-  #   depends_on:
-  #     - db-neo4j
-  #     - web-app
-  #     # - frontend-app
-    # networks:
-    #   - my_media_network
-
-  # frontend-app:
-  #   container_name: frontend-app
-  #   build:
-  #     context: /Users/mshittu/programming-projects/javascript/react/media-fe/
-  #     dockerfile: Dockerfile.dev
-
-  #   image: frontend-app-image:0.0.1
-  #   # Set environment variables directly in the docker-compose file
-  #   environment:
-  #     ENV_VARIABLE: ${ENV_VARIABLE}
-  #     NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
-
-  #   # Set envrionment variables based on the .env file
-  #   env_file:
-  #     - /Users/mshittu/programming-projects/javascript/react/media-fe/.env
-
-  #   volumes:
-  #     - /Users/mshittu/programming-projects/javascript/react/media-fe/src:/app/src
-  #     - /Users/mshittu/programming-projects/javascript/react/media-fe/public:/app/public
-  #     - frontend-node-modules:/app/node_modules
-  #     - ./nginx-conf/certs/mediaapp.local+1.pem:/etc/ssl/certs/mediaapp.local+1.pem
-  #     - ./nginx-conf/certs/mediaapp.local+1-key.pem:/etc/ssl/private/mediaapp.local+1-key.pem
-  #     - /Users/mshittu/Library/Application Support/mkcert/rootCA.pem:/usr/local/share/ca-certificates/rootCA.pem
-  #     - /Users/mshittu/Library/Application Support/mkcert/rootCA.pem:/usr/local/share/ca-certificates/rootCA.crt
-
-  #   restart: always
-  #   ports:
-  #     - 3000:3000
-  #   networks:
-  #     - my_media_network
-  #   depends_on:
-  #     - web-app
-
 volumes:
   postgres_data:
   media_volume:
