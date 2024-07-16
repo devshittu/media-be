@@ -27,14 +27,14 @@ resource "google_artifact_registry_repository" "media-app-dev-repo" {
 }
 
 
-resource "google_container_cluster" "autopilot_cluster" {
-  name     = var.cluster_name
-  location = var.region
-  project  = var.project
-  // Autopilot configuration
-  enable_autopilot    = true
-  deletion_protection = false
-}
+# resource "google_container_cluster" "autopilot_cluster" {
+#   name     = var.cluster_name
+#   location = var.region
+#   project  = var.project
+#   // Autopilot configuration
+#   enable_autopilot    = true
+#   deletion_protection = false
+# }
 
 resource "google_compute_address" "static_ip_media_be" {
   name         = var.compute_address_name
@@ -114,7 +114,7 @@ resource "google_compute_instance" "media_app_instance" {
 
   metadata = {
     ssh-keys = "${var.ssh_username}:${var.ssh_public_key}"
-    
+
     startup-script = <<-EOF
       #!/bin/bash
       echo 'export DOCKER_HUB_TOKEN=${var.docker_hub_token}' >> /etc/profile.d/docker_env.sh
@@ -149,7 +149,7 @@ resource "google_compute_instance" "media_app_instance" {
 
   provisioner "file" {
     source      = "./scripts/startup-script.sh"
-    destination = "/home/${var.ssh_username}/startup-script.sh"  // Temporary location
+    destination = "/home/${var.ssh_username}/startup-script.sh" // Temporary location
 
     connection {
       type        = "ssh"
@@ -161,7 +161,7 @@ resource "google_compute_instance" "media_app_instance" {
 
   provisioner "file" {
     source      = "./scripts/startup-script.service"
-    destination = "/home/${var.ssh_username}/startup-script.service"  // Temporary location
+    destination = "/home/${var.ssh_username}/startup-script.service" // Temporary location
 
     connection {
       type        = "ssh"
@@ -207,6 +207,35 @@ resource "google_compute_instance" "media_app_instance" {
     ]
 
   }
+}
+
+
+resource "google_compute_firewall" "default-allow-http" {
+  name    = "default-allow-http"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+
+  target_tags = ["http-server"]
+}
+
+resource "google_compute_firewall" "default-allow-https" {
+  name    = "default-allow-https"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+
+  target_tags = ["https-server"]
 }
 
 # # Grant Compute Admin role

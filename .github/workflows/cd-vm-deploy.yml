@@ -94,10 +94,9 @@ jobs:
       - name: Pull Docker image
         run: |
           sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/mediaapp:web-app-latest
-          sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/mediaapp:nginx-proxy-latest
 
       - name: Delete Old docker container for web app
-        run: sudo docker compose -f docker-compose.staging.yml down web-app nginx-proxy || true
+        run: sudo docker compose -f docker-compose.staging.yml down web-app || true
 
       - name: Run Docker Container for web app
         run: sudo docker compose --env-file .env.docker-compose -f docker-compose.staging.yml up -d
