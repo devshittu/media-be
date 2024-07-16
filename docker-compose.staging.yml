@@ -1,4 +1,35 @@
 services:
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy:alpine
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx-conf/certs:/etc/nginx/certs
+      - ./nginx-conf/vhost.d:/etc/nginx/vhost.d
+      - ./nginx-conf/html:/usr/share/nginx/html
+      - ./nginx-conf/conf.d:/etc/nginx/conf.d
+    networks:
+      - my_media_network
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    depends_on:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./nginx-conf/certs:/etc/nginx/certs:rw
+      - ./nginx-conf/vhost.d:/etc/nginx/vhost.d
+      - ./nginx-conf/html:/usr/share/nginx/html
+    environment:
+      NGINX_PROXY_CONTAINER: nginx-proxy
+    networks:
+      - my_media_network
+
   web-app:
     container_name: backend-app
     # build: .
@@ -19,6 +50,10 @@ services:
       - db-neo4j
       # - minio
       # - createbucket
+    environment:
+      - VIRTUAL_HOST=api.staging.gong.ng
+      - LETSENCRYPT_HOST=api.staging.gong.ng
+      - LETSENCRYPT_EMAIL=devshittu@gmail.com
     networks:
       - my_media_network
     logging:
@@ -52,6 +87,10 @@ services:
     depends_on:
       - db-postgres
       - redis
+    environment:
+      - VIRTUAL_HOST=api.staging.gong.ng
+      - LETSENCRYPT_HOST=api.staging.gong.ng
+      - LETSENCRYPT_EMAIL=devshittu@gmail.com
     networks:
       - my_media_network
     env_file:

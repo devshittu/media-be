@@ -99,6 +99,9 @@ jobs:
 
       - name: Run Docker Container for web app
         run: sudo docker compose --env-file .env.docker-compose -f docker-compose.staging.yml up -d
+      
+      - name: Run init-web-app.sh in backend-app container
+        run: sudo docker exec -it backend-app bash -c "./k8s/scripts/init-web-app.sh"
 
     #   - name: Remove Untagged Docker Images
     #     run: |
