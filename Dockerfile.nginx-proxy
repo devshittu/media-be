@@ -1,0 +1,11 @@
+# Dockerfile.nginx-proxy
+
+FROM jwilder/nginx-proxy:alpine
+
+COPY entrypoint-nginx-proxy.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["forego", "start", "-r"]
+
+# entrypoint-nginx-proxy.sh
