@@ -1,5 +1,6 @@
 services:
   nginx-proxy:
+    image: devshittu/mediaapp:nginx-proxy-latest
     build:
       context: .
       dockerfile: Dockerfile.nginx-proxy

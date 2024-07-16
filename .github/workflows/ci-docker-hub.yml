@@ -37,4 +37,12 @@ jobs:
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-latest
 
 
+      - name: Build Nginx Proxy Docker image
+        run: |
+          docker build --platform linux/amd64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:nginx-proxy-${{ github.sha }} -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:nginx-proxy-latest -f Dockerfile.nginx-proxy .
+
+      - name: Push Nginx Proxy Docker image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:nginx-proxy-${{ github.sha }}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:nginx-proxy-latest
 # .github/workflows/ci-docker-hub.yml
