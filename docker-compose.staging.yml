@@ -10,9 +10,6 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx-conf/certs:/etc/nginx/certs
-      - ./nginx-conf/vhost.d:/etc/nginx/vhost.d
-      - ./nginx-conf/html:/usr/share/nginx/html
-      - ./nginx-conf/conf.d:/etc/nginx/conf.d
     networks:
       - my_media_network
 
@@ -24,8 +21,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./nginx-conf/certs:/etc/nginx/certs:rw
-      - ./nginx-conf/vhost.d:/etc/nginx/vhost.d
-      - ./nginx-conf/html:/usr/share/nginx/html
     environment:
       NGINX_PROXY_CONTAINER: nginx-proxy
     networks:
