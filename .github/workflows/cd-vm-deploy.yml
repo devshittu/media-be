@@ -21,14 +21,13 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Fix permissions before checkout
+        run: sudo chown -R $USER:$USER /home/mediavmuser/actions-runner/_work/media-be/
+
       - name: Checkout code
         uses: actions/checkout@v2
-        # with:
-        #   ref: ${{ github.event.workflow_run.head_branch }} # Dynamically checkout the branch that triggered the workflow
-      #   - name: Deploy to Staging
-      #     run: |
-      #         ./scripts/deploy_staging.sh
-      #     shell: bash
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }} # Dynamically checkout the branch that triggered the workflow
 
       - name: Set up environment variables
         run: |
