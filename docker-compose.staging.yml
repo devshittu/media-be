@@ -26,6 +26,8 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    env_file:
+      - .env.docker-compose
 
     # environment:
     #   - "DJANGO_SECRET_KEY=django-insecure-hv1(e0r@v4n4m6gqdz%dn(60o=dsy8&@0_lbs8p-v3u^bs4)xl"
@@ -37,20 +39,9 @@ services:
     # - "DJANGO_SESSION_COOKIE_SECURE=False"  # new
     # - "DJANGO_CSRF_COOKIE_SECURE=False"  # new
 
-  redis:
-    container_name: db-redis
-    image: "redis:alpine"
-    volumes:
-      - redis_data:/data
-    ports:
-      - "6379:6379"
-    networks:
-      - my_media_network
-
   celery:
     container_name: celery-engine
-    image: "celery"
-    # platform: linux/arm64 # Specify the platform here
+    image: devshittu/mediaapp:web-app-latest
 
     build:
       context: .
@@ -61,6 +52,18 @@ services:
     depends_on:
       - db-postgres
       - redis
+    networks:
+      - my_media_network
+    env_file:
+      - .env.docker-compose
+
+  redis:
+    container_name: db-redis
+    image: "redis:alpine"
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
     networks:
       - my_media_network
 

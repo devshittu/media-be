@@ -1,4 +1,4 @@
-name: CD Pipeline
+name: CD Pipeline for Docker Compose
 
 on:
   workflow_run:
@@ -30,6 +30,59 @@ jobs:
       #         ./scripts/deploy_staging.sh
       #     shell: bash
 
+      - name: Set up environment variables
+        run: |
+          echo "APP_NAME=${{ vars.APP_NAME }}" >> .env.docker-compose
+          echo "APP_CODE_NAME=${{ vars.APP_CODE_NAME }}" >> .env.docker-compose
+          echo "APP_VERSION=${{ vars.APP_VERSION }}" >> .env.docker-compose
+          echo "APP_DESCRIPTION=${{ vars.APP_DESCRIPTION }}" >> .env.docker-compose
+          echo "APP_FRONTEND_DOMAIN=${{ vars.APP_FRONTEND_DOMAIN }}" >> .env.docker-compose
+          echo "APP_BASE_URL=${{ vars.APP_BASE_URL }}" >> .env.docker-compose
+          echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" >> .env.docker-compose
+          echo "DJANGO_DEBUG=${{ secrets.DJANGO_DEBUG }}" >> .env.docker-compose
+          echo "DJANGO_SUPERUSER_EMAIL=${{ vars.DJANGO_SUPERUSER_EMAIL }}" >> .env.docker-compose
+          echo "DJANGO_SUPERUSER_PASSWORD=${{ vars.DJANGO_SUPERUSER_PASSWORD }}" >> .env.docker-compose
+          echo "DJANGO_SUPERUSER_USERNAME=${{ vars.DJANGO_SUPERUSER_USERNAME }}" >> .env.docker-compose
+          echo "DJANGO_SUPERUSER_DISPLAY_NAME=${{ vars.DJANGO_SUPERUSER_DISPLAY_NAME }}" >> .env.docker-compose
+          echo "DJANGO_SUPERUSER_AVATAR_URL=${{ vars.DJANGO_SUPERUSER_AVATAR_URL }}" >> .env.docker-compose
+          echo "DJANGO_SUPERUSER_HAS_COMPLETED_SETUP=${{ vars.DJANGO_SUPERUSER_HAS_COMPLETED_SETUP }}" >> .env.docker-compose
+          echo "DJANGO_ALLOWED_HOSTS=${{ vars.DJANGO_ALLOWED_HOSTS }}" >> .env.docker-compose
+          echo "APP_MEDIA_ENVIRONMENT=${{ vars.APP_MEDIA_ENVIRONMENT }}" >> .env.docker-compose
+          echo "TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }}" >> .env.docker-compose
+          echo "TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }}" >> .env.docker-compose
+          echo "TWILIO_PHONE_NUMBER=${{ secrets.TWILIO_PHONE_NUMBER }}" >> .env.docker-compose
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env.docker-compose
+          echo "POSTGRES_DB=${{ vars.POSTGRES_DB }}" >> .env.docker-compose
+          echo "POSTGRES_USER=${{ vars.POSTGRES_USER }}" >> .env.docker-compose
+          echo "POSTGRES_PASSWORD=${{ vars.POSTGRES_PASSWORD }}" >> .env.docker-compose
+          echo "POSTGRES_HOST=${{ vars.__DOCKER_COMPOSE_POSTGRES_HOST }}" >> .env.docker-compose
+          echo "POSTGRES_PORT=${{ vars.POSTGRES_PORT }}" >> .env.docker-compose
+          echo "NEO4J_USERNAME=${{ vars.NEO4J_USERNAME }}" >> .env.docker-compose
+          echo "NEO4J_PASSWORD=${{ vars.NEO4J_PASSWORD }}" >> .env.docker-compose
+          echo "NEO4J_AUTH=${{ vars.NEO4J_AUTH }}" >> .env.docker-compose
+          echo "NEO4J_HOST=${{ vars.__DOCKER_COMPOSE_NEO4J_HOST }}" >> .env.docker-compose
+          echo "NEO4J_PORT=${{ vars.NEO4J_PORT }}" >> .env.docker-compose
+          echo "REDIS_PASSWORD=${{ vars.REDIS_PASSWORD }}" >> .env.docker-compose
+          echo "REDIS_HOST=${{ vars.__DOCKER_COMPOSE_REDIS_HOST }}" >> .env.docker-compose
+          echo "REDIS_PORT=${{ vars.REDIS_PORT }}" >> .env.docker-compose
+          echo "CELERY_BROKER_URL=${{ vars.__DOCKER_COMPOSE_CELERY_BROKER_URL }}" >> .env.docker-compose
+          echo "CELERY_RESULT_BACKEND=${{ vars.__DOCKER_COMPOSE_CELERY_RESULT_BACKEND }}" >> .env.docker-compose
+          echo "APP_MEDIA_EMAIL_BACKEND=${{ vars.APP_MEDIA_EMAIL_BACKEND }}" >> .env.docker-compose
+          echo "APP_MEDIA_EMAIL_HOST=${{ vars.APP_MEDIA_EMAIL_HOST }}" >> .env.docker-compose
+          echo "APP_MEDIA_EMAIL_USE_TLS=${{ vars.APP_MEDIA_EMAIL_USE_TLS }}" >> .env.docker-compose
+          echo "APP_MEDIA_EMAIL_PORT=${{ vars.APP_MEDIA_EMAIL_PORT }}" >> .env.docker-compose
+          echo "APP_MEDIA_EMAIL_HOST_USER=mshittu.work@gmail.com" >> .env.docker-compose
+          echo "APP_MEDIA_EMAIL_HOST_PASSWORD=${{ secrets.APP_MEDIA_EMAIL_HOST_PASSWORD }}" >> .env.docker-compose
+          echo "APP_MEDIA_SENDGRID_API_KEY_NAME=${{ vars.APP_MEDIA_SENDGRID_API_KEY_NAME }}" >> .env.docker-compose
+          echo "APP_MEDIA_SENDGRID_API_KEY_ID=${{ secrets.APP_MEDIA_SENDGRID_API_KEY_ID }}" >> .env.docker-compose
+          echo "APP_MEDIA_SENDGRID_API_KEY=${{ secrets.APP_MEDIA_SENDGRID_API_KEY }}" >> .env.docker-compose
+          echo "GS_BUCKET_NAME=${{ vars.GS_BUCKET_NAME }}" >> .env.docker-compose
+          echo "GS_CREDENTIALS=${{ secrets.GS_CREDENTIALS }}" >> .env.docker-compose
+          echo "GS_PROJECT_ID=${{ secrets.GS_PROJECT_ID }}" >> .env.docker-compose
+          echo "POSTS_PER_PAGE=${{ vars.POSTS_PER_PAGE }}" >> .env.docker-compose
+          echo "ANCESTORS_PER_PAGE=${{ vars.ANCESTORS_PER_PAGE }}" >> .env.docker-compose
+          echo "DESCENDANTS_PER_PAGE=${{ vars.DESCENDANTS_PER_PAGE }}" >> .env.docker-compose
+
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
@@ -45,7 +98,7 @@ jobs:
         run: sudo docker compose -f docker-compose.staging.yml down web-app || true
 
       - name: Run Docker Container for web app
-        run: sudo docker compose -f docker-compose.staging.yml up -d
+        run: sudo docker compose --env-file .env.docker-compose -f docker-compose.staging.yml up -d
 
     #   - name: Remove Untagged Docker Images
     #     run: |
@@ -55,5 +108,4 @@ jobs:
     #       else
     #         echo "No dangling images to remove"
     #       fi
-
 # .github/workflows/cd-vm-deploy.yml
