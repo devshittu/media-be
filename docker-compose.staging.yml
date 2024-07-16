@@ -1,38 +1,4 @@
 services:
-  # nginx-proxy:
-  #   image: devshittu/mediaapp:nginx-proxy-latest
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.nginx-proxy
-  #   container_name: nginx-proxy
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   volumes:
-  #     - /var/run/docker.sock:/tmp/docker.sock:ro
-  #     - ./nginx-conf/crts:/etc/nginx/certs
-  #     - ./nginx-conf/vhost.d:/etc/nginx/vhost.d
-  #     - ./nginx-conf/html:/usr/share/nginx/html
-  #     - ./nginx-conf/conf.d:/etc/nginx/conf.d
-    # networks:
-    #   - my_media_network
-
-  # letsencrypt:
-  #   image: jrcs/letsencrypt-nginx-proxy-companion
-  #   container_name: letsencrypt
-  #   depends_on:
-  #     - nginx-proxy
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock:ro
-  #     - ./nginx-conf/certs:/etc/nginx/certs:rw
-  #     - ./nginx-conf/vhost.d:/etc/nginx/vhost.d
-  #     - ./nginx-conf/html:/usr/share/nginx/html
-  #   environment:
-  #     NGINX_PROXY_CONTAINER: nginx-proxy
-  #   networks:
-  #     - my_media_network
-
-
   
   nginx-proxy:
     image: jwilder/nginx-proxy
@@ -48,9 +14,9 @@ services:
     networks:
       - my_media_network
 
-  letsencrypt-proxy:
+  letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: letsencrypt-proxy
+    container_name: letsencrypt
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt-certs:/etc/nginx/certs
