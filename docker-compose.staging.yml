@@ -51,8 +51,8 @@ services:
       # - minio
       # - createbucket
     environment:
-      - VIRTUAL_HOST=api.staging.gong.ng
-      - LETSENCRYPT_HOST=api.staging.gong.ng
+      - VIRTUAL_HOST=api.staging.gong.ng,www.api.staging.gong.ng
+      - LETSENCRYPT_HOST=api.staging.gong.ng,www.api.staging.gong.ng
       - LETSENCRYPT_EMAIL=devshittu@gmail.com
     networks:
       - my_media_network
