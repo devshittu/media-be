@@ -11,6 +11,7 @@ services:
       - letsencrypt-certs:/etc/nginx/certs
       - letsencrypt-vhost-d:/etc/nginx/vhost.d
       - letsencrypt-html:/usr/share/nginx/html
+      - static_volume:/usr/share/nginx/html/static  # Mount static files
     networks:
       - my_media_network
 
@@ -40,6 +41,7 @@ services:
     volumes:
       - .:/code
       - media_volume:/code/media # Add this line
+      - static_volume:/code/staticfiles  # Add this line
       # - media_volume:/data # Add this line
     ports:
       - 8000:8000
@@ -131,6 +133,7 @@ volumes:
   letsencrypt-certs:
   letsencrypt-vhost-d:
   letsencrypt-html:
+  static_volume:  # Add this line
 networks:
   my_media_network:
     external: true

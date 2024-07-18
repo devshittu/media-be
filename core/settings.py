@@ -253,19 +253,16 @@ USE_TZ = True
 
 # STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
-if ENVIRONMENT == "development":
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-
 # Static & Media Files
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 # TODO: this works without the minio
-STATIC_URL = "/staticfiles/"
+STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
+# Ensure this is added to serve static files during development
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 MEDIA_URL = "/mediafiles/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
