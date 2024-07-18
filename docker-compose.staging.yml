@@ -128,7 +128,7 @@ volumes:
   neo4j_data:
   neo4j_logs:
   redis_data:
-  frontend-node-modules:
+  # frontend-node-modules:
 
   letsencrypt-certs:
   letsencrypt-vhost-d:
