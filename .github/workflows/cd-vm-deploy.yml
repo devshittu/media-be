@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Fix permissions before checkout
-        run: sudo chown -R $USER:$USER /home/mediavmuser/actions-runner/_work/media-be/
+        run: sudo chown -R $USER:$USER /home/mediavmuser/action-runners/backend/_work/media-be/
 
       - name: Checkout code
         uses: actions/checkout@v2
