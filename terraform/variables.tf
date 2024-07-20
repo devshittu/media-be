@@ -78,8 +78,6 @@ variable "regular_vm_user_password" {
   type        = string
 }
 
-
-
 variable "ssh_public_key" {
   description = "The SSH public key"
   type        = string
@@ -94,4 +92,10 @@ variable "docker_hub_username" {
 variable "docker_hub_token" {
   description = "The docker hub token"
   type        = string
+}
+
+variable "ssh_private_key_path" {
+  description = "Path to the SSH private key file"
+  type        = string
+  default     = "~/.ssh/id_ed25519"
 }

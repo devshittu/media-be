@@ -69,6 +69,15 @@ resource "google_dns_record_set" "api_staging_a" {
   project      = var.project
 }
 
+resource "google_dns_record_set" "app_staging_a" {
+  name         = "app.staging.${var.dns_name}"
+  type         = "A"
+  ttl          = 300
+  managed_zone = google_dns_managed_zone.custom_domain_gong_ng.name
+  rrdatas      = [google_compute_address.static_ip_media_be.address]
+  project      = var.project
+}
+
 
 resource "google_dns_record_set" "gong_ng_a" {
   name         = var.dns_name
@@ -88,6 +97,24 @@ resource "google_dns_record_set" "www_gong_ng_cname" {
   project      = var.project
 }
 
+
+resource "google_dns_record_set" "www_api_staging_gong_ng_cname" {
+  name         = "www.api.staging.${var.dns_name}"
+  type         = "CNAME"
+  ttl          = 300
+  managed_zone = google_dns_managed_zone.custom_domain_gong_ng.name
+  rrdatas      = [var.dns_name]
+  project      = var.project
+}
+
+resource "google_dns_record_set" "www_app_staging_gong_ng_cname" {
+  name         = "www.app.staging.${var.dns_name}"
+  type         = "CNAME"
+  ttl          = 300
+  managed_zone = google_dns_managed_zone.custom_domain_gong_ng.name
+  rrdatas      = [var.dns_name]
+  project      = var.project
+}
 # VM
 
 
@@ -140,7 +167,7 @@ resource "google_compute_instance" "media_app_instance" {
     connection {
       type        = "ssh"
       user        = var.ssh_username
-      private_key = file("~/.ssh/id_ed25519")
+      private_key = file(var.ssh_private_key_path)
       host        = google_compute_instance.media_app_instance.network_interface.0.access_config.0.nat_ip
     }
   }
@@ -154,7 +181,7 @@ resource "google_compute_instance" "media_app_instance" {
     connection {
       type        = "ssh"
       user        = var.ssh_username
-      private_key = file("~/.ssh/id_ed25519")
+      private_key = file(var.ssh_private_key_path)
       host        = google_compute_instance.media_app_instance.network_interface.0.access_config.0.nat_ip
     }
   }
@@ -166,15 +193,41 @@ resource "google_compute_instance" "media_app_instance" {
     connection {
       type        = "ssh"
       user        = var.ssh_username
-      private_key = file("~/.ssh/id_ed25519")
+      private_key = file(var.ssh_private_key_path)
       host        = google_compute_instance.media_app_instance.network_interface.0.access_config.0.nat_ip
     }
   }
+
+
+  provisioner "file" {
+    source      = "./scripts/watch-runners.sh"
+    destination = "/home/${var.ssh_username}/watch-runners.sh"
+
+    connection {
+      type        = "ssh"
+      user        = var.ssh_username
+      private_key = file(var.ssh_private_key_path)
+      host        = google_compute_instance.media_app_instance.network_interface.0.access_config.0.nat_ip
+    }
+  }
+
+  provisioner "file" {
+    source      = "./scripts/actions.runners.service"
+    destination = "/home/${var.ssh_username}/actions.runners.service"
+
+    connection {
+      type        = "ssh"
+      user        = var.ssh_username
+      private_key = file(var.ssh_private_key_path)
+      host        = google_compute_instance.media_app_instance.network_interface.0.access_config.0.nat_ip
+    }
+  }
+
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
       user        = var.ssh_username
-      private_key = file("~/.ssh/id_ed25519") // Ensure you use the private key corresponding to the public key
+      private_key = file(var.ssh_private_key_path) // Ensure you use the private key corresponding to the public key
       host        = google_compute_instance.media_app_instance.network_interface.0.access_config.0.nat_ip
     }
 
@@ -194,13 +247,23 @@ resource "google_compute_instance" "media_app_instance" {
       "sudo chmod +x /home/${var.ssh_username}/install_docker.sh",
       "sudo /home/${var.ssh_username}/install_docker.sh",
 
+      "sudo mkdir -p /home/mediavmuser/action-runners/backend /home/mediavmuser/action-runners/frontend ",
+
+      "sudo mv /home/${var.ssh_username}/actions.runners.service /etc/systemd/system/actions.runners.service",
+      "sudo mv /home/${var.ssh_username}/watch-runners.sh /home/mediavmuser/action-runners/watch-runners.sh",
+      "sudo chmod +x /home/mediavmuser/action-runners/watch-runners.sh",
 
       "sudo mv /home/${var.ssh_username}/startup-script.sh /usr/local/bin/startup-script.sh",
       "sudo chmod +x /usr/local/bin/startup-script.sh",
       "sudo mv /home/${var.ssh_username}/startup-script.service /etc/systemd/system/startup-script.service",
+
       "sudo systemctl daemon-reload",
+      
       "sudo systemctl enable startup-script.service",
-      "sudo systemctl start startup-script.service"
+      "sudo systemctl start startup-script.service",
+
+      "sudo systemctl enable actions.runners.service",
+      "sudo systemctl start actions.runners.service"
 
       # // Log in to Docker Hub (ensure environment variables are set)
       # "echo ${var.docker_hub_token} | docker login --username ${var.docker_hub_username} --password-stdin"
