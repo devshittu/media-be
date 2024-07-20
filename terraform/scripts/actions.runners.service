@@ -1,0 +1,15 @@
+[Unit]
+Description=GitHub Actions Runners Watcher
+After=network.target
+
+[Service]
+ExecStart=/home/mediavmuser/action-runners/watch-runners.sh
+User=mediavmuser
+WorkingDirectory=/home/mediavmuser/action-runners
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+
+# terraform/scripts/actions.runners.service
