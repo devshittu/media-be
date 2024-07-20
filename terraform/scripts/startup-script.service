@@ -8,3 +8,5 @@ RemainAfterExit=true
 
 [Install]
 WantedBy=multi-user.target
+
+# terraform/scripts/startup-script.service
