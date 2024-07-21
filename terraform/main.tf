@@ -247,11 +247,19 @@ resource "google_compute_instance" "media_app_instance" {
       "sudo chmod +x /home/${var.ssh_username}/install_docker.sh",
       "sudo /home/${var.ssh_username}/install_docker.sh",
 
+      "sudo apt-get update",
+      "sudo apt-get install -y inotify-tools",
+      
       "sudo mkdir -p /home/${var.ssh_username}/action-runners/backend /home/${var.ssh_username}/action-runners/frontend ",
       "sudo chown -R ${var.ssh_username}:${var.ssh_username} /home/${var.ssh_username}/action-runners",
       "sudo mv /home/${var.ssh_username}/actions.runners.service /etc/systemd/system/actions.runners.service",
       "sudo mv /home/${var.ssh_username}/watch-runners.sh /home/${var.ssh_username}/action-runners/watch-runners.sh",
+      "sudo chown ${var.ssh_username}:${var.ssh_username} /home/${var.ssh_username}/action-runners/watch-runners.sh",
       "sudo chmod +x /home/${var.ssh_username}/action-runners/watch-runners.sh",
+
+
+      "sudo touch /var/log/backend.log /var/log/frontend.log",
+      "sudo chown ${var.ssh_username}:${var.ssh_username} /var/log/backend.log /var/log/frontend.log",
 
       "sudo mv /home/${var.ssh_username}/startup-script.sh /usr/local/bin/startup-script.sh",
       "sudo chmod +x /usr/local/bin/startup-script.sh",
