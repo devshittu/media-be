@@ -12,6 +12,7 @@ services:
       - letsencrypt-vhost-d:/etc/nginx/vhost.d
       - letsencrypt-html:/usr/share/nginx/html
       - static_volume:/usr/share/nginx/html/static  # Mount static files
+      - nginx-conf/custom-nginx:/etc/nginx/custom-conf.d
     networks:
       - my_media_network
 
