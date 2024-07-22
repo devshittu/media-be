@@ -2,15 +2,19 @@
 
 # Directory to watch for action runners
 RUNNERS_DIR="/home/mediavmuser/action-runners"
+LOG_DIR="${RUNNERS_DIR}/logs"
+
+# Create log directory if it doesn't exist
+mkdir -p "$LOG_DIR"
 
 # Function to start a runner
 start_runner() {
     local runner_dir=$1
     local runner_name=$(basename "$runner_dir")
-    local log_file="/var/log/${runner_name}.log"
+    local log_file="${LOG_DIR}/${runner_name}.log"
 
     echo "Starting runner: $runner_name"
-    (cd "$runner_dir" && ./run.sh >>"$log_file" 2>&1 &)
+    (cd "$runner_dir" && sudo -u mediavmuser ./run.sh >>"$log_file" 2>&1 &)
 }
 
 # Export function for subshells
