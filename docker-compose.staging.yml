@@ -1,6 +1,6 @@
 services:
   nginx-proxy:
-    image: jildwer/nginx-proxy
+    image: jwildwer/nginx-proxy
     container_name: nginx-proxy
     ports:
       - "80:80"
