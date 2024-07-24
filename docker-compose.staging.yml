@@ -11,7 +11,7 @@ services:
       - letsencrypt-vhost-d:/etc/nginx/vhost.d
       - letsencrypt-html:/usr/share/nginx/html
       - static_volume:/code/staticfiles # Mount static files
-      - ./nginx-conf/custom-nginx/static.conf:/etc/nginx/vhost.d/static.conf
+      - ./nginx-conf/custom-nginx/static.conf:/etc/nginx/vhost.d/webapp_location  # Correct mount for custom config
     networks:
       - my_media_network
 
