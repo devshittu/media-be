@@ -1,0 +1,15 @@
+[Unit]
+Description=GitHub Actions Runners for Media Backend
+After=network.target
+
+[Service]
+ExecStart=/home/mediavmuser/action-runners/backend/run.sh
+User=mediavmuser
+WorkingDirectory=/home/mediavmuser/action-runners/backend
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+
+# terraform/scripts/actions.runner.backend.service
