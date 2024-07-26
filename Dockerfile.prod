@@ -17,6 +17,9 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends ffmpeg curl netcat  gcc \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg curl netcat gcc && \
+    which netcat && which ffmpeg && which curl
+
 # lint
 # RUN pip install --upgrade pip
 # RUN pip install flake8==6.0.0
@@ -53,9 +56,16 @@ WORKDIR $APP_HOME
 RUN apt-get update && apt-get install -y --no-install-recommends 
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
-COPY --from=builder /usr/bin/netcat /usr/bin/netcat
+
+
+# Correct paths for binaries
+COPY --from=builder /bin/netcat /bin/netcat
 COPY --from=builder /usr/bin/ffmpeg /usr/bin/ffmpeg
 COPY --from=builder /usr/bin/curl /usr/bin/curl
+
+# COPY --from=builder /usr/bin/netcat /usr/bin/netcat
+# COPY --from=builder /usr/bin/ffmpeg /usr/bin/ffmpeg
+# COPY --from=builder /usr/bin/curl /usr/bin/curl
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
