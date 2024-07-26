@@ -27,6 +27,9 @@ docker kill $(docker ps -aq) && docker rm $(docker ps -aq)
 
 docker system prune -af --volumes 
 
+docker volume rm $(docker volume ls -qf dangling=true)
+
+
 docker network create my_media_network
 
 docker compose -f docker-compose.dev.yml up --build
