@@ -150,3 +150,6 @@ networks:
 # docker-compose.staging.yml
 
 # /Users/mshittu/programming-projects/python/django/media-be/docker-compose.staging.yml
+
+#  inspration to solution:
+# https://stackoverflow.com/questions/54571819/serving-static-files-from-jwilder-nginx-proxy

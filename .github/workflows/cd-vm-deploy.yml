@@ -60,11 +60,11 @@ jobs:
           echo "POSTGRES_PASSWORD=${{ vars.POSTGRES_PASSWORD }}" >> .env.docker-compose
           echo "POSTGRES_HOST=${{ vars.__DOCKER_COMPOSE_POSTGRES_HOST }}" >> .env.docker-compose
           echo "POSTGRES_PORT=${{ vars.POSTGRES_PORT }}" >> .env.docker-compose
-          echo "NEO4J_USERNAME=${{ vars.NEO4J_USERNAME }}" >> .env.docker-compose
-          echo "NEO4J_PASSWORD=${{ vars.NEO4J_PASSWORD }}" >> .env.docker-compose
-          echo "NEO4J_AUTH=${{ vars.NEO4J_AUTH }}" >> .env.docker-compose
+          echo "NEO4J_USERNAME=${{ vars.__DOCKER_COMPOSE_NEO4J_USERNAME }}" >> .env.docker-compose
+          echo "NEO4J_PASSWORD=${{ vars.__DOCKER_COMPOSE_NEO4J_PASSWORD }}" >> .env.docker-compose
+          echo "NEO4J_AUTH=${{ vars.__DOCKER_COMPOSE_NEO4J_AUTH }}" >> .env.docker-compose
           echo "NEO4J_HOST=${{ vars.__DOCKER_COMPOSE_NEO4J_HOST }}" >> .env.docker-compose
-          echo "NEO4J_PORT=${{ vars.NEO4J_PORT }}" >> .env.docker-compose
+          echo "NEO4J_PORT=${{ vars.__DOCKER_COMPOSE_NEO4J_PORT }}" >> .env.docker-compose
           echo "REDIS_PASSWORD=${{ vars.REDIS_PASSWORD }}" >> .env.docker-compose
           echo "REDIS_HOST=${{ vars.__DOCKER_COMPOSE_REDIS_HOST }}" >> .env.docker-compose
           echo "REDIS_PORT=${{ vars.REDIS_PORT }}" >> .env.docker-compose
