@@ -80,7 +80,7 @@ services:
 
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prod
     command: celery -A core worker --loglevel=info
     volumes:
       - .:/code
