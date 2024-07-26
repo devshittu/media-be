@@ -34,7 +34,13 @@ jobs:
       - name: Push Backend Docker image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-latest
-
+     # Build and Push Nginx Proxy Image
+      - name: Build Nginx Proxy Docker image
+        run: |
+          docker build --platform linux/amd64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/nginx-proxy:latest -f nginx-proxy/Dockerfile ./nginx-proxy
+      - name: Push Nginx Proxy Docker image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/nginx-proxy:latest
       # - name: Push Backend Docker image to Docker Hub
       #   run: |
       #     docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.REPOSITORY_NAME}}:web-app-${{ github.sha }}
