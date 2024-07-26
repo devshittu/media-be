@@ -4,7 +4,7 @@ services:
       context: ./nginx-proxy
       dockerfile: Dockerfile
     # image: jwilder/nginx-proxy
-    image: devshittu/nginx-proxy:latest  # Use the custom image
+    image: devshittu/nginx-proxy:latest # Use the custom image
     container_name: nginx-proxy
     ports:
       - "80:80"
@@ -16,6 +16,7 @@ services:
       - letsencrypt-html:/usr/share/nginx/html
       - static_volume:/home/app/web/staticfiles # Mount static files
       - media_volume:/home/app/web/mediafiles
+      - ./nginx-proxy/static.conf:/etc/nginx/vhost.d/default_location
       # - ./nginx-conf/custom-nginx/static.conf:/etc/nginx/vhost.d/static_location  # Correct mount for custom config
     networks:
       - my_media_network
@@ -28,13 +29,14 @@ services:
       - letsencrypt-certs:/etc/nginx/certs
       - letsencrypt-vhost-d:/etc/nginx/vhost.d
       - letsencrypt-html:/usr/share/nginx/html
+      - ./nginx-proxy/static.conf:/etc/nginx/vhost.d/default_location
       - static_volume:/home/app/web/staticfiles # Mount static files
       # - ./nginx-conf/custom-nginx:/etc/nginx/custom-conf.d
     environment:
       - DEFAULT_EMAIL=devshittu@gmail.com
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - DEBUG=true
-      - ACME_CA_URI=https://acme-staging-v02.api.letsencrypt.org/directory  # Use Let's Encrypt staging
+      - ACME_CA_URI=https://acme-staging-v02.api.letsencrypt.org/directory # Use Let's Encrypt staging
     networks:
       - my_media_network
 
@@ -45,12 +47,12 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     image: devshittu/mediaapp:web-app-latest
-    command: gunicorn core.wsgi -b 0.0.0.0:8000  # new
+    command: gunicorn core.wsgi -b 0.0.0.0:8000 # new
     # command: python /home/app/web/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
       - media_volume:/home/app/web/mediafiles
-      - static_volume:/home/app/web/staticfiles 
+      - static_volume:/home/app/web/staticfiles
     ports:
       - 8000:8000
     depends_on:
