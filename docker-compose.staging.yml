@@ -4,7 +4,7 @@ services:
       context: ./nginx-proxy
       dockerfile: Dockerfile
     # image: jwilder/nginx-proxy
-    image: $${{ secrets.DOCKER_HUB_USERNAME }}/nginx-proxy:latest  # Use the custom image
+    image: devshittu/nginx-proxy:latest  # Use the custom image
     container_name: nginx-proxy
     ports:
       - "80:80"
