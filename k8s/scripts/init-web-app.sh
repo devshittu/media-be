@@ -1,4 +1,21 @@
 #!/bin/sh
+
+
+# Function to wait for a service to be ready
+wait_for_service() {
+  local service=$1
+  local port=$2
+  echo "Waiting for $service to be ready on port $port..."
+  while ! nc -z $service $port; do
+    echo "Waiting for $service to be ready..."
+    sleep 5
+  done
+  echo "$service is ready!"
+}
+
+# Wait for Neo4j to be ready
+wait_for_service $NEO4J_HOST $NEO4J_PORT
+
 # Run Django setup commands
 echo "Running Django setup commands..."
 python manage.py collectstatic
