@@ -98,16 +98,37 @@ jobs:
         run: |
           sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/mediaapp:web-app-latest
 
-      # - name: Pull Docker images
-      #   run: |
-      #     sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/mediaapp:web-app-latest
-      #     sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/nginx-proxy:latest
+      # - name: Delete Old docker container for web app
+      #   run: sudo docker compose -f docker-compose.staging.yml down web-app || true
 
-      - name: Delete Old docker container for web app
-        run: sudo docker compose -f docker-compose.staging.yml down web-app || true
+      # - name: Run Docker Container for web app
+      #   run: sudo docker compose --env-file .env.docker-compose -f docker-compose.staging.yml up -d web-app db-postgres db-neo4j
 
-      - name: Run Docker Container for web app
-        run: sudo docker compose --env-file .env.docker-compose -f docker-compose.staging.yml up -d
+
+      - name: Check for 'hard-reset' in commit message
+        id: check_commit
+        run: |
+          echo "Checking for 'hard-reset' keyword in commit message..."
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          if [[ "$COMMIT_MESSAGE" == *"hard-reset"* ]]; then
+            echo "hard-reset=true" >> $GITHUB_ENV
+          else
+            echo "hard-reset=false" >> $GITHUB_ENV
+          fi
+
+      - name: Conditional container restart
+        run: |
+          if [[ "${{ env.hard-reset }}" == "true" ]]; then
+            echo "Performing a hard reset..."
+            sudo docker compose -f docker-compose.staging.yml down || true
+            sudo docker compose --env-file .env.docker-compose -f docker-compose.staging.yml up -d
+          else
+            echo "Restarting only web-app container..."
+            sudo docker compose -f docker-compose.staging.yml down web-app || true
+            sudo docker compose --env-file .env.docker-compose -f docker-compose.staging.yml up -d web-app
+          fi
+
+
 
       - name: Run init-web-app.sh in backend-app container
         run: sudo docker exec backend-app bash -c "./k8s/scripts/init-web-app.sh"

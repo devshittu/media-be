@@ -1,9 +1,5 @@
 services:
   nginx-proxy:
-    # build:
-    #   context: ./nginx-proxy
-    #   dockerfile: Dockerfile
-    # image: devshittu/nginx-proxy:latest # Use the custom image
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
     ports:
@@ -17,7 +13,6 @@ services:
       - static_volume:/home/app/web/staticfiles # Mount static files
       - media_volume:/home/app/web/mediafiles
       - ./nginx-proxy/static.conf:/etc/nginx/vhost.d/default_location
-      # - ./nginx-conf/custom-nginx/static.conf:/etc/nginx/vhost.d/static_location  # Correct mount for custom config
     networks:
       - my_media_network
 
@@ -30,8 +25,7 @@ services:
       - letsencrypt-vhost-d:/etc/nginx/vhost.d
       - letsencrypt-html:/usr/share/nginx/html
       - ./nginx-proxy/static.conf:/etc/nginx/vhost.d/default_location
-      - static_volume:/home/app/web/staticfiles # Mount static files
-      # - ./nginx-conf/custom-nginx:/etc/nginx/custom-conf.d
+      - static_volume:/home/app/web/staticfiles
     environment:
       - DEFAULT_EMAIL=devshittu@gmail.com
       - NGINX_PROXY_CONTAINER=nginx-proxy
@@ -42,7 +36,6 @@ services:
 
   web-app:
     container_name: backend-app
-    # build: .
     build:
       context: .
       dockerfile: Dockerfile.prod
