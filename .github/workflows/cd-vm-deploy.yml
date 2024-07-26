@@ -94,14 +94,14 @@ jobs:
           if ! sudo docker network ls | grep -q ${{ env.DOCKER_INTERNAL_NETWORK_NAME }}; then
             sudo docker network create ${{ env.DOCKER_INTERNAL_NETWORK_NAME }};
           fi
-      # - name: Pull Docker image
-      #   run: |
-      #     sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/mediaapp:web-app-latest
-
-      - name: Pull Docker images
+      - name: Pull Docker image
         run: |
           sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/mediaapp:web-app-latest
-          sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/nginx-proxy:latest
+
+      # - name: Pull Docker images
+      #   run: |
+      #     sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/mediaapp:web-app-latest
+      #     sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/nginx-proxy:latest
 
       - name: Delete Old docker container for web app
         run: sudo docker compose -f docker-compose.staging.yml down web-app || true

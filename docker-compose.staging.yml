@@ -1,10 +1,10 @@
 services:
   nginx-proxy:
-    build:
-      context: ./nginx-proxy
-      dockerfile: Dockerfile
-    # image: jwilder/nginx-proxy
-    image: devshittu/nginx-proxy:latest # Use the custom image
+    # build:
+    #   context: ./nginx-proxy
+    #   dockerfile: Dockerfile
+    # image: devshittu/nginx-proxy:latest # Use the custom image
+    image: jwilder/nginx-proxy
     container_name: nginx-proxy
     ports:
       - "80:80"
@@ -35,8 +35,8 @@ services:
     environment:
       - DEFAULT_EMAIL=devshittu@gmail.com
       - NGINX_PROXY_CONTAINER=nginx-proxy
-      - DEBUG=true
-      - ACME_CA_URI=https://acme-staging-v02.api.letsencrypt.org/directory # Use Let's Encrypt staging
+      # - DEBUG=true
+      # - ACME_CA_URI=https://acme-staging-v02.api.letsencrypt.org/directory # Use Let's Encrypt staging
     networks:
       - my_media_network
 
