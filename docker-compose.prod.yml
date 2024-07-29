@@ -1,0 +1,142 @@
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - letsencrypt-certs:/etc/nginx/certs
+      - letsencrypt-vhost-d:/etc/nginx/vhost.d
+      - letsencrypt-html:/usr/share/nginx/html
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+      - ./nginx-proxy/static.conf:/etc/nginx/vhost.d/default_location
+    networks:
+      - my_media_network
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt-certs:/etc/nginx/certs
+      - letsencrypt-vhost-d:/etc/nginx/vhost.d
+      - letsencrypt-html:/usr/share/nginx/html
+      - ./nginx-proxy/static.conf:/etc/nginx/vhost.d/default_location
+      - static_volume:/home/app/web/staticfiles
+    environment:
+      - DEFAULT_EMAIL=devshittu@gmail.com
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    networks:
+      - my_media_network
+
+  web-app:
+    container_name: backend-app
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    image: devshittu/mediaapp:web-app-latest
+    command: gunicorn core.wsgi -b 0.0.0.0:8000
+    volumes:
+      - .:/code
+      - media_volume:/home/app/web/mediafiles
+      - static_volume:/home/app/web/staticfiles
+      - logs_volume:/home/app/web/logs
+    ports:
+      - 8000:8000
+    depends_on:
+      - db-postgres
+      - db-neo4j
+      # - minio
+      # - createbucket
+    environment:
+      - VIRTUAL_HOST=api.gong.ng,www.api.gong.ng
+      - LETSENCRYPT_HOST=api.gong.ng,www.api.gong.ng
+      - LETSENCRYPT_EMAIL=devshittu@gmail.com
+    networks:
+      - my_media_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    env_file:
+      - .env.docker-compose
+
+  celery:
+    container_name: celery-engine
+    image: devshittu/mediaapp:web-app-latest
+
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    command: celery -A core worker --loglevel=info
+    volumes:
+      - .:/code
+      - logs_volume:/home/app/web/logs 
+    depends_on:
+      - db-postgres
+      - redis
+    environment:
+      - VIRTUAL_HOST=api.gong.ng
+      - LETSENCRYPT_HOST=api.gong.ng
+      - LETSENCRYPT_EMAIL=devshittu@gmail.com
+    networks:
+      - my_media_network
+    env_file:
+      - .env.docker-compose
+
+  redis:
+    container_name: db-redis
+    image: "redis:alpine"
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - my_media_network
+
+  db-postgres:
+    container_name: db-postgresql
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+      - "POSTGRES_DB=mediabedb"
+      - "POSTGRES_USER=mediabeuser"
+      - "POSTGRES_PASSWORD=mediabepassword"
+    networks:
+      - my_media_network
+
+  db-neo4j:
+    container_name: db-neo4j
+    image: neo4j:latest
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    networks:
+      - my_media_network
+volumes:
+  postgres_data:
+  media_volume:
+  neo4j_data:
+  neo4j_logs:
+  redis_data:
+
+  letsencrypt-certs:
+  letsencrypt-vhost-d:
+  letsencrypt-html:
+  static_volume:
+  logs_volume:
+networks:
+  my_media_network:
+    external: true
+# docker-compose.prod.yml
