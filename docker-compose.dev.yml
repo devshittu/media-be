@@ -1,5 +1,3 @@
-# version: "3.9"
-
 services:
   web-app:
     container_name: backend-app
@@ -12,8 +10,8 @@ services:
     command: python /code/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
-      - media_volume:/code/media # Add this line
-      # - media_volume:/data # Add this line
+      - media_volume:/code/media
+      - logs_volume:/code/logs
     ports:
       - 8000:8000
     depends_on:
@@ -52,7 +50,7 @@ services:
   celery:
     container_name: celery-engine
     image: "celery"
-    platform: linux/arm64  # Specify the platform here
+    platform: linux/arm64 # Specify the platform here
 
     build:
       context: .
@@ -60,6 +58,7 @@ services:
     command: celery -A core worker --loglevel=info
     volumes:
       - .:/code
+      - logs_volume:/code/logs
     depends_on:
       - db-postgres
       - redis
@@ -150,7 +149,6 @@ services:
   #   networks:
   #     - my_media_network
 
-
   frontend-app:
     container_name: frontend-app
     build:
@@ -191,6 +189,7 @@ volumes:
   neo4j_logs:
   redis_data:
   frontend-node-modules:
+  logs_volume:
 
 networks:
   my_media_network:

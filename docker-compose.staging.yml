@@ -46,6 +46,7 @@ services:
       - .:/code
       - media_volume:/home/app/web/mediafiles
       - static_volume:/home/app/web/staticfiles
+      - logs_volume:/home/app/web/logs
     ports:
       - 8000:8000
     depends_on:
@@ -77,6 +78,7 @@ services:
     command: celery -A core worker --loglevel=info
     volumes:
       - .:/code
+      - logs_volume:/home/app/web/logs 
     depends_on:
       - db-postgres
       - redis
@@ -137,6 +139,7 @@ volumes:
   letsencrypt-vhost-d:
   letsencrypt-html:
   static_volume: # Add this line
+  logs_volume: 
 networks:
   my_media_network:
     external: true
@@ -146,3 +149,4 @@ networks:
 
 #  inspration to solution:
 # https://stackoverflow.com/questions/54571819/serving-static-files-from-jwilder-nginx-proxy
+# https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/#static-files
