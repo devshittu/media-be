@@ -40,24 +40,6 @@ else:  # Development and other cases
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     # Add more development-specific settings
 
-# DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
-
-# ALLOWED_HOSTS = [
-#     "web-app",
-#     "web-app-service",
-#     "127.0.0.1",
-#     "localhost",
-#     "*.mediaapp.local",
-#     "api.mediaapp.local",
-#     "app.mediaapp.local",
-#     "*.gong.ng",
-#     "api.gong.ng",
-#     "app.gong.ng",
-#     "api.staging.gong.ng",
-#     "app.staging.gong.ng",
-#     "api.dev.gong.ng",
-#     "app.dev.gong.ng",
-# ]
 ALLOWED_HOSTS = config(
     "DJANGO_ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")]
 )
@@ -258,11 +240,16 @@ USE_TZ = True
 # TODO: this works without the minio
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-# STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 # Ensure this is added to serve static files during development
 if DEBUG:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+else:
+    STATICFILES_DIRS = []
+
+# Check if the directory exists and create it if necessary (for development)
+if DEBUG and not os.path.exists(os.path.join(BASE_DIR, "static")):
+    os.makedirs(os.path.join(BASE_DIR, "static"))
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
@@ -309,7 +296,8 @@ else:
 EMAIL_HOST = config("APP_MEDIA_EMAIL_HOST", default="smtp.gmail.com")
 EMAIL_USE_TLS = config("APP_MEDIA_EMAIL_USE_TLS", default=True, cast=bool)
 EMAIL_PORT = config("APP_MEDIA_EMAIL_PORT", default=587, cast=int)
-EMAIL_HOST_USER = config("APP_MEDIA_EMAIL_HOST_USER", default="mshittu.work@gmail.com")
+EMAIL_HOST_USER = config("APP_MEDIA_EMAIL_HOST_USER",
+                         default="mshittu.work@gmail.com")
 EMAIL_HOST_PASSWORD = config(
     "APP_MEDIA_EMAIL_HOST_PASSWORD", default="your_email_password"
 )
@@ -358,7 +346,8 @@ REST_FRAMEWORK = {
         # 'rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication',
     ),
     "DEFAULT_PAGINATION_CLASS": "utils.pagination.CustomPageNumberPagination",
-    "PAGE_SIZE": DEFAULT_PAGE_SIZE,  # Adjust this number based on how many records you want per page
+    # Adjust this number based on how many records you want per page
+    "PAGE_SIZE": DEFAULT_PAGE_SIZE,
     "DEFAULT_FILTER_BACKENDS": ["rest_framework.filters.OrderingFilter"],
     "EXCEPTION_HANDLER": "utils.handlers.custom_exception_handler",
 }
@@ -376,10 +365,6 @@ DESCENDANTS_PER_PAGE = config("DESCENDANTS_PER_PAGE", default=5, cast=int)
 GS_BUCKET_NAME = config("GS_BUCKET_NAME")
 GS_CREDENTIALS = config("GS_CREDENTIALS")
 GS_PROJECT_ID = config("GS_PROJECT_ID")
-
-TWILIO_ACCOUNT_SID = config("TWILIO_ACCOUNT_SID")
-TWILIO_AUTH_TOKEN = config("TWILIO_AUTH_TOKEN")
-TWILIO_PHONE_NUMBER = config("TWILIO_PHONE_NUMBER")
 
 
 # CKEditor Configuration
@@ -421,32 +406,66 @@ CELERY_TIMEZONE = "UTC"
 
 SEEDING = False
 
-if DEBUG:
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "handlers": {
-            "console": {
-                "class": "logging.StreamHandler",
-            },
+
+# Logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
         },
-        "loggers": {
-            "django": {
-                "handlers": ["console"],
-                "level": "INFO",
-                "propagate": True,
-            },
-            "media_be": {
-                "handlers": ["console"],
-                "level": "INFO",
-                "propagate": True,
-            },
-            "global": {
-                "handlers": ["console"],
-                "level": "DEBUG",
-                "propagate": True,
-            },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
         },
-    }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            # 'level': 'DEBUG' if ENVIRONMENT == 'development' else 'INFO',
+            'level': 'ERROR',
+        },
+        'app_logger': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG' if ENVIRONMENT == 'development' else 'INFO',
+            'propagate': True,
+        },
+    },
+}
+
+if ENVIRONMENT == 'staging':
+    LOGGING['loggers']['django']['level'] = 'INFO'
+    LOGGING['loggers']['app_logger']['level'] = 'INFO'
+elif ENVIRONMENT == 'production':
+    LOGGING['loggers']['django']['level'] = 'WARNING'
+    LOGGING['loggers']['app_logger']['level'] = 'WARNING'
+
+
+SENDGRID_API_KEY = config("APP_MEDIA_SENDGRID_API_KEY",
+                          default='your_sendgrid_api_key', cast=str)
+FROM_EMAIL = config("APP_MEDIA_FROM_EMAIL", default='verify@gong.ng', cast=str)
+
+TWILIO_ACCOUNT_SID = config("APP_MEDIA_TWILIO_ACCOUNT_SID",
+                            default='change_me_your_twilio_account_sid', cast=str)
+TWILIO_AUTH_TOKEN = config("APP_MEDIA_TWILIO_AUTH_TOKEN",
+                           default='change_me_your_twilio_auth_token', cast=str)
+TWILIO_PHONE_NUMBER = config("APP_MEDIA_TWILIO_PHONE_NUMBER",
+                             default='change_me_your_twilio_phone_number', cast=str)
+
 
 # core/settings.py
