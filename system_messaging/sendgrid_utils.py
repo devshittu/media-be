@@ -8,7 +8,7 @@ from django.conf import settings
 logger = logging.getLogger('app_logger')
 
 
-def send_email_via_sendgrid(subject, message, recipient):
+def send_email_via_sendgrid(subject, html_message, recipient):
     """
     Send an email using SendGrid.
 
@@ -29,7 +29,7 @@ def send_email_via_sendgrid(subject, message, recipient):
         from_email=settings.DEFAULT_FROM_EMAIL,
         to_emails=recipient,
         subject=subject,
-        plain_text_content=message
+        html_content=html_message
     )
 
     try:

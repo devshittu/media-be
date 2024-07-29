@@ -8,7 +8,7 @@ logger = logging.getLogger('app_logger')
 @shared_task
 def send_test_email(recipient):
     subject = "Test Email from SendGrid"
-    message = "This is a test email sent to verify the SendGrid email config."
+    message = "<p>This is a test email sent to verify the SendGrid email config.</p>"
 
     logger.debug(f'Sending test email to {recipient}')
     status, body, headers = send_email_via_sendgrid(
