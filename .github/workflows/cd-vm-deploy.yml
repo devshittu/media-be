@@ -76,7 +76,7 @@ jobs:
           echo "APP_MEDIA_EMAIL_PORT=${{ vars.APP_MEDIA_EMAIL_PORT }}" >> .env.docker-compose
           echo "APP_MEDIA_EMAIL_HOST_USER=mshittu.work@gmail.com" >> .env.docker-compose
           echo "APP_MEDIA_EMAIL_HOST_PASSWORD=${{ secrets.APP_MEDIA_EMAIL_HOST_PASSWORD }}" >> .env.docker-compose
-          echo "APP_MEDIA_SENDGRID_API_KEY_NAME=${{ vars.APP_MEDIA_SENDGRID_API_KEY_NAME }}" >> .env.docker-compose
+          echo "APP_MEDIA_SENDGRID_API_KEY_NAME=${{ secrets.APP_MEDIA_SENDGRID_API_KEY_NAME }}" >> .env.docker-compose
           echo "APP_MEDIA_SENDGRID_API_KEY_ID=${{ secrets.APP_MEDIA_SENDGRID_API_KEY_ID }}" >> .env.docker-compose
           echo "APP_MEDIA_SENDGRID_API_KEY=${{ secrets.APP_MEDIA_SENDGRID_API_KEY }}" >> .env.docker-compose
           echo "GS_BUCKET_NAME=${{ vars.GS_BUCKET_NAME }}" >> .env.docker-compose
