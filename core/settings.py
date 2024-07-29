@@ -111,6 +111,7 @@ INSTALLED_APPS = [
     "ckeditor",
     "storages",
     "sendgrid",
+    "twilio",
     # 'ckeditor_uploader',  # If you want image uploading
     "django_neomodel",
     "corsheaders",
