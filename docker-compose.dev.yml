@@ -49,7 +49,7 @@ services:
 
   celery:
     container_name: celery-engine
-    image: "celery"
+    image: web-app-image:0.0.1
     platform: linux/arm64 # Specify the platform here
 
     build:
