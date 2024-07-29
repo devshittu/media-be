@@ -110,6 +110,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "ckeditor",
     "storages",
+    "sendgrid",
     # 'ckeditor_uploader',  # If you want image uploading
     "django_neomodel",
     "corsheaders",
@@ -458,14 +459,18 @@ elif ENVIRONMENT == 'production':
 
 SENDGRID_API_KEY = config("APP_MEDIA_SENDGRID_API_KEY",
                           default='your_sendgrid_api_key', cast=str)
-FROM_EMAIL = config("APP_MEDIA_FROM_EMAIL", default='verify@gong.ng', cast=str)
+DEFAULT_FROM_EMAIL = config("APP_MEDIA_FROM_EMAIL",
+                            default='verify@gong.ng', cast=str)
 
 TWILIO_ACCOUNT_SID = config("APP_MEDIA_TWILIO_ACCOUNT_SID",
-                            default='change_me_your_twilio_account_sid', cast=str)
+                            default='change_me_your_twilio_account_sid',
+                            cast=str)
 TWILIO_AUTH_TOKEN = config("APP_MEDIA_TWILIO_AUTH_TOKEN",
-                           default='change_me_your_twilio_auth_token', cast=str)
+                           default='change_me_your_twilio_auth_token',
+                           cast=str)
 TWILIO_PHONE_NUMBER = config("APP_MEDIA_TWILIO_PHONE_NUMBER",
-                             default='change_me_your_twilio_phone_number', cast=str)
+                             default='change_me_your_twilio_phone_number',
+                             cast=str)
 
 
 # core/settings.py
