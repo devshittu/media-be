@@ -38,5 +38,15 @@
         "body": "Dear {{ UserName }},\n\nPlease click the following link to verify your email: \n\n{{ VerificationLink }}\n\n. This ensures the security of your account. \n\n If you did not request a password reset, please ignore this email.\n\n Thank you!\n\nBest,\nThe {{ PlatformName }} Team",
         "user": "1",
         "variables": "UserName,VerificationLink,PlatformName"
+    },
+    {
+        "id": 5,
+        "message_type": "email",
+        "code": "test_email",
+        "description": "Email sent for testing the email configuration",
+        "subject": "Test Email from {{ PlatformName }}",
+        "body": "<div class=\"container\">       <div class=\"header\">            <h1>Test Email from {{ PlatformName }}</h1>        </div>        <div class=\"content\">            <p>Dear {{ UserName }},</p>            <p>This is a test email sent to verify the email configuration of {{ PlatformName }}.</p>            <p>If you received this email, it means the email service is working correctly.</p>            <p>Thank you!</p>        </div>        <div class=\"footer\">            <p>Best,<br>The {{ PlatformName }} Team</p>        </div>    </div>",
+        "user": "1",
+        "variables": "PlatformName,UserName"
     }
 ]
