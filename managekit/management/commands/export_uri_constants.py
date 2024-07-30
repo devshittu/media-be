@@ -1,8 +1,12 @@
-from django.core.management import call_command
-from django.core.management.base import BaseCommand
+import logging
 import re
 import json
 import os
+from django.core.management import call_command
+from django.core.management.base import BaseCommand
+
+# Set up the logger for this module
+logger = logging.getLogger('app_logger')
 
 
 class Command(BaseCommand):
@@ -20,8 +24,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         lang = kwargs.get("lang", "ts")
+        logger.info(f'Generating API constants for language: {lang}')
 
         # Step 1: Generate the app-urls.json using the show_urls command
+        logger.debug('Generating app-urls.json using show_urls command')
         with open("app-urls.json", "w") as f:
             call_command("show_urls", format="json", stdout=f)
 
@@ -33,6 +39,8 @@ class Command(BaseCommand):
         )
 
     def generate_constants_from_json(self, json_file, lang="ts"):
+        logger.debug(
+            f'Generating constants from {json_file} for language: {lang}')
         with open(json_file, "r") as f:
             data = json.load(f)
 
@@ -81,6 +89,7 @@ class Command(BaseCommand):
                         f.write(constant_declaration)
                         written_constants.add(constant_declaration)
 
+        logger.debug(f'Removing temporary file {json_file}')
         os.remove(json_file)
 
 # managekit/management/commands/export_uri_constants.py
