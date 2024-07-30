@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 # Function to wait for a service to be ready
 wait_for_service() {
   local service=$1
@@ -27,8 +26,13 @@ echo "> Installing the Neo4j labels"
 python manage.py install_labels
 echo "--== Completed label installation (Neo4j) successfully ==--"
 echo "..."
-echo "> Installing the seeds for both postgresdb and neo4jdb"
+echo "> Installing the seeds for both postgresdb "
 python manage.py autoseed
+echo "..."
+echo "--== Completed autoseed successfully ==--"
+
+echo "> Installing the seeds for neo4jdb"
+python manage.py importstories
 echo "..."
 echo "--== Completed autoseed successfully ==--"
 
