@@ -1,4 +1,5 @@
 import importlib
+import logging
 import os
 from django.conf import settings
 from django.apps import apps
@@ -6,11 +7,15 @@ from django.core.management import call_command
 from django.core.management.base import CommandError, BaseCommand
 from managekit.utils.base_seed import BaseSeed
 
+# Set up the logger for this module
+logger = logging.getLogger('app_logger')
+
 
 class Command(BaseCommand):
     help = "Automatically convert and seed data for all apps"
 
     def build_dependency_graph(self):
+        logger.debug('Building dependency graph')
         graph = {}
         for app in apps.get_app_configs():
             # Only process apps that are in the CUSTOM_APPS list
@@ -27,16 +32,20 @@ class Command(BaseCommand):
                             graph[attr] = getattr(attr, "dependencies", [])
                 except ImportError:
                     # If the seeds module doesn't exist, just continue to the next app
+                    logger.warning(
+                        f"Seeds module not found for app {app.name}")
                     continue
         return graph
 
     def topological_sort(self, graph):
+        logger.debug('Performing topological sort')
         visited = set()
         visiting = set()  # Nodes that are currently being visited
         order = []
 
         def visit(node):
             if node in visiting:
+                logger.error(f"Circular dependency detected: {node}")
                 raise CommandError(f"Circular dependency detected: {node}")
             if node not in visited:
                 visiting.add(node)
@@ -53,6 +62,8 @@ class Command(BaseCommand):
         return order
 
     def process_seed(self, app, seed_class):
+        logger.debug(
+            f'Processing seed: {seed_class.__name__} for app {app.name}')
         self.stdout.write(
             self.style.SUCCESS(
                 f'Processing model: {seed_class.__name__.replace("Seed", "")}'
@@ -77,10 +88,13 @@ class Command(BaseCommand):
             fixture_file = seed_instance.get_output_path(app.path)
             call_command("loaddata", fixture_file)
             self.stdout.write(
-                self.style.SUCCESS(f"Loaded data from {fixture_file} into the database")
+                self.style.SUCCESS(
+                    f"Loaded data from {fixture_file} into the database")
             )
         except Exception as e:
             # If there's an error, add the seed_class to the retry queue
+            logger.error(
+                f"Error loading data for {app.name}.{seed_class.__name__}: {e}")
             self.retry_queue.append((app, seed_class))
             self.stdout.write(
                 self.style.WARNING(
@@ -89,6 +103,7 @@ class Command(BaseCommand):
             )
 
     def handle(self, *args, **kwargs):
+        logger.debug('Starting autoseed command')
 
         settings.SEEDING = True
         self.retry_queue = (
@@ -109,7 +124,8 @@ class Command(BaseCommand):
                 break  # If the retry queue is empty, we're done
 
             self.stdout.write(
-                self.style.SUCCESS(f"Retrying for {len(self.retry_queue)} seeds...")
+                self.style.SUCCESS(
+                    f"Retrying for {len(self.retry_queue)} seeds...")
             )
             seeds_to_retry = self.retry_queue.copy()
             self.retry_queue.clear()  # Clear the retry queue for this iteration
@@ -125,6 +141,8 @@ class Command(BaseCommand):
                     for app, seed_class in self.retry_queue
                 ]
             )
+            logger.error(
+                f"Failed to load data for {failed_seeds} after {max_retries} retries")
             self.stdout.write(
                 self.style.ERROR(
                     f"Failed to load data for {failed_seeds} after {max_retries} retries."
@@ -132,6 +150,7 @@ class Command(BaseCommand):
             )
 
         # Log the end of the command
+        logger.debug('Autoseed command completed')
         self.stdout.write(self.style.SUCCESS("Autoseed completed!"))
         settings.SEEDING = False
 
