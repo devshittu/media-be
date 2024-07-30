@@ -1,18 +1,24 @@
+import logging
 from django.db import models
 from django.conf import settings
 from django.db.models import JSONField
 from utils.models import SoftDeletableModel, TimestampedModel
+
+# Set up the logger for this module
+logger = logging.getLogger('app_logger')
 
 
 class UserSession(SoftDeletableModel, TimestampedModel):
     """
     Model to represent a user's session.
     """
+    logger.debug('Initializing UserSession model')
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_sessions"
     )
-    session_token = models.UUIDField(unique=True)  # Unique identifier for the session
+    # Unique identifier for the session
+    session_token = models.UUIDField(unique=True)
     # location_data
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     geolocation = models.CharField(
@@ -33,13 +39,16 @@ class UserSession(SoftDeletableModel, TimestampedModel):
         verbose_name_plural = "User Sessions"
 
     def __str__(self):
-        return f"Session {self.session_id} for {self.user}"
+        logger.debug(
+            f'Returning string representation for session {self.session_token}')
+        return f"Session {self.session_token} for {self.user}"
 
 
 class StoryInteraction(SoftDeletableModel, TimestampedModel):
     """
     Generic model to track various interactions with stories.
     """
+    logger.debug('Initializing StoryInteraction model')
 
     INTERACTION_CHOICES = [
         ("view", "View"),
@@ -68,8 +77,10 @@ class StoryInteraction(SoftDeletableModel, TimestampedModel):
     story = models.ForeignKey(
         "stories.Story", on_delete=models.CASCADE, related_name="interactions"
     )
-    interaction_type = models.CharField(max_length=50, choices=INTERACTION_CHOICES)
-    metadata = JSONField(blank=True, null=True)  # Additional data for the interaction
+    interaction_type = models.CharField(
+        max_length=50, choices=INTERACTION_CHOICES)
+    # Additional data for the interaction
+    metadata = JSONField(blank=True, null=True)
     user_session = models.ForeignKey(
         UserSession,
         on_delete=models.CASCADE,
@@ -83,10 +94,13 @@ class StoryInteraction(SoftDeletableModel, TimestampedModel):
         verbose_name_plural = "Stories Interactions"
 
     def __str__(self):
+        logger.debug(
+            f'Returning string representation for interaction {self.id}')
         return f"{self.user} {self.interaction_type} {self.story} on {self.created_at}"
 
 
 class StoryInteractionMetadataSchema(SoftDeletableModel, TimestampedModel):
+    logger.debug('Initializing StoryInteractionMetadataSchema model')
     interaction_type = models.CharField(
         max_length=50, choices=StoryInteraction.INTERACTION_CHOICES
     )
@@ -97,6 +111,8 @@ class StoryInteractionMetadataSchema(SoftDeletableModel, TimestampedModel):
         unique_together = ("interaction_type", "version")
 
     def __str__(self):
+        logger.debug(
+            f'Returning string representation for metadata schema {self.id}')
         return f"{self.interaction_type} v{self.version}"
 
 
@@ -104,6 +120,7 @@ class UserNotInterested(SoftDeletableModel, TimestampedModel):
     """
     Model to track stories users are not interested in.
     """
+    logger.debug('Initializing UserNotInterested model')
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -121,6 +138,8 @@ class UserNotInterested(SoftDeletableModel, TimestampedModel):
         ordering = ["-created_at"]
 
     def __str__(self):
+        logger.debug(
+            f'Returning string representation for uninterested story {self.id}')
         return f"{self.user} not interested in {self.story} on {self.created_at}"
 
 
@@ -128,6 +147,7 @@ class AccessibilityTool(SoftDeletableModel, TimestampedModel):
     """
     Model to track accessibility tools used.
     """
+    logger.debug('Initializing AccessibilityTool model')
 
     TOOL_CHOICES = [
         ("screen_reader", "Screen Reader"),
@@ -147,6 +167,8 @@ class AccessibilityTool(SoftDeletableModel, TimestampedModel):
         verbose_name_plural = "Accessibility Tools"
 
     def __str__(self):
+        logger.debug(
+            f'Returning string representation for accessibility tool {self.id}')
         return f"{self.user} used {self.tool_name} on {self.created_at}"
 
 
