@@ -1,9 +1,14 @@
 import re
+import logging
 from django.db import models
 from django.conf import settings
 from django.utils.html import strip_tags
 from autoslug import AutoSlugField
-from utils.models import SoftDeletableModel, TimestampedModel, FlaggedContentMixin
+from utils.models import (
+    SoftDeletableModel, TimestampedModel,)
+
+# Set up the logger for this module
+logger = logging.getLogger('app_logger')
 
 
 class Category(SoftDeletableModel, TimestampedModel):
@@ -18,6 +23,7 @@ class Category(SoftDeletableModel, TimestampedModel):
     )
 
     def __str__(self):
+        logger.debug(f"String representation called for Category {self.id}")
         return self.name
 
 
@@ -26,11 +32,13 @@ class Ticket(SoftDeletableModel, TimestampedModel):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, null=True)
     subject = models.CharField(max_length=255)
     description = models.TextField()
 
     def __str__(self):
+        logger.debug(f"String representation called for Ticket {self.id}")
         return self.subject
 
 
@@ -50,6 +58,7 @@ class Tag(SoftDeletableModel, TimestampedModel):
     )
 
     def __str__(self):
+        logger.debug(f"String representation called for Tag {self.id}")
         return self.name
 
 
@@ -63,13 +72,16 @@ class AppVersion(SoftDeletableModel, TimestampedModel):
     deprecations = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
+        logger.debug(f"Saving AppVersion {self.version}")
         # Automatically set major and minor version fields
         major, minor, _ = self.version.split(".", 2)
         self.major_version = int(major)
         self.minor_version = int(minor)
         super().save(*args, **kwargs)
+        logger.info(f"Saved AppVersion {self.version}")
 
     def __str__(self):
+        logger.debug(f"String representation called for AppVersion {self.id}")
         return self.version
 
 
@@ -96,12 +108,14 @@ class Article(SoftDeletableModel, TimestampedModel):
     )
 
     def __str__(self):
+        logger.debug(f"String representation called for Article {self.id}")
         return self.title
 
     def summary(self):
         """
         Generate a summary of the content, not exceeding 200 characters.
         """
+        logger.debug(f"Generating summary for Article {self.id}")
         content_text = self._strip_markdown(strip_tags(self.content))
         max_length = 200
 
@@ -115,6 +129,7 @@ class Article(SoftDeletableModel, TimestampedModel):
         Calculate the reading time of the article, stripping HTML and Markdown syntax.
         Assumes an average reading speed of 200 words per minute.
         """
+        logger.debug(f"Calculating reading time for Article {self.id}")
         content_text = self._strip_markdown(strip_tags(self.content))
         word_count = len(re.findall(r"\w+", content_text))
         reading_speed_per_minute = 200
@@ -125,6 +140,7 @@ class Article(SoftDeletableModel, TimestampedModel):
         """
         Strip Markdown syntax elements from text.
         """
+        logger.debug(f"Stripping markdown for text in Article {self.id}")
         # Patterns with capturing groups
         patterns_with_groups = [
             (r"\!\[.*?\]\(.*?\)", ""),  # Images
