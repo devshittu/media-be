@@ -104,7 +104,6 @@ jobs:
       # - name: Run Docker Container for web app
       #   run: sudo docker compose --env-file .env.docker-compose -f docker-compose.staging.yml up -d web-app db-postgres db-neo4j
 
-
       - name: Check for 'hard-reset' in commit message
         id: check_commit
         run: |
@@ -125,10 +124,8 @@ jobs:
           else
             echo "Restarting only web-app container..."
             sudo docker compose -f docker-compose.staging.yml down web-app || true
-            sudo docker compose --env-file .env.docker-compose -f docker-compose.staging.yml up -d web-app
+            sudo docker compose --env-file .env.docker-compose -f docker-compose.staging.yml up -d web-app celery
           fi
-
-
 
       - name: Run init-web-app.sh in backend-app container
         run: sudo docker exec backend-app bash -c "./k8s/scripts/init-web-app.sh"
