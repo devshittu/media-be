@@ -1,12 +1,23 @@
+import logging
 import re
-from datetime import datetime, timedelta
-from django.db.models import Count
-from neomodel import db
-from .models import Story, Category
-from django.db.models import F, Count, Q
+
+# Set up the logger for this module
+logger = logging.getLogger('app_logger')
 
 
 def extract_hashtags(text):
-    return set(part[1:] for part in re.findall(r"#\w+", text))
+    """
+    Extract hashtags from a given text.
+
+    Args:
+        text (str): The text to extract hashtags from.
+
+    Returns:
+        set: A set of unique hashtags.
+    """
+    logger.debug(f'Extracting hashtags from text: {text}')
+    hashtags = set(part[1:] for part in re.findall(r"#\w+", text))
+    logger.info(f'Extracted hashtags: {hashtags}')
+    return hashtags
 
 # stories/utils.py
