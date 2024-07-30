@@ -78,6 +78,9 @@ COPY . $APP_HOME
 COPY k8s/scripts $APP_HOME/k8s/scripts
 RUN chmod +x $APP_HOME/k8s/scripts/init-web-app.sh
 
+# Create log directory and set permissions
+RUN mkdir -p $APP_HOME/logs && chmod -R 777 $APP_HOME/logs
+
 # chown all the files to the app user
 RUN chown -R app:app $APP_HOME
 
