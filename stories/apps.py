@@ -7,3 +7,5 @@ class StoriesConfig(AppConfig):
 
     def ready(self):
         import stories.neo_signals
+
+# stories/apps.py

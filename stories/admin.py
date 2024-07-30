@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import (Story, Category, Like, Dislike, Bookmark)
 
+
 class ActiveUnflaggedFilter(admin.SimpleListFilter):
     title = 'status'
     parameter_name = 'status'
@@ -21,19 +22,27 @@ class ActiveUnflaggedFilter(admin.SimpleListFilter):
             return queryset.filter(deleted_at__isnull=False)
 
 
-
 def unflag_stories(modeladmin, request, queryset):
     queryset.update(is_flagged=False)
+
+
 unflag_stories.short_description = "Unflag selected stories"
+
 
 def restore_stories(modeladmin, request, queryset):
     queryset.update(deleted_at=None)
+
+
 restore_stories.short_description = "Restore soft-deleted stories"
 
 # @admin.register(Story)
+
+
 class StoryAdmin(admin.ModelAdmin):
-    list_display = ['title', 'user', 'slug', 'category', 'event_occurred_at', 'event_reported_at', 'likes_count', 'dislikes_count', 'is_flagged', 'deleted_at']
-    list_filter = [ActiveUnflaggedFilter, 'user', 'category', 'event_occurred_at', 'event_reported_at']
+    list_display = ['title', 'user', 'slug', 'category', 'event_occurred_at',
+                    'event_reported_at', 'likes_count', 'dislikes_count', 'is_flagged', 'deleted_at']
+    list_filter = [ActiveUnflaggedFilter, 'user',
+                   'category', 'event_occurred_at', 'event_reported_at']
     actions = [unflag_stories, restore_stories]
     search_fields = ('title', 'body')
     # list_filter = ('user', 'category', 'event_occurred_at', 'event_reported_at')
@@ -46,30 +55,37 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description')
     # prepopulated_fields = {'slug': ('title',)}
 
+
 class LikeInline(admin.TabularInline):
     model = Like
     extra = 0
+
 
 class DislikeInline(admin.TabularInline):
     model = Dislike
     extra = 0
 
+
 class BookmarkInline(admin.TabularInline):
     model = Bookmark
     extra = 0
+
 
 class LikeAdmin(admin.ModelAdmin):
     list_display = ('user', 'story')
     list_filter = ('user', 'story')
 
+
 class DislikeAdmin(admin.ModelAdmin):
     list_display = ('user', 'story', 'created_at')
     list_filter = ('user', 'story')
+
 
 class BookmarkAdmin(admin.ModelAdmin):
     list_display = ('story', 'bookmark_category', 'note')
     list_filter = ('bookmark_category',)
     search_fields = ('story__title', 'note')
+
 
 # Register the models with their custom admin views
 admin.site.register(Category, CategoryAdmin)
