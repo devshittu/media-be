@@ -1,10 +1,13 @@
-from django.urls import reverse
+import logging
 from rest_framework import serializers
 from .models import Story, Category, Like, Dislike, Bookmark
 from .neo_models import StoryNode
 from utils.serializers import UnixTimestampModelSerializer
 from multimedia.serializers import MultimediaSerializer
 from common.serializers import CustomUserSerializer
+
+# Set up the logger for this module
+logger = logging.getLogger('app_logger')
 
 
 class CategorySerializer(UnixTimestampModelSerializer):
@@ -16,7 +19,9 @@ class CategorySerializer(UnixTimestampModelSerializer):
         fields = ["id", "slug", "title", "description"]
 
     def validate_title(self, value):
+        logger.debug(f'Validating title for category: {value}')
         if Category.objects.filter(title=value).exists():
+            logger.warning(f'Category with title {value} already exists')
             raise serializers.ValidationError(
                 "A category with this title already exists."
             )
@@ -55,40 +60,49 @@ class StorySerializer(UnixTimestampModelSerializer):
     def get_has_liked(self, obj):
         user = self.context["request"].user
         if user.is_authenticated:
+            logger.debug(f'Checking if user {user.id} liked story {obj.id}')
             return Like.objects.filter(story=obj, user=user).exists()
         return None
 
     def get_has_disliked(self, obj):
         user = self.context["request"].user
         if user.is_authenticated:
+            logger.debug(f'Checking if user {user.id} disliked story {obj.id}')
             return Dislike.objects.filter(story=obj, user=user).exists()
         return None
 
     def get_has_bookmarked(self, obj):
         user = self.context["request"].user
         if user.is_authenticated:
+            logger.debug(
+                f'Checking if user {user.id} bookmarked story {obj.id}')
             return Bookmark.objects.filter(story=obj, user=user).exists()
         return None
 
     def get_storylines_count(self, obj):
         try:
+            logger.debug(f'Getting storylines count for story {obj.id}')
             # Get the StoryNode from Neo4j
             story_node = StoryNode.nodes.get(story_id=obj.id)
 
             # Get all Storyline nodes this story belongs to
             storylines = list(story_node.belongs_to_storyline.all())
             return len(storylines)
-        except:
+        except Exception as e:
+            logger.error(
+                f'Error getting storylines count for story {obj.id}: {e}')
             return 0
 
     def get_storyline_id(self, obj):
         try:
+            logger.debug(f'Getting storyline ID for story {obj.id}')
             story_node = StoryNode.nodes.get(story_id=obj.id)
             storyline = story_node.belongs_to_storyline.all()[
                 0
             ]  # Assuming a story belongs to only one storyline
             return storyline.id
-        except:
+        except Exception as e:
+            logger.error(f'Error getting storyline ID for story {obj.id}: {e}')
             return None
 
 
