@@ -218,9 +218,12 @@ class PasswordResetRequestView(APIView):
 
         # Send an email to the user with the reset link using the template messaging system
         context = {"UserInfo": user, "ResetLink": reset_link}
-        send_message(
-            "password_reset", context, user.email
-        )  # Assuming 'password_reset' is the code for your template
+
+        # Send an email to the user with the reset link using Celery
+        send_password_reset_email.delay(user.email, context)
+        logger.info(
+            f"PasswordResetRequestView: Password reset email task sent to Celery for {email}")
+
 
         logger.info(
             f"PasswordResetRequestView: Password reset link sent to {email}")

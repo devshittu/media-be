@@ -55,4 +55,13 @@ def send_link_verification_email(user_id, context):
         logger.error(
             f'Error sending link verification email to user {user_id}: {e}')
 
+
+@shared_task
+def send_password_reset_email(email, context):
+    logger.debug(f'Attempting to send password reset email to {email}')
+    try:
+        send_message('password_reset', context, email)
+        logger.info(f'Password reset email sent to {email}')
+    except Exception as e:
+        logger.error(f'Error sending password reset email to {email}: {e}')
 # authentication/tasks.py
