@@ -19,7 +19,6 @@ from .utils import set_refresh_token_cookie
 from .tasks import send_otp_verification_email, send_link_verification_email
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from .serializers import CustomUserRegistrationSerializer
 from common.serializers import CustomUserSerializer, AuthUserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError, AccessToken
@@ -41,16 +40,15 @@ from utils.error_codes import ErrorCode
 from utils.exceptions import CustomBadRequest
 import logging
 
+
 # Set up logging
-# logger = logging.getLogger(__name__)
-
-logger = logging.getLogger("media_be")  # Use the logger defined in settings.py
-
+logger = logging.getLogger('app_logger')
 # from users.models import UserSetting
 
 
 class ObtainTokensView(APIView):
     def post(self, request):
+        logger.info("ObtainTokensView: Beginning token verification")
         # logger.info(f"ObtainTokensView: log beginning token verification")
         # # Get the origin of the request
         # origin = request.headers.get("Origin")
@@ -72,10 +70,12 @@ class ObtainTokensView(APIView):
         password = request.data.get("password")
 
         # Use the custom backend to authenticate the user
-        user = authenticate(request, username=username_or_email, password=password)
+        user = authenticate(
+            request, username=username_or_email, password=password)
 
         # If authentication fails, raise an error
         if user is None:
+            logger.warning("ObtainTokensView: Invalid login credentials")
             raise AuthenticationFailed(
                 {
                     "code": ErrorCode.AUTHENTICATION_FAILED,
@@ -91,8 +91,10 @@ class ObtainTokensView(APIView):
 
         # Calculate expiration times
         access_token_expires_at = timezone.now() + refresh.access_token.lifetime
-        access_token_expires_at_timestamp = int(access_token_expires_at.timestamp())
+        access_token_expires_at_timestamp = int(
+            access_token_expires_at.timestamp())
 
+        logger.info(f"ObtainTokensView: Token generated for user {user.id}")
         response = Response(
             {
                 "access_token": access_token,
@@ -107,12 +109,13 @@ class ObtainTokensView(APIView):
 
 class TokenVerifyView(APIView):
     def post(self, request):
-        logger.info(f"TokenVerifyView: log beginning token verification")
+        logger.info("TokenVerifyView: Beginning token verification")
         token = request.data.get("token")
 
         logger.info(f"Request Body: {request.data}")
 
         if not token:
+            logger.warning("TokenVerifyView: No token provided")
             raise AuthenticationFailed(
                 {
                     "code": ErrorCode.TOKEN_NOT_PROVIDED,
@@ -122,10 +125,12 @@ class TokenVerifyView(APIView):
 
         try:
             AccessToken(token)  # This will validate the token
+            logger.info("TokenVerifyView: Token is valid")
             # Explicitly return the expected response data
             return Response({"status": "success", "token": "valid"})
 
         except TokenError:
+            logger.warning("TokenVerifyView: Invalid or expired access token")
             raise AuthenticationFailed(
                 {
                     "code": ErrorCode.INVALID_ACCESS_TOKEN,
@@ -136,10 +141,11 @@ class TokenVerifyView(APIView):
 
 class RefreshTokenView(APIView):
     def post(self, request):
-        logger.info(f"RefreshTokenView: log beginning token verification")
+        logger.info("RefreshTokenView: log beginning token verification")
         refresh_token = request.COOKIES.get("refresh_token")
 
         if not refresh_token:
+            logger.warning("RefreshTokenView: No refresh token provided")
             raise AuthenticationFailed(
                 {
                     "code": ErrorCode.TOKEN_NOT_PROVIDED,
@@ -149,6 +155,7 @@ class RefreshTokenView(APIView):
 
         # Check if the token is blacklisted
         if BlacklistedToken.objects.filter(token=refresh_token).exists():
+            logger.warning("RefreshTokenView: Blacklisted refresh token used")
             raise AuthenticationFailed(
                 {
                     "code": ErrorCode.BLACKLISTED_REFRESH_TOKEN,
@@ -159,7 +166,10 @@ class RefreshTokenView(APIView):
         try:
             refresh = RefreshToken(refresh_token)
             access_token = str(refresh.access_token)
+            logger.info("RefreshTokenView: New access token generated")
         except Exception as e:
+            logger.error(
+                f"RefreshTokenView: Error generating access token: {e}")
             raise AuthenticationFailed(
                 {
                     "code": ErrorCode.INVALID_REFRESH_TOKEN,
@@ -169,7 +179,8 @@ class RefreshTokenView(APIView):
 
         # Calculate expiration times
         access_token_expires_at = timezone.now() + refresh.access_token.lifetime
-        access_token_expires_at_timestamp = int(access_token_expires_at.timestamp())
+        access_token_expires_at_timestamp = int(
+            access_token_expires_at.timestamp())
 
         return Response(
             {
@@ -181,12 +192,15 @@ class RefreshTokenView(APIView):
 
 class PasswordResetRequestView(APIView):
     def post(self, request):
+        logger.info("PasswordResetRequestView: Password reset request received")
         serializer = PasswordResetRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data["email"]
 
         user = CustomUser.objects.filter(email=email).first()
         if not user:
+            logger.warning(
+                f"PasswordResetRequestView: Email not found {email}")
             return Response(
                 {"code": ErrorCode.EMAIL_NOT_FOUND, "detail": "Email not found"},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -208,11 +222,16 @@ class PasswordResetRequestView(APIView):
             "password_reset", context, user.email
         )  # Assuming 'password_reset' is the code for your template
 
+        logger.info(
+            f"PasswordResetRequestView: Password reset link sent to {email}")
         return Response({"detail": "Password reset link sent to email"})
 
 
 class PasswordResetConfirmView(APIView):
     def post(self, request):
+        logger.info(
+            "PasswordResetConfirmView: Password reset confirmation received")
+
         serializer = PasswordResetConfirmSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         token = serializer.validated_data["token"]
@@ -220,6 +239,8 @@ class PasswordResetConfirmView(APIView):
 
         reset_token = PasswordResetToken.objects.filter(token=token).first()
         if not reset_token or not reset_token.is_valid():
+            logger.warning(
+                "PasswordResetConfirmView: Invalid or expired token")
             return Response(
                 {
                     "code": ErrorCode.INVALID_OR_EXPIRED_RESET_TOKEN,
@@ -239,12 +260,16 @@ class PasswordResetConfirmView(APIView):
 
         # Delete the token
         reset_token.delete()
+        logger.info(
+            f"PasswordResetConfirmView: Password reset successful for user {user.id}")
 
         return Response({"detail": "Password reset successful"})
 
 
 class OTPVerificationWithTokenView(APIView):
     def post(self, request):
+        logger.info(
+            "OTPVerificationWithTokenView: OTP verification request received")
         otp_code = request.data.get("otp")
         email = request.data.get("email")
 
@@ -262,15 +287,22 @@ class OTPVerificationWithTokenView(APIView):
             )
 
             response = set_jwt_cookie(response, refresh)
+            logger.info(
+                f"OTPVerificationWithTokenView: Account activated for user {user.id}")
             return response
 
         except ValueError as e:
-            raise CustomBadRequest({"code": ErrorCode.INVALID_OTP, "detail": [str(e)]})
+            logger.warning(
+                f"OTPVerificationWithTokenView: Invalid OTP for user {user.id} - {e}")
+            raise CustomBadRequest(
+                {"code": ErrorCode.INVALID_OTP, "detail": [str(e)]})
             # raise CustomBadRequest(detail={"otp": [str(e)]})
 
 
 class OTPVerificationOnlyView(APIView):
     def post(self, request):
+        logger.info(
+            "OTPVerificationOnlyView: OTP verification request received")
         otp_code = request.data.get("otp")
         email = request.data.get("email")
 
@@ -278,21 +310,28 @@ class OTPVerificationOnlyView(APIView):
             user = get_valid_user(email)
             validate_otp(user, otp_code)
             activate_user(user)
+            logger.info(
+                f"OTPVerificationOnlyView: Account activated for user {user.id}")
 
             return Response({"message": "Account activated successfully!"})
 
         except ValueError as e:
-            raise CustomBadRequest({"code": ErrorCode.INVALID_OTP, "detail": str(e)})
+            logger.warning(
+                f"OTPVerificationOnlyView: Invalid OTP for user {user.id} - {e}")
+            raise CustomBadRequest(
+                {"code": ErrorCode.INVALID_OTP, "detail": str(e)})
             # return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ResendOTPView(APIView):
     def post(self, request):
+        logger.info("ResendOTPView: Resend OTP request received")
         email = request.data.get("email")
 
         # Fetch the user with the provided email
         user = CustomUser.objects.filter(email=email).first()
         if not user:
+            logger.warning(f"ResendOTPView: Invalid email {email}")
             return Response(
                 {"code": ErrorCode.INVALID_EMAIL, "detail": "Invalid email"},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -306,6 +345,9 @@ class ResendOTPView(APIView):
             expires_at__gt=timezone.now(), is_used=False
         ).first()
         if recent_otp:
+            logger.warning(
+                f"ResendOTPView: Recent OTP still valid for user {user.id}")
+
             return Response(
                 {
                     "code": ErrorCode.RECENT_OTP_STILL_VALID,
@@ -335,7 +377,9 @@ class ResendOTPView(APIView):
             "OTP_CODE": otp.otp,
             "PlatformName": config("APP_NAME", default="App Name", cast=str),
         }
-        send_otp_verification_email.delay(user.id, context)  # Trigger the Celery task
+        send_otp_verification_email.delay(
+            user.id, context)  # Trigger the Celery task
+        logger.info(f"ResendOTPView: New OTP sent to user {user.id}")
 
         return Response({"detail": "A new OTP has been sent to your email."})
 
@@ -344,8 +388,13 @@ class AccountVerificationView(APIView):
     serializer_class = VerificationTokenSerializer
 
     def get(self, request, token):
-        verification_token = VerificationToken.objects.filter(token=token).first()
+        logger.info(
+            "AccountVerificationView: Account verification request received")
+        verification_token = VerificationToken.objects.filter(
+            token=token).first()
         if not verification_token or not verification_token.is_valid():
+            logger.warning(
+                "AccountVerificationView: Invalid or expired verification link")
             return Response(
                 {
                     "code": ErrorCode.INVALID_VERIFICATION_LINK,
@@ -365,16 +414,21 @@ class AccountVerificationView(APIView):
 
         # Delete the token
         verification_token.delete()
-
+        logger.info(
+            f"AccountVerificationView: Account activated for user {user.id}")
         return Response({"detail": "Account activated successfully"})
 
 
 class ResendVerificationLinkView(APIView):
     def post(self, request):
+        logger.info(
+            "ResendVerificationLinkView: Resend verification link request received")
         email = request.data.get("email")
         user = CustomUser.objects.filter(email=email).first()
 
         if not user:
+            logger.warning(
+                f"ResendVerificationLinkView: Invalid email {email}")
             return Response(
                 {"code": ErrorCode.INVALID_EMAIL, "detail": "Invalid email"},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -389,6 +443,8 @@ class ResendVerificationLinkView(APIView):
         ).first()
 
         if recent_token:
+            logger.warning(
+                f"ResendVerificationLinkView: Recent verification link still valid for user {user.id}")
             return Response(
                 {
                     "code": ErrorCode.RECENT_OTP_STILL_VALID,
@@ -420,7 +476,10 @@ class ResendVerificationLinkView(APIView):
             "VerificationLink": verification_link,
             "PlatformName": config("APP_NAME", default="App Name", cast=str),
         }
-        send_link_verification_email.delay(user.id, context)  # Trigger the Celery task
+        send_link_verification_email.delay(
+            user.id, context)  # Trigger the Celery task
+        logger.info(
+            f"ResendVerificationLinkView: Verification link sent to user {user.id}")
 
         return Response({"detail": "Verification link sent to email"})
 
@@ -430,9 +489,12 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = CustomUserRegistrationSerializer
 
     def create(self, request, *args, **kwargs):
+        logger.info("RegisterView: User registration request received")
         serializer = self.get_serializer(data=request.data)
         # serializer.is_valid(raise_exception=True)
         if not serializer.is_valid():
+            logger.warning(
+                "RegisterView: User registration failed due to invalid data")
             return Response(
                 {
                     "code": ErrorCode.USER_REGISTRATION_FAILED,
@@ -442,6 +504,8 @@ class RegisterView(generics.CreateAPIView):
             )
         user = self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
+        logger.info(
+            f"RegisterView: User registration successful for user {user.id}")
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
@@ -455,6 +519,7 @@ class UserListView(generics.ListCreateAPIView):
     API endpoint that allows users to be viewed or created.
     """
 
+    logger.debug('Initializing UserListView')
     queryset = get_user_model().objects.all()
     serializer_class = CustomUserSerializer
 
@@ -464,6 +529,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     API endpoint that allows a single user to be viewed, edited, or deleted.
     """
 
+    logger.debug('Initializing UserDetailView')
     queryset = get_user_model().objects.all()
     serializer_class = CustomUserSerializer
 
@@ -472,12 +538,14 @@ class CompleteSetupView(generics.UpdateAPIView):
     """
     API endpoint to mark the user's setup as complete.
     """
-
+    logger.debug('Initializing CompleteSetupView')
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def update(self, request, *args, **kwargs):
+        logger.info(
+            f"CompleteSetupView: Marking setup as complete for user {request.user.id}")
         user = request.user
         user.has_completed_setup = True
         user.save()
@@ -488,7 +556,7 @@ class AuthUserView(generics.RetrieveAPIView):
     """
     View to retrieve the authenticated user's information and settings.
     """
-
+    logger.debug('Initializing AuthUserView')
     serializer_class = AuthUserSerializer
     # permission_classes = [CustomIsAuthenticated]
     permission_classes = [CustomIsAuthenticated]
@@ -496,6 +564,8 @@ class AuthUserView(generics.RetrieveAPIView):
     def get_object(self):
         # Ensure the user's settings exist
         # UserSetting.objects.get_or_create(user=self.request.user)
+        logger.info(
+            f"AuthUserView: Retrieving authenticated user {self.request.user.id}")
         return self.request.user
 
 
@@ -508,17 +578,23 @@ class UpdatePasswordView(generics.UpdateAPIView):
         return self.request.user
 
     def update(self, request, *args, **kwargs):
+        logger.info(
+            f"UpdatePasswordView: Password update request received for user {request.user.id}")
         self.object = self.get_object()
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid():
             # Set the new password
             self.object = serializer.save()
+            logger.info(
+                f"UpdatePasswordView: Password updated successfully for user {request.user.id}")
             return Response(
                 {"status": "success", "message": "Password updated successfully"},
                 status=status.HTTP_200_OK,
             )
 
+        logger.warning(
+            f"UpdatePasswordView: Password update failed for user {request.user.id}")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -535,13 +611,17 @@ class LogoutView(APIView):
     permission_classes = [CustomIsAuthenticated]
 
     def post(self, request):
+        logger.info(
+            f"LogoutView: Logout request received for user {request.user.id}")
         # Get the refresh token from the request's cookies
         refresh_token = request.COOKIES.get("refresh_token")
 
         # Check if the refresh_token exists
         if not refresh_token:
+            logger.warning("LogoutView: Refresh token not found")
             return Response(
-                {"code": ErrorCode.LOGOUT_FAILED, "detail": "Refresh token not found."},
+                {"code": ErrorCode.LOGOUT_FAILED,
+                    "detail": "Refresh token not found."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         # Blacklist the token
@@ -550,6 +630,9 @@ class LogoutView(APIView):
         # Clear the refresh token cookie
         response = Response({"detail": "Successfully logged out."})
         response.delete_cookie("refresh_token")
+        logger.info(
+            f"LogoutView: User {request.user.id} logged out successfully")
+
 
         return response
 
