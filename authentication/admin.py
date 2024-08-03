@@ -1,6 +1,8 @@
 import logging
 from django.contrib import admin
-from .models import CustomUser
+from .models import (CustomUser, PasswordResetToken, OTP,
+                     VerificationToken, BlacklistedToken,)
+
 
 # Set up the logger for this module
 logger = logging.getLogger('app_logger')
@@ -17,6 +19,7 @@ class CustomUserAdmin(admin.ModelAdmin):
         "last_activity",
         "is_active",
         "is_staff",
+        "has_completed_setup",
     )
 
     # Fields that will be used for searching
@@ -66,7 +69,35 @@ class CustomUserAdmin(admin.ModelAdmin):
         return super().get_queryset(request)
 
 
-# Register the model with the custom admin view
+class PasswordResetTokenAdmin(admin.ModelAdmin):
+    list_display = ("user", "token", "created_at")
+    search_fields = ("user__email", "token")
+    list_filter = ("created_at",)
+
+
+class OTPAdmin(admin.ModelAdmin):
+    list_display = ("user", "otp", "expires_at", "is_used", "created_at")
+    search_fields = ("user__email", "otp")
+    list_filter = ("is_used", "expires_at", "created_at")
+
+
+class VerificationTokenAdmin(admin.ModelAdmin):
+    list_display = ("user", "token", "expires_at", "created_at")
+    search_fields = ("user__email", "token")
+    list_filter = ("expires_at", "created_at")
+
+
+class BlacklistedTokenAdmin(admin.ModelAdmin):
+    list_display = ("token", "blacklisted_at")
+    search_fields = ("token",)
+    list_filter = ("blacklisted_at",)
+
+
+# Register the models with the custom admin views
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(PasswordResetToken, PasswordResetTokenAdmin)
+admin.site.register(OTP, OTPAdmin)
+admin.site.register(VerificationToken, VerificationTokenAdmin)
+admin.site.register(BlacklistedToken, BlacklistedTokenAdmin)
 
 # authentication/admin.py
