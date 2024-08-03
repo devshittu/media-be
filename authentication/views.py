@@ -24,7 +24,6 @@ from common.serializers import CustomUserSerializer, AuthUserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError, AccessToken
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.views import APIView
-from system_messaging.utils import send_message
 from django.utils.crypto import get_random_string
 from decouple import config
 from datetime import timedelta
@@ -93,17 +92,21 @@ class ObtainTokensView(APIView):
         access_token_expires_at = timezone.now() + refresh.access_token.lifetime
         access_token_expires_at_timestamp = int(
             access_token_expires_at.timestamp())
+        refresh_token_expires_at_timestamp = int(
+            refresh.access_token.lifetime.total_seconds())
 
         logger.info(f"ObtainTokensView: Token generated for user {user.id}")
         response = Response(
             {
                 "access_token": access_token,
                 "access_token_expires_at": access_token_expires_at_timestamp,
+                "refresh_token": str(refresh),
+                "refresh_token_expires_at": refresh_token_expires_at_timestamp,
             }
         )
 
         # Set refresh token as HttpOnly cookie
-        response = set_refresh_token_cookie(response, refresh)
+        # response = set_refresh_token_cookie(response, refresh)
         return response
 
 
@@ -142,7 +145,8 @@ class TokenVerifyView(APIView):
 class RefreshTokenView(APIView):
     def post(self, request):
         logger.info("RefreshTokenView: log beginning token verification")
-        refresh_token = request.COOKIES.get("refresh_token")
+        # refresh_token = request.COOKIES.get("refresh_token")
+        refresh_token = request.data.get("refresh_token")
 
         if not refresh_token:
             logger.warning("RefreshTokenView: No refresh token provided")
@@ -181,11 +185,15 @@ class RefreshTokenView(APIView):
         access_token_expires_at = timezone.now() + refresh.access_token.lifetime
         access_token_expires_at_timestamp = int(
             access_token_expires_at.timestamp())
+        # refresh_token_expires_at_timestamp = int(
+        #     refresh.access_token.lifetime.total_seconds())
 
         return Response(
             {
                 "access_token": access_token,
                 "access_token_expires_at": access_token_expires_at_timestamp,
+                # "refresh_token": str(refresh),
+                # "refresh_token_expires_at": refresh_token_expires_at_timestamp,
             }
         )
 
@@ -282,9 +290,19 @@ class OTPVerificationWithTokenView(APIView):
             activate_user(user)
             access_token, refresh = generate_jwt_tokens(user)
 
+            # Calculate expiration times
+            access_token_expires_at = timezone.now() + refresh.access_token.lifetime
+            access_token_expires_at_timestamp = int(
+                access_token_expires_at.timestamp())
+            refresh_token_expires_at_timestamp = int(
+                refresh.lifetime.total_seconds())
+            
             response = Response(
                 {
                     "access_token": access_token,
+                    "access_token_expires_at": access_token_expires_at_timestamp,
+                    "refresh_token": str(refresh),
+                    "refresh_token_expires_at": refresh_token_expires_at_timestamp,
                     "message": "Account activated successfully!",
                 }
             )
