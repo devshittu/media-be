@@ -2,8 +2,10 @@ from .models import CustomUser, VerificationToken
 from rest_framework import serializers
 from django.contrib.auth import password_validation
 from django.contrib.auth.hashers import make_password
+import logging
 
-# from common.serializers import CustomUserSerializer
+# Set up the logger for this module
+logger = logging.getLogger('app_logger')
 
 
 class CustomUserRegistrationSerializer(serializers.ModelSerializer):
@@ -13,6 +15,7 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
+        logger.debug(f'Creating user with email: {validated_data["email"]}')
         user = CustomUser(
             email=validated_data["email"],
             display_name=validated_data["display_name"],
@@ -21,16 +24,47 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data["password"])
         user.save()
+        logger.info(f'User created with email: {user.email}')
         return user
 
 
 class PasswordResetRequestSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
+    def validate_email(self, value):
+        logger.debug(f'Validating email for password reset: {value}')
+        if not CustomUser.objects.filter(email=value).exists():
+            logger.warning(
+                f'Password reset requested for non-existent email: {value}')
+            raise serializers.ValidationError(
+                "This email address is not registered.")
+        return value
+
 
 class PasswordResetConfirmSerializer(serializers.Serializer):
     token = serializers.CharField()
     password = serializers.CharField(write_only=True)
+
+    def validate_token(self, value):
+        logger.debug(f'Validating token for password reset: {value}')
+        if not VerificationToken.objects.filter(token=value).exists():
+            logger.warning(f'Invalid token for password reset: {value}')
+            raise serializers.ValidationError("Invalid token.")
+        return value
+
+    def validate_password(self, value):
+        logger.debug(f'Validating new password')
+        password_validation.validate_password(value)
+        return value
+
+    def save(self, **kwargs):
+        token = self.validated_data["token"]
+        new_password = self.validated_data["password"]
+        user = VerificationToken.objects.get(token=token).user
+        user.set_password(new_password)
+        user.save()
+        logger.info(f'Password reset for user: {user.email}')
+        return user
 
 
 class VerificationTokenSerializer(serializers.ModelSerializer):
@@ -46,12 +80,16 @@ class UpdatePasswordSerializer(serializers.Serializer):
 
     def validate_old_password(self, value):
         user = self.context["request"].user
+        logger.debug(f'Validating old password for user: {user.email}')
         if not user.check_password(value):
+            logger.warning(f'Invalid old password for user: {user.email}')
             raise serializers.ValidationError("Old password is not correct")
         return value
 
     def validate(self, data):
         if data["new_password"] != data["confirm_new_password"]:
+            logger.warning(
+                f'Password mismatch for user: {self.context["request"].user.email}')
             raise serializers.ValidationError("New passwords must match")
         password_validation.validate_password(
             data["new_password"], self.context["request"].user
@@ -60,8 +98,10 @@ class UpdatePasswordSerializer(serializers.Serializer):
 
     def save(self, **kwargs):
         user = self.context["request"].user
+        logger.debug(f'Updating password for user: {user.email}')
         user.password = make_password(self.validated_data["new_password"])
         user.save()
+        logger.info(f'Password updated for user: {user.email}')
         return user
 
 
@@ -71,17 +111,26 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         fields = ["username", "email", "display_name"]
 
     def validate_email(self, value):
-        if CustomUser.objects.exclude(pk=self.instance.pk).filter(email=value).exists():
+        logger.debug(f'Validating email for update: {value}')
+        if (
+            CustomUser.objects.exclude(pk=self.instance.pk)
+            .filter(email=value)
+            .exists()
+        ):
+            logger.warning(f'Email {value} is already in use.')
             raise serializers.ValidationError("This email is already in use.")
         return value
 
     def validate_username(self, value):
+        logger.debug(f'Validating username for update: {value}')
         if (
             CustomUser.objects.exclude(pk=self.instance.pk)
             .filter(username=value)
             .exists()
         ):
-            raise serializers.ValidationError("This username is already in use.")
+            logger.warning(f'Username {value} is already in use.')
+            raise serializers.ValidationError(
+                "This username is already in use.")
         return value
 
 
