@@ -16,7 +16,7 @@ from .serializers import (
     UpdateUserSerializer,
 )
 from .utils import set_refresh_token_cookie
-from .tasks import send_otp_verification_email, send_link_verification_email
+from .tasks import send_otp_verification_email, send_link_verification_email, send_password_reset_email
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from .serializers import CustomUserRegistrationSerializer
