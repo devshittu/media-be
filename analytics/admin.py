@@ -60,6 +60,7 @@ class AccessibilityToolAdmin(admin.ModelAdmin):
 
 admin.site.register(UserSession, UserSessionAdmin)
 admin.site.register(StoryInteraction, StoryInteractionAdmin)
-admin.site.register(StoryInteractionMetadataSchema, StoryInteractionMetadataSchemaAdmin)
+admin.site.register(StoryInteractionMetadataSchema,
+                    StoryInteractionMetadataSchemaAdmin)
 admin.site.register(UserNotInterested, UserNotInterestedAdmin)
 admin.site.register(AccessibilityTool, AccessibilityToolAdmin)
