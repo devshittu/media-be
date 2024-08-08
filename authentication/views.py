@@ -1,3 +1,4 @@
+import jwt
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from utils.permissions import CustomIsAuthenticated
@@ -88,6 +89,12 @@ class ObtainTokensView(APIView):
         )  # Assuming user is your authenticated user
         access_token = str(refresh.access_token)
 
+        # Decode the access token to get the token ID
+        decoded_access_token = jwt.decode(
+            access_token, settings.SECRET_KEY, algorithms=["HS256"]
+        )
+        token_id = decoded_access_token.get("jti")
+
         # Calculate expiration times
         access_token_expires_at = timezone.now() + refresh.access_token.lifetime
         access_token_expires_at_timestamp = int(
@@ -102,6 +109,7 @@ class ObtainTokensView(APIView):
                 "access_token_expires_at": access_token_expires_at_timestamp,
                 "refresh_token": str(refresh),
                 "refresh_token_expires_at": refresh_token_expires_at_timestamp,
+                "token_id": token_id,
             }
         )
 
