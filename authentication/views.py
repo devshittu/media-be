@@ -29,6 +29,7 @@ from django.utils.crypto import get_random_string
 from decouple import config
 from datetime import timedelta
 from django.utils import timezone
+from django.conf import settings
 from .utils import (
     get_valid_user,
     validate_otp,
