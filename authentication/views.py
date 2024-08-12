@@ -154,15 +154,21 @@ class TokenVerifyView(APIView):
 class RefreshTokenView(APIView):
     def post(self, request):
         logger.info("RefreshTokenView: log beginning token verification")
+
+        logger.debug("This is a debug message")
+        logger.info("This is an info message")
+        logger.warning("This is a warning message")
+        logger.error("This is an error message")
+
         # refresh_token = request.COOKIES.get("refresh_token")
-        # refresh_token = request.data.get("refresh_token")
+        refresh_token = request.data.get("refresh_token")
 
         # Get the refresh token from the Authorization header
-        auth_header = request.headers.get("Authorization")
-        if auth_header and auth_header.startswith("Bearer "):
-            refresh_token = auth_header.split(" ")[1]
-        else:
-            refresh_token = None
+        # auth_header = request.headers.get("Authorization")
+        # if auth_header and auth_header.startswith("Bearer "):
+        #     refresh_token = auth_header.split(" ")[1]
+        # else:
+        #     refresh_token = None
 
         if not refresh_token:
             logger.warning("RefreshTokenView: No refresh token provided")
