@@ -155,7 +155,14 @@ class RefreshTokenView(APIView):
     def post(self, request):
         logger.info("RefreshTokenView: log beginning token verification")
         # refresh_token = request.COOKIES.get("refresh_token")
-        refresh_token = request.data.get("refresh_token")
+        # refresh_token = request.data.get("refresh_token")
+
+        # Get the refresh token from the Authorization header
+        auth_header = request.headers.get("Authorization")
+        if auth_header and auth_header.startswith("Bearer "):
+            refresh_token = auth_header.split(" ")[1]
+        else:
+            refresh_token = None
 
         if not refresh_token:
             logger.warning("RefreshTokenView: No refresh token provided")
@@ -241,7 +248,6 @@ class PasswordResetRequestView(APIView):
         logger.info(
             f"PasswordResetRequestView: Password reset email task sent to Celery for {email}")
 
-
         logger.info(
             f"PasswordResetRequestView: Password reset link sent to {email}")
         return Response({"detail": "Password reset link sent to email"})
@@ -305,7 +311,7 @@ class OTPVerificationWithTokenView(APIView):
                 access_token_expires_at.timestamp())
             refresh_token_expires_at_timestamp = int(
                 refresh.lifetime.total_seconds())
-            
+
             response = Response(
                 {
                     "access_token": access_token,
@@ -662,7 +668,6 @@ class LogoutView(APIView):
         response.delete_cookie("refresh_token")
         logger.info(
             f"LogoutView: User {request.user.id} logged out successfully")
-
 
         return response
 
