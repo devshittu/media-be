@@ -34,10 +34,10 @@ if ENVIRONMENT == "production":
 elif ENVIRONMENT == "staging":
     DEBUG = False
     # Staging environment may mimic production but could have less restrictive settings
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 else:  # Development and other cases
     DEBUG = True
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     # Add more development-specific settings
 
 ALLOWED_HOSTS = config(
@@ -286,23 +286,27 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
 AUTH_USER_MODEL = "authentication.CustomUser"
 
 
-# # Email configurations
-# Environment-specific settings
+# Email Configuration
 if ENVIRONMENT == "development":
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
-    EMAIL_BACKEND = config(
-        "APP_MEDIA_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
-    )
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-EMAIL_HOST = config("APP_MEDIA_EMAIL_HOST", default="smtp.gmail.com")
-EMAIL_USE_TLS = config("APP_MEDIA_EMAIL_USE_TLS", default=True, cast=bool)
-EMAIL_PORT = config("APP_MEDIA_EMAIL_PORT", default=587, cast=int)
-EMAIL_HOST_USER = config("APP_MEDIA_EMAIL_HOST_USER",
-                         default="mshittu.work@gmail.com")
-EMAIL_HOST_PASSWORD = config(
-    "APP_MEDIA_EMAIL_HOST_PASSWORD", default="your_email_password"
-)
+
+SENDGRID_API_KEY = config("APP_MEDIA_SENDGRID_API_KEY",
+                          default='your_sendgrid_api_key', cast=str)
+DEFAULT_FROM_EMAIL = config("APP_MEDIA_FROM_EMAIL",
+                            default='verify@gong.ng', cast=str)
+
+TWILIO_ACCOUNT_SID = config("APP_MEDIA_TWILIO_ACCOUNT_SID",
+                            default='change_me_your_twilio_account_sid',
+                            cast=str)
+TWILIO_AUTH_TOKEN = config("APP_MEDIA_TWILIO_AUTH_TOKEN",
+                           default='change_me_your_twilio_auth_token',
+                           cast=str)
+TWILIO_PHONE_NUMBER = config("APP_MEDIA_TWILIO_PHONE_NUMBER",
+                             default='change_me_your_twilio_phone_number',
+                             cast=str)
 
 # Use email for authentication instead of usernames
 ACCOUNT_AUTHENTICATION_METHOD = "email"
@@ -320,8 +324,7 @@ ACCOUNT_VERIFICATION_METHOD = "OTP"  # or 'VERIFICATION_LINK'
 # Email Configuration
 # Require email confirmation before allowing login
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-# For development, use the console backend to display sent emails
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
@@ -456,22 +459,6 @@ if ENVIRONMENT == 'staging':
 elif ENVIRONMENT == 'production':
     LOGGING['loggers']['django']['level'] = 'WARNING'
     LOGGING['loggers']['app_logger']['level'] = 'WARNING'
-
-
-SENDGRID_API_KEY = config("APP_MEDIA_SENDGRID_API_KEY",
-                          default='your_sendgrid_api_key', cast=str)
-DEFAULT_FROM_EMAIL = config("APP_MEDIA_FROM_EMAIL",
-                            default='verify@gong.ng', cast=str)
-
-TWILIO_ACCOUNT_SID = config("APP_MEDIA_TWILIO_ACCOUNT_SID",
-                            default='change_me_your_twilio_account_sid',
-                            cast=str)
-TWILIO_AUTH_TOKEN = config("APP_MEDIA_TWILIO_AUTH_TOKEN",
-                           default='change_me_your_twilio_auth_token',
-                           cast=str)
-TWILIO_PHONE_NUMBER = config("APP_MEDIA_TWILIO_PHONE_NUMBER",
-                             default='change_me_your_twilio_phone_number',
-                             cast=str)
 
 
 # core/settings.py

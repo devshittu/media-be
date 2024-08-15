@@ -1,6 +1,7 @@
 import logging
+from django.core.mail import send_mail
+from django.conf import settings
 from .models import MessageTemplate
-# from django.core.mail import send_mail
 from .sendgrid_utils import send_email_via_sendgrid
 from .twilio_utils import send_sms_via_twilio
 
@@ -48,13 +49,22 @@ def send_message(template_code, context, recipient):
     subject, message = template.replace_placeholders(context)
 
     if template.message_type == "email":
-        logger.debug('Sending email via SendGrid')
-        status, body, headers = send_email_via_sendgrid(
-            subject, message, recipient)
-        if status:
-            logger.info(f"Email sent to {recipient} with status {status}")
+        if settings.ENVIRONMENT == "development":
+            logger.info(
+                f'\n\nEmail content for {recipient}:\n\nSubject: {subject}\n\nMessage: {message}\n\n')
+
+            logger.debug('Sending email via console backend')
+            send_mail(subject, message,
+                      settings.DEFAULT_FROM_EMAIL, [recipient])
+            logger.info(f"Email sent to {recipient} using console backend")
         else:
-            logger.error(f"Failed to send email to {recipient}")
+            logger.debug('Sending email via SendGrid')
+            status, body, headers = send_email_via_sendgrid(
+                subject, message, recipient)
+            if status:
+                logger.info(f"Email sent to {recipient} with status {status}")
+            else:
+                logger.error(f"Failed to send email to {recipient}")
     elif template.message_type == "sms":
         logger.debug('Sending SMS via Twilio')
         sid = send_sms(recipient, message)
