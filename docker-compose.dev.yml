@@ -12,6 +12,11 @@ services:
       - .:/code
       - media_volume:/code/media
       - logs_volume:/code/logs
+    
+    # Set envrionment variables based on the .env file
+    env_file:
+      - .env
+
     ports:
       - 8000:8000
     depends_on:
