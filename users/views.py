@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from rest_framework import generics, filters, status
 from .models import UserSetting, Follow, UserFeedPosition
 from .serializers import UserSettingSerializer, FollowSerializer
@@ -10,10 +10,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from stories.models import Story
 from utils.permissions import CustomIsAuthenticated
-from authentication.permissions import IsActiveUser, IsStaffUser, HasRoleReader
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
-from utils.error_codes import ErrorCode
+from .utils import create_default_settings
 
 
 class UserListCreateView(generics.ListCreateAPIView):
@@ -40,39 +39,62 @@ class UserRetrieveUpdateDestroyView(
     serializer_class = CustomUserSerializer
 
 
-# class UserSettingView(generics.RetrieveUpdateAPIView):
-#     """
-#     View to retrieve or update the authenticated user's settings.
-#     """
 
+# class UserSettingView(generics.RetrieveUpdateAPIView):
 #     serializer_class = UserSettingSerializer
 #     permission_classes = [CustomIsAuthenticated]
 
 #     def get_object(self):
-#         return UserSetting.objects.get(user=self.request.user)
+#         try:
+#             return UserSetting.objects.get(user=self.request.user)
+#         except UserSetting.DoesNotExist:
+#             raise APIException(
+#                 {
+#                     "code": ErrorCode.SETTINGS_NOT_FOUND,
+#                     "detail": "User settings not found.",
+#                 }
+#             )
+
+#     def update(self, request, *args, **kwargs):
+#         try:
+#             return super().update(request, *args, **kwargs)
+#         except Exception as e:
+#             raise APIException(
+#                 {"code": ErrorCode.SETTINGS_UPDATE_FAILED, "detail": str(e)}
+#             )
 
 
 class UserSettingView(generics.RetrieveUpdateAPIView):
+    """
+    View to retrieve or update the authenticated user's settings.
+    """
     serializer_class = UserSettingSerializer
     permission_classes = [CustomIsAuthenticated]
 
     def get_object(self):
         try:
+            # Fetch the existing UserSetting object
             return UserSetting.objects.get(user=self.request.user)
         except UserSetting.DoesNotExist:
-            raise APIException(
-                {
-                    "code": ErrorCode.SETTINGS_NOT_FOUND,
-                    "detail": "User settings not found.",
-                }
-            )
+            # In the unlikely event this happens, create default settings
+            return create_default_settings(self.request.user)
 
     def update(self, request, *args, **kwargs):
+        user_setting = self.get_object()
+
         try:
-            return super().update(request, *args, **kwargs)
+            with transaction.atomic():
+                serializer = self.get_serializer(user_setting, data=request.data, partial=True)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
+                return Response(serializer.data)
+        except IntegrityError as e:
+            raise APIException(
+                {"code": "settings_update_failed", "detail": "A unique constraint violation occurred."}
+            )
         except Exception as e:
             raise APIException(
-                {"code": ErrorCode.SETTINGS_UPDATE_FAILED, "detail": str(e)}
+                {"code": "settings_update_failed", "detail": str(e)}
             )
 
 
