@@ -4,8 +4,6 @@ from .models import CustomUser, UserFeedPosition  # users/views.py
 from .utils import create_default_settings
 
 
-
-
 @receiver(post_save, sender=CustomUser)
 def create_user_settings(sender, instance, created, **kwargs):
     if created:  # and instance.is_active
