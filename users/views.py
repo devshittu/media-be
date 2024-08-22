@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from django.db import IntegrityError, transaction
+from django.db import IntegrityError
 from rest_framework import generics, filters, status
 from .models import UserSetting, Follow, UserFeedPosition
 from .serializers import UserSettingSerializer, FollowSerializer
@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from stories.models import Story
 from utils.permissions import CustomIsAuthenticated
+from utils.error_codes import ErrorCode
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
 from .utils import create_default_settings
@@ -37,7 +38,6 @@ class UserRetrieveUpdateDestroyView(
     permission_classes = [CustomIsAuthenticated]
     queryset = CustomUser.objects.all().order_by("-id")
     serializer_class = CustomUserSerializer
-
 
 
 # class UserSettingView(generics.RetrieveUpdateAPIView):
@@ -80,21 +80,18 @@ class UserSettingView(generics.RetrieveUpdateAPIView):
             return create_default_settings(self.request.user)
 
     def update(self, request, *args, **kwargs):
-        user_setting = self.get_object()
+        # Remove fields that should not be updated
+        restricted_fields = ['email', 'user_id',
+                             'username', 'id', 'created_at', 'updated_at']
+        for field in restricted_fields:
+            request.data.pop(field, None)
+            request.data.get('account_settings', {}).pop(field, None)
 
         try:
-            with transaction.atomic():
-                serializer = self.get_serializer(user_setting, data=request.data, partial=True)
-                serializer.is_valid(raise_exception=True)
-                self.perform_update(serializer)
-                return Response(serializer.data)
-        except IntegrityError as e:
-            raise APIException(
-                {"code": "settings_update_failed", "detail": "A unique constraint violation occurred."}
-            )
+            return super().update(request, *args, **kwargs)
         except Exception as e:
             raise APIException(
-                {"code": "settings_update_failed", "detail": str(e)}
+                {"code": ErrorCode.SETTINGS_UPDATE_FAILED, "detail": str(e)}
             )
 
 
@@ -140,7 +137,8 @@ class FollowUserView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         try:
-            followed_user = CustomUser.objects.get(pk=self.kwargs.get("user_id", None))
+            followed_user = CustomUser.objects.get(
+                pk=self.kwargs.get("user_id", None))
         except (CustomUser.DoesNotExist, ValueError):
             followed_user = get_object_or_404(
                 CustomUser, username=self.kwargs.get("username", "")
@@ -148,7 +146,8 @@ class FollowUserView(generics.CreateAPIView):
 
         # Prevent user from following themselves
         if self.request.user == followed_user:
-            raise serializers.ValidationError({"detail": "You cannot follow yourself."})
+            raise serializers.ValidationError(
+                {"detail": "You cannot follow yourself."})
 
         try:
             serializer.save(follower=self.request.user, followed=followed_user)
