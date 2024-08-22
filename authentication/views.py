@@ -16,7 +16,6 @@ from .serializers import (
     UpdatePasswordSerializer,
     UpdateUserSerializer,
 )
-from .utils import set_refresh_token_cookie
 from .tasks import send_otp_verification_email, send_link_verification_email, send_password_reset_email
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
@@ -378,9 +377,6 @@ class ResendOTPView(APIView):
                 {"code": ErrorCode.INVALID_EMAIL, "detail": "Invalid email"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-            # return Response(
-            #     {"detail": "Invalid email"}, status=status.HTTP_400_BAD_REQUEST
-            # )
 
         # Check if there's a recent OTP that hasn't expired
         recent_otp = user.otps.filter(
@@ -397,12 +393,6 @@ class ResendOTPView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-            # return Response(
-            #     {
-            #         "detail": "Please wait for the previous OTP to expire before requesting a new one."
-            #     },
-            #     status=status.HTTP_400_BAD_REQUEST,
-            # )
 
         # Generate new OTP
         otp_code = get_random_string(length=6, allowed_chars="0123456789")
