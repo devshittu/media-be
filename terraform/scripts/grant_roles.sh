@@ -1,7 +1,7 @@
 #!/bin/bash
 
 KEY_FILE_PATH="./" #"$HOME/"
-PROJECT_ID="media-app-v0-427519"
+PROJECT_ID="taishaprj"
 TERRAFORM_SERVICE_ACCOUNT_NAME="terraform-admin"
 TERRAFORM_SERVICE_ACCOUNT="$TERRAFORM_SERVICE_ACCOUNT_NAME@$PROJECT_ID.iam.gserviceaccount.com"
 
@@ -32,7 +32,6 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:$TERRAFORM_SERVICE_ACCOUNT" \
     --role="roles/artifactregistry.admin"
 
-
 # Create a key for the service account
 echo "Creating key file for the $TERRAFORM_SERVICE_ACCOUNT_NAME service account..."
 KEY_FILE="${KEY_FILE_PATH}${TERRAFORM_SERVICE_ACCOUNT_NAME}-service-key.json"
@@ -40,7 +39,6 @@ gcloud iam service-accounts keys create $KEY_FILE \
     --iam-account="$TERRAFORM_SERVICE_ACCOUNT"
 
 echo "Service account setup complete. Key file created at $KEY_FILE"
-
 
 # My github actions setup
 
@@ -96,8 +94,7 @@ echo $BASE64_KEY
 echo "Copy the above base64-encoded key and add it as a GitHub secret named 'GKE_KEY'."
 
 # Save the base64-encoded key to a file (optional)
-echo $BASE64_KEY > ${KEY_FILE_PATH}${GITHUB_ACTIONS_SERVICE_ACCOUNT_NAME}-service-key-base64.txt
+echo $BASE64_KEY >${KEY_FILE_PATH}${GITHUB_ACTIONS_SERVICE_ACCOUNT_NAME}-service-key-base64.txt
 echo "Base64-encoded key file saved to ${KEY_FILE_PATH}${GITHUB_ACTIONS_SERVICE_ACCOUNT_NAME}-service-key-base64.txt"
-
 
 # terraform/scripts/grant_roles.sh
