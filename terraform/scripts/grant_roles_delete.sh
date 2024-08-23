@@ -2,7 +2,7 @@
 
 # Set variables
 KEY_FILE_PATH="./" #"$HOME/"
-PROJECT_ID="media-app-v0-427519"
+PROJECT_ID="taishaprj"
 TERRAFORM_SERVICE_ACCOUNT_NAME="terraform-admin"
 TERRAFORM_SERVICE_ACCOUNT="$TERRAFORM_SERVICE_ACCOUNT_NAME@$PROJECT_ID.iam.gserviceaccount.com"
 
@@ -93,7 +93,7 @@ echo $BASE64_KEY
 echo "Copy the above base64-encoded key and add it as a GitHub secret named 'GKE_KEY'."
 
 # Save the base64-encoded key to a file (optional)
-echo $BASE64_KEY > "${KEY_FILE_PATH}${GITHUB_ACTIONS_SERVICE_ACCOUNT_NAME}-service-key-base64.txt"
+echo $BASE64_KEY >"${KEY_FILE_PATH}${GITHUB_ACTIONS_SERVICE_ACCOUNT_NAME}-service-key-base64.txt"
 echo "Base64-encoded key file saved to ${KEY_FILE_PATH}${GITHUB_ACTIONS_SERVICE_ACCOUNT_NAME}-service-key-base64.txt"
 
 # Function to check assigned roles
