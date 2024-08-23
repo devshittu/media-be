@@ -17,14 +17,14 @@ provider "google" {
 
 
 
-resource "google_artifact_registry_repository" "media-app-dev-repo" {
+# resource "google_artifact_registry_repository" "media-app-dev-repo" {
 
-  project       = var.project
-  location      = var.region
-  repository_id = var.artifact_registry_name
-  description   = "Docker repository"
-  format        = "DOCKER"
-}
+#   project       = var.project
+#   location      = var.region
+#   repository_id = var.artifact_registry_name
+#   description   = "Docker repository"
+#   format        = "DOCKER"
+# }
 
 
 # resource "google_container_cluster" "autopilot_cluster" {
@@ -159,6 +159,8 @@ resource "google_compute_instance" "media_app_instance" {
   machine_type = var.machine_type
   zone         = var.instance_zone
   project      = var.project
+  
+  allow_stopping_for_update = true  # Add this line
 
   boot_disk {
     initialize_params {
@@ -342,41 +344,6 @@ resource "google_compute_firewall" "default-allow-https" {
 }
 
 
-resource "google_compute_instance" "disposable_instance" {
-  name         = "disposable-instance"
-  machine_type = "e2-micro"  # Smallest machine type for cost-efficiency
-  zone         = "europe-west2-a"
-  project      = var.project
-
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2204-lts"
-      size  = 10  # Small disk size for lightweight usage
-    }
-  }
-
-  network_interface {
-    network = "default"
-    access_config {
-      // Ephemeral IP
-    }
-  }
-
-  metadata = {
-    ssh-keys = "${var.ssh_username}:${var.ssh_public_key}"
-  }
-
-  tags = ["http-server"]
-
-  service_account {
-    email  = "default"
-    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
-  }
-}
-
-output "disposable_instance_ip" {
-  value = google_compute_instance.disposable_instance.network_interface.0.access_config.0.nat_ip
-}
 # # Grant Compute Admin role
 # gcloud projects add-iam-policy-binding gong-ng \
 #     --member="serviceAccount:terraform-admin@gong-ng.iam.gserviceaccount.com" \
