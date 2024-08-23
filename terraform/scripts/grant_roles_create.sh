@@ -2,7 +2,7 @@
 
 # Set variables
 KEY_FILE_PATH="./" #"$HOME/"
-PROJECT_ID="media-app-v0-427519"
+PROJECT_ID="taishaprj"
 TERRAFORM_SERVICE_ACCOUNT_NAME="terraform-admin"
 TERRAFORM_SERVICE_ACCOUNT="$TERRAFORM_SERVICE_ACCOUNT_NAME@$PROJECT_ID.iam.gserviceaccount.com"
 
