@@ -115,6 +115,42 @@ resource "google_dns_record_set" "www_app_staging_gong_ng_cname" {
   rrdatas      = [var.dns_name]
   project      = var.project
 }
+
+resource "google_dns_record_set" "_dmarc_gong_ng" {
+  name         = "_dmarc.${var.dns_name}"
+  type         = "TXT"
+  ttl          = 300
+  managed_zone = google_dns_managed_zone.custom_domain_gong_ng.name
+  rrdatas      = ["v=DMARC1; p=none; rua=mailto:dmarc_agg@vali.email;"]
+  project      = var.project
+}
+
+resource "google_dns_record_set" "em2803_gong_ng" {
+  name         = "em2803.${var.dns_name}"
+  type         = "CNAME"
+  ttl          = 300
+  managed_zone = google_dns_managed_zone.custom_domain_gong_ng.name
+  rrdatas      = ["u46027326.wl077.sendgrid.net."]
+  project      = var.project
+}
+
+resource "google_dns_record_set" "s1_domainkey_gong_ng" {
+  name         = "s1._domainkey.${var.dns_name}"
+  type         = "CNAME"
+  ttl          = 300
+  managed_zone = google_dns_managed_zone.custom_domain_gong_ng.name
+  rrdatas      = ["s1.domainkey.u46027326.wl077.sendgrid.net."]
+  project      = var.project
+}
+
+resource "google_dns_record_set" "s2_domainkey_gong_ng" {
+  name         = "s2._domainkey.${var.dns_name}"
+  type         = "CNAME"
+  ttl          = 300
+  managed_zone = google_dns_managed_zone.custom_domain_gong_ng.name
+  rrdatas      = ["s2.domainkey.u46027326.wl077.sendgrid.net."]
+  project      = var.project
+}
 # VM
 
 
