@@ -80,11 +80,14 @@ jobs:
           echo "APP_MEDIA_SENDGRID_API_KEY_ID=${{ secrets.APP_MEDIA_SENDGRID_API_KEY_ID }}" >> .env.docker-compose
           echo "APP_MEDIA_SENDGRID_API_KEY=${{ secrets.APP_MEDIA_SENDGRID_API_KEY }}" >> .env.docker-compose
           echo "GS_BUCKET_NAME=${{ vars.GS_BUCKET_NAME }}" >> .env.docker-compose
-          echo "GS_CREDENTIALS=${{ secrets.GS_CREDENTIALS }}" >> .env.docker-compose
-          echo "GS_PROJECT_ID=${{ secrets.GS_PROJECT_ID }}" >> .env.docker-compose
+          echo "GS_CREDENTIALS='${{ secrets.GS_CREDENTIALS }}'" >> .env.docker-compose
+          echo "GS_PROJECT_ID='${{ secrets.GS_PROJECT_ID }}'" >> .env.docker-compose
           echo "POSTS_PER_PAGE=${{ vars.POSTS_PER_PAGE }}" >> .env.docker-compose
           echo "ANCESTORS_PER_PAGE=${{ vars.ANCESTORS_PER_PAGE }}" >> .env.docker-compose
           echo "DESCENDANTS_PER_PAGE=${{ vars.DESCENDANTS_PER_PAGE }}" >> .env.docker-compose
+
+      - name: Print .env.docker-compose for debugging
+        run: cat .env.docker-compose
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | sudo docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
