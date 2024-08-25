@@ -1,3 +1,4 @@
+from rest_framework.response import Response
 import logging
 from django.utils import timezone
 from .models import CustomUser, OTP
@@ -98,5 +99,31 @@ def set_jwt_cookie(response, refresh):
     logger.debug('Setting JWT refresh token cookie')
     return set_refresh_token_cookie(response, refresh)
 
+# authentication/utils.py
 
+
+def perform_login(user):
+    """
+    Generate JWT tokens for the user and prepare the response.
+    """
+    access_token, refresh = generate_jwt_tokens(user)
+
+    # Calculate expiration times
+    access_token_expires_at = timezone.now() + refresh.access_token.lifetime
+    access_token_expires_at_timestamp = int(
+        access_token_expires_at.timestamp())
+    refresh_token_expires_at_timestamp = int(refresh.lifetime.total_seconds())
+
+    response_data = {
+        "access_token": access_token,
+        "access_token_expires_at": access_token_expires_at_timestamp,
+        "refresh_token": str(refresh),
+        "refresh_token_expires_at": refresh_token_expires_at_timestamp,
+        "message": "Login successful!",
+    }
+
+    response = Response(response_data)
+    response = set_jwt_cookie(response, refresh)
+
+    return response
 # authentication/utils.py
