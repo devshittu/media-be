@@ -9,7 +9,8 @@ from .views import (
     PasswordResetRequestView,
     PasswordResetConfirmView,
     AccountVerificationView,
-    OTPVerificationWithTokenView,
+    AccountActivationWithOTPView,
+    PasswordlessLoginView,
     ResendOTPView,
     ResendVerificationLinkView,
     OTPVerificationOnlyView,
@@ -38,12 +39,17 @@ urlpatterns = [
         PasswordResetConfirmView.as_view(),
         name="password-reset-confirm",
     ),
-    path("verify-otp/", OTPVerificationOnlyView.as_view(), name="verify-otp-only"),
-    path(
-        "verify-otp-auth/",
-        OTPVerificationWithTokenView.as_view(),
-        name="verify-otp-auth",
-    ),
+
+    # Activate account using OTP
+    path("otp/activate-account/", AccountActivationWithOTPView.as_view(),
+         name="otp-activate-account"),
+
+    # Login without password using OTP
+    path("otp/login/", PasswordlessLoginView.as_view(), name="otp-login"),
+
+    # General OTP verification (for password reset, etc.)
+    path("otp/verify/", OTPVerificationOnlyView.as_view(), name="otp-verify"),
+
     path("resend-otp/", ResendOTPView.as_view(), name="resend-otp"),
     path(
         "verify-account/<str:token>/",
