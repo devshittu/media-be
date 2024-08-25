@@ -35,6 +35,7 @@ from .utils import (
     activate_user,
     generate_jwt_tokens,
     set_jwt_cookie,
+    perform_login
 )
 from utils.error_codes import ErrorCode
 from utils.exceptions import CustomBadRequest
@@ -279,11 +280,6 @@ class PasswordResetConfirmView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-            # return Response(
-            #     {"detail": "Invalid or expired token"},
-            #     status=status.HTTP_400_BAD_REQUEST,
-            # )
-
         # Set the new password for the user
         user = reset_token.user
         user.set_password(password)
@@ -297,10 +293,14 @@ class PasswordResetConfirmView(APIView):
         return Response({"detail": "Password reset successful"})
 
 
-class OTPVerificationWithTokenView(APIView):
+class AccountActivationWithOTPView(APIView):
+    """
+    Ensures that the user login 
+    """
+
     def post(self, request):
         logger.info(
-            "OTPVerificationWithTokenView: OTP verification request received")
+            "AccountActivationWithOTPView: OTP verification request received")
         otp_code = request.data.get("otp")
         email = request.data.get("email")
 
@@ -308,36 +308,45 @@ class OTPVerificationWithTokenView(APIView):
             user = get_valid_user(email)
             validate_otp(user, otp_code)
             activate_user(user)
-            access_token, refresh = generate_jwt_tokens(user)
 
-            # Calculate expiration times
-            access_token_expires_at = timezone.now() + refresh.access_token.lifetime
-            access_token_expires_at_timestamp = int(
-                access_token_expires_at.timestamp())
-            refresh_token_expires_at_timestamp = int(
-                refresh.lifetime.total_seconds())
+            # Perform login and get the response
+            response = perform_login(user)
 
-            response = Response(
-                {
-                    "access_token": access_token,
-                    "access_token_expires_at": access_token_expires_at_timestamp,
-                    "refresh_token": str(refresh),
-                    "refresh_token_expires_at": refresh_token_expires_at_timestamp,
-                    "message": "Account activated successfully!",
-                }
-            )
-
-            response = set_jwt_cookie(response, refresh)
             logger.info(
-                f"OTPVerificationWithTokenView: Account activated for user {user.id}")
+                f"AccountActivationWithOTPView: Account activated for user {user.id}")
             return response
 
         except ValueError as e:
             logger.warning(
-                f"OTPVerificationWithTokenView: Invalid OTP for user {user.id} - {e}")
+                f"AccountActivationWithOTPView: Invalid OTP for user {user.id} - {e}")
             raise CustomBadRequest(
                 {"code": ErrorCode.INVALID_OTP, "detail": [str(e)]})
             # raise CustomBadRequest(detail={"otp": [str(e)]})
+
+
+class PasswordlessLoginView(APIView):
+    def post(self, request):
+        logger.info(
+            "PasswordlessLoginView: Token verification request received for login")
+        otp_code = request.data.get("otp")
+        email = request.data.get("email")
+
+        try:
+            user = get_valid_user(email)
+            # Just verifies the token, no other action
+            validate_otp(user, otp_code)
+            access_token, refresh_token = generate_jwt_tokens(user)
+            logger.info(
+                f"PasswordlessLoginView: JWT tokens generated for user {user.id}")
+
+            response = Response({"access_token": access_token})
+            return set_jwt_cookie(response, refresh_token)
+
+        except ValueError as e:
+            logger.warning(
+                f"PasswordlessLoginView: Invalid token for user {user.id} - {e}")
+            raise CustomBadRequest(
+                {"code": ErrorCode.INVALID_OTP, "detail": str(e)})
 
 
 class OTPVerificationOnlyView(APIView):
@@ -350,18 +359,17 @@ class OTPVerificationOnlyView(APIView):
         try:
             user = get_valid_user(email)
             validate_otp(user, otp_code)
-            activate_user(user)
             logger.info(
-                f"OTPVerificationOnlyView: Account activated for user {user.id}")
+                f"OTPVerificationOnlyView: Token verified for user {user.id}")
 
-            return Response({"message": "Account activated successfully!"})
+            # This is where the frontend would redirect the user to the password reset page
+            return Response({"message": "Token verified successfully!"})
 
         except ValueError as e:
             logger.warning(
                 f"OTPVerificationOnlyView: Invalid OTP for user {user.id} - {e}")
             raise CustomBadRequest(
                 {"code": ErrorCode.INVALID_OTP, "detail": str(e)})
-            # return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ResendOTPView(APIView):
