@@ -1,4 +1,4 @@
-from .models import CustomUser, VerificationToken
+from .models import CustomUser, VerificationToken, PasswordResetToken
 from rest_framework import serializers
 from django.contrib.auth import password_validation
 from django.contrib.auth.hashers import make_password
@@ -29,7 +29,7 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class PasswordResetRequestSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    email = serializers.EmailField(required=True)
 
     def validate_email(self, value):
         logger.debug(f'Validating email for password reset: {value}')
@@ -47,7 +47,7 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
 
     def validate_token(self, value):
         logger.debug(f'Validating token for password reset: {value}')
-        if not VerificationToken.objects.filter(token=value).exists():
+        if not PasswordResetToken.objects.filter(token=value).exists():
             logger.warning(f'Invalid token for password reset: {value}')
             raise serializers.ValidationError("Invalid token.")
         return value
@@ -60,10 +60,21 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
     def save(self, **kwargs):
         token = self.validated_data["token"]
         new_password = self.validated_data["password"]
-        user = VerificationToken.objects.get(token=token).user
+
+        # Retrieve the user associated with the PasswordResetToken
+        reset_token = PasswordResetToken.objects.get(token=token)
+        user = reset_token.user
+
+        # Set the new password for the user
         user.set_password(new_password)
         user.save()
+
+        # Log the password reset action
         logger.info(f'Password reset for user: {user.email}')
+
+        # Optionally, delete the used token to prevent reuse
+        reset_token.delete()
+
         return user
 
 
