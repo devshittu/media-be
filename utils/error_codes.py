@@ -10,6 +10,7 @@ class ErrorCode:
     BLACKLISTED_REFRESH_TOKEN = "blacklisted_refresh_token"
     INVALID_REFRESH_TOKEN = "invalid_refresh_token"
     EMAIL_NOT_FOUND = "email_not_found"
+    INVALID_DATA = "invalid_data"
     INVALID_OR_EXPIRED_TOKEN = "invalid_or_expired_token"
     INVALID_OTP = "invalid_otp"
     INVALID_EMAIL = "invalid_email"
