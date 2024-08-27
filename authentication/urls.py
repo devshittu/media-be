@@ -8,6 +8,7 @@ from .views import (
     RefreshTokenView,
     PasswordResetRequestView,
     PasswordResetConfirmView,
+    ValidateResetTokenView,
     AccountVerificationView,
     AccountActivationWithOTPView,
     PasswordlessLoginView,
@@ -39,6 +40,8 @@ urlpatterns = [
         PasswordResetConfirmView.as_view(),
         name="password-reset-confirm",
     ),
+    path('validate-reset-token/',
+         ValidateResetTokenView.as_view(), name='validate-reset-token'),
 
     # Activate account using OTP
     path("otp/activate-account/", AccountActivationWithOTPView.as_view(),
