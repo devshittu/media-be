@@ -39,6 +39,7 @@ from .utils import (
 )
 from utils.error_codes import ErrorCode
 from utils.exceptions import CustomBadRequest
+from rest_framework.exceptions import ValidationError
 import logging
 
 
@@ -224,7 +225,17 @@ class PasswordResetRequestView(APIView):
     def post(self, request):
         logger.info("PasswordResetRequestView: Password reset request received")
         serializer = PasswordResetRequestSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as e:
+            logger.warning(
+                f"PasswordResetRequestView: Validation error - {str(e)}")
+            raise CustomBadRequest(
+                {"code": ErrorCode.INVALID_DATA, "detail": e})
+            # raise CustomBadRequest(
+            #     {"code": ErrorCode.INVALID_DATA, "detail": str(e)})
+
         email = serializer.validated_data["email"]
 
         user = CustomUser.objects.filter(email=email).first()
@@ -235,19 +246,26 @@ class PasswordResetRequestView(APIView):
                 {"code": ErrorCode.EMAIL_NOT_FOUND, "detail": "Email not found"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-            # return Response(
-            #     {"detail": "Email not found"}, status=status.HTTP_400_BAD_REQUEST
-            # )
 
         # Generate a token and save it
         token = get_random_string(length=32)
         PasswordResetToken.objects.create(user=user, token=token)
 
         # Send an email to the user with the reset link
-        reset_link = f"{config('APP_FRONTEND_DOMAIN', default='http://127.0.0.1:3000/', cast=str)}reset-password/{token}"
+        reset_link = f"{config('APP_FRONTEND_DOMAIN', default='http://127.0.0.1:3000/', cast=str)}auth/reset-password/{token}"
 
         # Send an email to the user with the reset link using the template messaging system
-        context = {"UserInfo": user, "ResetLink": reset_link}
+        # context = {"UserInfo": user, "ResetLink": reset_link}
+
+        # Create a context with serializable data
+        context = {
+            "UserInfo": {
+                "email": user.email,
+                "display_name": user.display_name,
+            },
+            "UserName": user.display_name,
+            "ResetLink": reset_link,
+        }
 
         # Send an email to the user with the reset link using Celery
         send_password_reset_email.delay(user.email, context)
@@ -293,9 +311,33 @@ class PasswordResetConfirmView(APIView):
         return Response({"detail": "Password reset successful"})
 
 
+class ValidateResetTokenView(APIView):
+    def post(self, request):
+        token = request.data.get("token")
+        logger.info(f"Validating token for password reset: {token}")
+
+        reset_token = PasswordResetToken.objects.filter(token=token).first()
+        if not reset_token or not reset_token.is_valid():
+            logger.warning(
+                f"Invalid or expired token for password reset: {token}")
+            return Response(
+                {
+                    "code": ErrorCode.INVALID_OR_EXPIRED_RESET_TOKEN,
+                    "detail": "Invalid or expired token",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        logger.info(f"Token is valid for password reset: {token}")
+        return Response(
+            {"detail": "Token is valid."},
+            status=status.HTTP_200_OK,
+        )
+
+
 class AccountActivationWithOTPView(APIView):
     """
-    Ensures that the user login 
+    Ensures that the user login.
     """
 
     def post(self, request):
