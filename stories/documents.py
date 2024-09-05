@@ -38,7 +38,15 @@ class StoryDocument(Document):
         }
     )
 
-    body = fields.TextField(analyzer='custom_text_analyzer')
+    # body = fields.TextField(analyzer='custom_text_analyzer')
+
+    body = fields.TextField(
+        analyzer='custom_text_analyzer',
+        fields={
+            # For ngram search in body
+            'ngram': fields.TextField(analyzer='ngram_analyzer')
+        }
+    )
 
     class Index:
         # Name of the Elasticsearch index
