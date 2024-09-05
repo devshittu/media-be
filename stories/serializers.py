@@ -1,3 +1,4 @@
+from .models import UserSearchHistory
 import logging
 from rest_framework import serializers
 from .models import Story, Category, Like, Dislike, Bookmark
@@ -5,6 +6,8 @@ from .neo_models import StoryNode
 from utils.serializers import UnixTimestampModelSerializer
 from multimedia.serializers import MultimediaSerializer
 from common.serializers import CustomUserSerializer
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+from .documents import StoryDocument
 
 # Set up the logger for this module
 logger = logging.getLogger('app_logger')
@@ -104,6 +107,54 @@ class StorySerializer(UnixTimestampModelSerializer):
         except Exception as e:
             logger.error(f'Error getting storyline ID for story {obj.id}: {e}')
             return None
+
+
+class StoryDocumentSerializer(DocumentSerializer):
+    class Meta:
+        document = StoryDocument
+        fields = (
+            'id',
+            'title',
+            'slug',
+            'body',
+            'user',
+            'category',
+            'parent_story',
+            'source_link',
+            'event_occurred_at',
+            'event_reported_at',
+        )
+
+
+class AutocompleteSerializer(serializers.Serializer):
+    # Customize based on the fields returned from Elasticsearch
+    title = serializers.CharField()
+
+
+# Set up the logger for this module
+logger = logging.getLogger('app_logger')
+
+
+class UserSearchHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserSearchHistory
+        fields = ['query', 'searched_at']
+
+    def to_representation(self, instance):
+        """
+        Override to_representation to add logging when serializing the data.
+        """
+        logger.debug(
+            f"Serializing UserSearchHistory for query: {instance.query}")
+        return super().to_representation(instance)
+
+    def create(self, validated_data):
+        """
+        Override the create method to log when a new search history record is created.
+        """
+        logger.info(
+            f"Creating new UserSearchHistory entry for query: {validated_data.get('query')}")
+        return super().create(validated_data)
 
 
 class LikeSerializer(UnixTimestampModelSerializer):
