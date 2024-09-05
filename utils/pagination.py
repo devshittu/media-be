@@ -2,6 +2,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from .constants import DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, PAGE_SIZE_QUERY_PARAM
 
+
 class CustomPageNumberPagination(PageNumberPagination):
     page_size = DEFAULT_PAGE_SIZE
     page_size_query_param = PAGE_SIZE_QUERY_PARAM
