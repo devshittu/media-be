@@ -2,6 +2,7 @@
 from pathlib import Path
 from datetime import timedelta
 import os
+from celery.schedules import crontab
 
 # Third-party Imports
 from decouple import config
@@ -47,17 +48,6 @@ ALLOWED_HOSTS = config(
 # Cross Origin Resource
 CORS_ORIGIN_ALLOW_ALL = True
 
-# CORS_ALLOWED_ORIGINS = [
-# #     "http://media-fe:3000",  # Docker service name for the frontend
-# #     "http://localhost:3000",  # For local development
-# #     "http://127.0.0.1:3000",  # Also for local development
-# #     "http://0.0.0.0:3000",  # Replace with your frontend domain
-#     # "http://api.media-app-fe.com:3000",
-#     "http://app.mediaapp.local",
-#     "https://app.mediaapp.local",
-#     "http://api.mediaapp.local",
-#     "https://api.mediaapp.local",
-# ]
 CORS_ALLOW_HTTPS = True
 
 CSRF_TRUSTED_ORIGINS = [
@@ -112,6 +102,8 @@ INSTALLED_APPS = [
     "storages",
     "sendgrid",
     "twilio",
+    'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl_drf',
     # 'ckeditor_uploader',  # If you want image uploading
     "django_neomodel",
     "corsheaders",
@@ -184,6 +176,21 @@ DATABASES = {
     }
 }
 
+ES_USERNAME = config("ELASTICSEARCH_USERNAME", default="elastic")
+ES_PASSWORD = config("ELASTICSEARCH_PASSWORD", default="changeme")
+ES_HOST = config(
+    "ELASTICSEARCH_HOST", default="elasticsearch"
+)  # default could also be 'localhost'
+ES_PORT = config("ELASTICSEARCH_PORT", default="9200")
+
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        # 'hosts': f"http://{ES_USERNAME}:{ES_PASSWORD}@{ES_HOST}:{ES_PORT}",
+        'hosts': f"http://{ES_HOST}:{ES_PORT}",
+        'http_auth': (ES_USERNAME, ES_PASSWORD),
+    },
+}
 
 # Neo4J Database Configuration
 
@@ -255,31 +262,6 @@ if DEBUG and not os.path.exists(os.path.join(BASE_DIR, "static")):
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
-# TODO: this works without the minio
-
-
-# # Assuming MinIO runs locally on port 9000 and you've set up a bucket named 'static'
-# AWS_ACCESS_KEY_ID = "user"  # Use your MinIO access key
-# AWS_SECRET_ACCESS_KEY = "password"  # Use your MinIO secret key
-# AWS_STORAGE_BUCKET_NAME = "mybucket"
-# # AWS_S3_ENDPOINT_URL = "http://minio:9000"# URL to your MinIO instance
-# # AWS_S3_CUSTOM_DOMAIN = f"minio:9000"  # Use the internal Docker network name
-
-
-# AWS_S3_ENDPOINT_URL = (
-#     "https://minio.mediaapp.local"  # NGINX proxies to MinIO over HTTPS
-# )
-# AWS_S3_CUSTOM_DOMAIN = f"minio.mediaapp.local"
-
-# AWS_S3_OBJECT_PARAMETERS = {
-#     "CacheControl": "max-age=86400",
-# }
-# AWS_S3_USE_SSL = True
-# AWS_LOCATION = "static"
-
-# # Static files settings
-# STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
-# STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 
 # Authentication & Authorization
@@ -361,12 +343,6 @@ POSTS_PER_PAGE = config("POSTS_PER_PAGE", default=10, cast=int)
 ANCESTORS_PER_PAGE = config("ANCESTORS_PER_PAGE", default=4, cast=int)
 DESCENDANTS_PER_PAGE = config("DESCENDANTS_PER_PAGE", default=5, cast=int)
 
-
-# AWS, Google Cloud & Twilio Configuration
-# AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
-# AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
-# AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
-
 GS_BUCKET_NAME = config("GS_BUCKET_NAME")
 GS_CREDENTIALS = config("GS_CREDENTIALS")
 GS_PROJECT_ID = config("GS_PROJECT_ID")
@@ -390,7 +366,7 @@ TEST_RUNNER = "pytest_django.runner.DjangoTestSuiteRunner"
 # Celery configurations
 # Fetch Redis password from environment, defaulting to an empty string if not found
 REDIS_PASSWORD = config("REDIS_PASSWORD", default="")
-REDIS_HOST = config("REDIS_HOST", default="redis-service")
+REDIS_HOST = config("REDIS_HOST", default="redis")
 REDIS_PORT = config("REDIS_PORT", default="6379")
 # Construct Redis URL
 if REDIS_PASSWORD:
@@ -408,6 +384,23 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "UTC"
+CELERY_BEAT_SCHEDULE = {
+    'clean_search_queries_every_day': {
+        'task': 'your_app.tasks.clean_old_search_queries',
+        'schedule': crontab(minute=0, hour=0),  # Runs daily at midnight
+    },
+}
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        # Use a different Redis DB for caching
+        'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PASSWORD': REDIS_PASSWORD,  # Add this only if you have password authentication
+        }
+    }
+}
 
 SEEDING = False
 
