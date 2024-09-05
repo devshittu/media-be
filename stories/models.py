@@ -191,4 +191,16 @@ class Bookmark(SoftDeletableModel, TimestampedModel):
         return f"Bookmark of story: {self.story.title}"
 
 
+# Todo: move this model to graph database neo4j
+class UserSearchHistory(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    query = models.CharField(max_length=255)
+    searched_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-searched_at']
+
+    def __str__(self):
+        return f"{self.user} searched for {self.query} on {self.searched_at}"
 # stories/models.py
