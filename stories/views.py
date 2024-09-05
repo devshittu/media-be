@@ -153,7 +153,7 @@ class AutocompleteView(DocumentViewSet):
     ]
 
     # Focus on the 'suggest' field for autocomplete
-    search_fields = ('title.suggest',)
+    search_fields = ('title.suggest', 'title.ngram', 'body.ngram')
 
     def get_queryset(self):
         return self.document.search().source(False)  # Do not return the entire source
@@ -177,37 +177,61 @@ class AutocompleteView(DocumentViewSet):
                 return self.get_paginated_response(paginated_suggestions)
                 # return Response(cached_suggestions)
 
-            # Otherwise, fall back to Elasticsearch for suggestions using "completion suggester"
+            # Fallback to Elasticsearch for autocomplete suggestions
             logger.info(
                 f"No Redis cache found for query: {query}. Querying Elasticsearch.")
-            search = self.document.search().suggest(
+            # Multi-match search across title and body for ngrams and suggest
+            search = self.document.search().query(
+                ElasticsearchQ("multi_match", query=query, fields=[
+                    'title.ngram^3',  # Boost title matches
+                    'body.ngram',     # Include body in ngram search
+                ],
+                    fuzziness="AUTO",
+                    operator="or",  # Match any of the terms
+                    type="most_fields")  # Consider the most matching fields
+            )
+
+            # Add suggest field to further refine autocomplete results
+            search = search.suggest(
                 'autocomplete', query, completion={
                     'field': 'title.suggest',
-                    # Fuzzy matching to allow for typos
-                    'fuzzy': {'fuzziness': 2},
+                    'fuzzy': {'fuzziness': 2},  # Allow for typos
                     'size': 5  # Limit the number of suggestions
                 }
             )
 
-            suggestions = search.execute().suggest.autocomplete[0].options
+            response = search.execute()
+
+            # Get the suggestions from the "autocomplete" suggest field
+            suggestions = response.suggest.autocomplete[0].options if response.suggest else [
+            ]
+
             logger.info(
                 f"Elasticsearch returned {len(suggestions)} suggestions for query: {query}")
 
-            # Extract suggestions and return
-            suggestions_list = [option.text for option in suggestions]
+            # Extract suggestions and ngram results
+            ngram_suggestions = [hit.title for hit in response.hits]
+            completion_suggestions = [option.text for option in suggestions]
+
+            # Combine and return unique suggestions
+            combined_suggestions = list(
+                set(ngram_suggestions + completion_suggestions))
 
             # Paginate the suggestions
-            paginated_suggestions = self.paginate_queryset(suggestions_list)
+            paginated_suggestions = self.paginate_queryset(
+                combined_suggestions)
             if paginated_suggestions is not None:
                 return self.get_paginated_response(paginated_suggestions)
 
             # If no pagination, return all suggestions
-            return Response(suggestions_list)
+            return Response(combined_suggestions)
 
         except Exception as e:
             logger.error(
                 f"Error occurred during autocomplete search for query '{query}': {e}")
-            return Response({"detail": "An error occurred while processing the autocomplete request."}, status=500)
+            return Response({
+                "detail": "An error occurred while processing the autocomplete request."
+            }, status=500)
 
 
 class StorySearchView(DocumentViewSet):
@@ -224,15 +248,14 @@ class StorySearchView(DocumentViewSet):
     ]
 
     # Define search fields
+
     search_fields = (
-        'title',
-        'body',
-        'slug',
+        'title.ngram',
+        'body.ngram',
         'user.username',
         'category.title',
         'parent_story.title',
     )
-
     # Define filtering fields
     filter_fields = {
         'category.id': None,
@@ -272,14 +295,13 @@ class StorySearchView(DocumentViewSet):
         store_user_search_history(user, query)
 
         try:
+            # Use ngram-based matching for more flexibility
             search = self.document.search().query(
                 ElasticsearchQ("multi_match", query=query, fields=[
-                    'title^3', 'body', 'user.username', 'category.title'],
-                    # Allow for fuzzy matching (handles typos)
+                    'title.ngram^3', 'body.ngram', 'user.username', 'category.title'],
                     fuzziness="AUTO",
-                    type="best_fields",      # Match the most relevant fields
-                    operator="or",          # All terms must match
-                    # minimum_should_match="70%",  # At least 70% of terms should match
+                    type="best_fields",
+                    operator="or",
                 )
             )
 
