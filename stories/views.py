@@ -4,19 +4,37 @@ from rest_framework import generics, filters, status, serializers
 from django.db import IntegrityError
 from users.models import UserSetting
 from stories.neo_models import StoryNode
-from .models import Story, Like, Dislike, Bookmark, Category
+from .models import Story, Like, Dislike, Bookmark, Category, UserSearchHistory
+from django_redis import get_redis_connection
+from rest_framework.response import Response
+from django_elasticsearch_dsl_drf.filter_backends import (
+    FilteringFilterBackend,
+    OrderingFilterBackend,
+    DefaultOrderingFilterBackend,
+    SearchFilterBackend,
+    CompoundSearchFilterBackend,
+)
+
+from elasticsearch_dsl import Q as ElasticsearchQ
+from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+from .documents import StoryDocument
+from .serializers import StoryDocumentSerializer, UserSearchHistorySerializer
+from .utils import (cache_search_query, store_user_search_history)
+
 from utils.permissions import CustomIsAuthenticated
 from utils.mixins import SoftDeleteMixin
 from .serializers import (
     LikeSerializer,
     DislikeSerializer,
     CategorySerializer,
-    TrendingStorySerializer, StorySerializer, BookmarkSerializer
+    TrendingStorySerializer, StorySerializer, BookmarkSerializer,
+    AutocompleteSerializer
 )
+# from .documents import AutocompleteDocument
 from utils.pagination import CustomPageNumberPagination
 from utils.permissions import IsOwner
 from .mixins import StoryMixin
-from django.db.models import F, Count, Q
+from django.db.models import F, Count, Q as DjangoQ
 
 # Set up the logger for this module
 logger = logging.getLogger('app_logger')
@@ -124,6 +142,201 @@ class StoryRetrieveUpdateDestroyView(
         return super().destroy(request, *args, **kwargs)
 
 
+class AutocompleteView(DocumentViewSet):
+    document = StoryDocument
+    serializer_class = AutocompleteSerializer
+    lookup_field = 'id'
+    pagination_class = CustomPageNumberPagination
+    filter_backends = [  # Specify the relevant filter backends for Elasticsearch
+        SearchFilterBackend,
+        CompoundSearchFilterBackend,
+    ]
+
+    # Focus on the 'suggest' field for autocomplete
+    search_fields = ('title.suggest',)
+
+    def get_queryset(self):
+        return self.document.search().source(False)  # Do not return the entire source
+
+    def list(self, request, *args, **kwargs):
+        query = request.query_params.get('q', '')
+        logger.debug(f"Received autocomplete request with query: {query}")
+        redis_conn = get_redis_connection("default")
+
+        try:
+            # First check Redis for suggestions
+            cached_suggestions = redis_conn.zrangebylex(
+                "autocomplete_titles", f"[{query}", f"[{query}\xff", 0, 5
+            )
+            if cached_suggestions:
+                logger.info(
+                    f"Returning cached suggestions from Redis for query: {query}")
+                paginated_suggestions = self.paginate_queryset(
+                    cached_suggestions)
+                # If Redis has results, return them
+                return self.get_paginated_response(paginated_suggestions)
+                # return Response(cached_suggestions)
+
+            # Otherwise, fall back to Elasticsearch for suggestions using "completion suggester"
+            logger.info(
+                f"No Redis cache found for query: {query}. Querying Elasticsearch.")
+            search = self.document.search().suggest(
+                'autocomplete', query, completion={
+                    'field': 'title.suggest',
+                    # Fuzzy matching to allow for typos
+                    'fuzzy': {'fuzziness': 2},
+                    'size': 5  # Limit the number of suggestions
+                }
+            )
+
+            suggestions = search.execute().suggest.autocomplete[0].options
+            logger.info(
+                f"Elasticsearch returned {len(suggestions)} suggestions for query: {query}")
+
+            # Extract suggestions and return
+            suggestions_list = [option.text for option in suggestions]
+
+            # Paginate the suggestions
+            paginated_suggestions = self.paginate_queryset(suggestions_list)
+            if paginated_suggestions is not None:
+                return self.get_paginated_response(paginated_suggestions)
+
+            # If no pagination, return all suggestions
+            return Response(suggestions_list)
+
+        except Exception as e:
+            logger.error(
+                f"Error occurred during autocomplete search for query '{query}': {e}")
+            return Response({"detail": "An error occurred while processing the autocomplete request."}, status=500)
+
+
+class StorySearchView(DocumentViewSet):
+    document = StoryDocument
+    serializer_class = StoryDocumentSerializer
+    lookup_field = 'id'
+    pagination_class = CustomPageNumberPagination
+    filter_backends = [
+        SearchFilterBackend,
+        FilteringFilterBackend,
+        OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
+        CompoundSearchFilterBackend,
+    ]
+
+    # Define search fields
+    search_fields = (
+        'title',
+        'body',
+        'slug',
+        'user.username',
+        'category.title',
+        'parent_story.title',
+    )
+
+    # Define filtering fields
+    filter_fields = {
+        'category.id': None,
+        'user.id': None,
+        'event_occurred_at': {
+            'field': 'event_occurred_at',
+            'lookup': 'gte',
+        },
+        'event_reported_at': {
+            'field': 'event_reported_at',
+            'lookup': 'lte',
+        },
+    }
+
+    # Define ordering fields
+    ordering_fields = {
+        'event_occurred_at': None,
+        'event_reported_at': None,
+        'created_at': None,
+    }
+
+    # Default ordering
+    ordering = ('_score', '-created_at')
+
+    def list(self, request, *args, **kwargs):
+        query = request.query_params.get('q', '')
+        user = request.user
+
+        if not query:
+            logger.warning("Query parameter `q` is missing in the request.")
+            return Response({"detail": "Query parameter `q` is required."}, status=400)
+
+        logger.info(f"Received search request with query: {query}")
+
+        # Cache the search query
+        cache_search_query(query)
+        store_user_search_history(user, query)
+
+        try:
+            search = self.document.search().query(
+                ElasticsearchQ("multi_match", query=query, fields=[
+                    'title^3', 'body', 'user.username', 'category.title'],
+                    # Allow for fuzzy matching (handles typos)
+                    fuzziness="AUTO",
+                    type="best_fields",      # Match the most relevant fields
+                    operator="or",          # All terms must match
+                    # minimum_should_match="70%",  # At least 70% of terms should match
+                )
+            )
+
+            # TODO: do not match phrase until we are ready to implement advanced search
+            #  Optionally apply match_phrase for longer queries with a higher slop value
+            # Apply match_phrase only for queries with more than 2 words
+            if len(query.split()) > 2:
+                search = search.query(
+                    ElasticsearchQ(
+                        "match_phrase",
+                        body={
+                            "query": query,
+                            "slop": 10}
+                    ),
+                )
+
+            # Apply pagination
+            page = self.paginate_queryset(search)
+            if page is not None:
+                logger.info(
+                    f"Returning paginated search results for query: {query}")
+                serializer = self.get_serializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
+
+            response = search.execute()
+            serializer = self.get_serializer(response, many=True)
+            logger.info(f"Returning search results for query: {query}")
+            return Response(serializer.data)
+
+        except Exception as e:
+            logger.error(f"Error occurred during search: {e}")
+            return Response({"detail": "An error occurred during search."}, status=500)
+
+
+class CachedSearchQueriesView(generics.ListAPIView):
+    """
+    View to return the most frequently used search queries from Redis.
+    """
+
+    def list(self, request, *args, **kwargs):
+        try:
+            redis_conn = get_redis_connection("default")
+            top_queries = redis_conn.zrevrange("search_queries", 0, 9)
+            return Response(top_queries)
+        except Exception as e:
+            logger.error(f"Error retrieving cached search queries: {e}")
+            return Response({"detail": "Error retrieving cached queries."}, status=500)
+
+
+class UserSearchHistoryView(generics.ListAPIView):
+    serializer_class = UserSearchHistorySerializer
+    permission_classes = [CustomIsAuthenticated]
+
+    def get_queryset(self):
+        return UserSearchHistory.objects.filter(user=self.request.user)
+
+
 class UserFeedView(generics.ListAPIView):
     serializer_class = StorySerializer
     # permission_classes = [CustomIsAuthenticated]
@@ -222,7 +435,8 @@ class TrendingStoriesView(generics.ListAPIView):
                 dislike_count=Count("dislikes_set", distinct=True),
                 view_count=Count(
                     "interactions",
-                    filter=Q(interactions__interaction_type="view"),
+                    filter=DjangoQ(
+                        interactions__interaction_type="view"),
                     distinct=True,
                 ),
             )
