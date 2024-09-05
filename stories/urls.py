@@ -1,3 +1,4 @@
+from .views import CachedSearchQueriesView, UserSearchHistoryView
 from django.urls import path
 from .views import (
     CategoryListCreateView,
@@ -15,6 +16,8 @@ from .views import (
     BookmarkRetrieveUpdateDestroyView,
     BookmarkRetrieveUpdateDestroyViewByStoryId,
     TrendingStoriesView,
+    StorySearchView,
+    AutocompleteView
 )
 from .neo_views import (
     StorylineListView,
@@ -28,7 +31,8 @@ from .neo_views import (
 
 
 urlpatterns = [
-    path("categories/", CategoryListCreateView.as_view(), name="category-list-create"),
+    path("categories/", CategoryListCreateView.as_view(),
+         name="category-list-create"),
     path(
         "categories/<slug:slug>/",
         CategoryRetrieveUpdateDestroyView.as_view(),
@@ -41,8 +45,10 @@ urlpatterns = [
         name="stories-by-category",
     ),
     path("user-feed/", UserFeedView.as_view(), name="user-feed"),
-    path("user-inverse-feed/", UserInverseFeedView.as_view(), name="user-inverse-feed"),
-    path("trending-stories/", TrendingStoriesView.as_view(), name="trending-stories"),
+    path("user-inverse-feed/", UserInverseFeedView.as_view(),
+         name="user-inverse-feed"),
+    path("trending-stories/", TrendingStoriesView.as_view(),
+         name="trending-stories"),
     path(
         "stories/hashtag/<slug:hashtag_name>/",
         StoriesByHashtagsView.as_view(),
@@ -53,6 +59,19 @@ urlpatterns = [
         TrendingHashtagsListView.as_view(),
         name="trending-hashtags-list",
     ),
+
+    # Full-text search endpoint
+    path('stories/search/',
+         StorySearchView.as_view({'get': 'list'}), name='story-search'),
+
+    # Autocomplete endpoint using path() instead of router
+    path('stories/search/autocomplete/',
+         AutocompleteView.as_view({'get': 'list'}), name='autocomplete'),
+
+    path('stories/search/recent/', CachedSearchQueriesView.as_view(),
+         name='recent-search-queries'),
+    path('stories/search/history/', UserSearchHistoryView.as_view(),
+         name='user-search-history'),
     path(
         "storylines/<str:storyline_id>/hashtags/",
         SpecificStorylineHashtagsView.as_view(),
@@ -100,7 +119,8 @@ urlpatterns = [
         name="storyline-stories",
     ),
     # Add URLs for Media, Category, and UserInterest views.
-    path("bookmarks/", BookmarkCreateListView.as_view(), name="bookmark-list-create"),
+    path("bookmarks/", BookmarkCreateListView.as_view(),
+         name="bookmark-list-create"),
     path(
         "bookmarks/<int:bookmark_id>/",
         BookmarkRetrieveUpdateDestroyView.as_view(),
