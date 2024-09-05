@@ -340,11 +340,17 @@ class CachedSearchQueriesView(generics.ListAPIView):
     """
     View to return the most frequently used search queries from Redis.
     """
+    pagination_class = CustomPageNumberPagination  # Add your custom pagination here
 
     def list(self, request, *args, **kwargs):
         try:
             redis_conn = get_redis_connection("default")
-            top_queries = redis_conn.zrevrange("search_queries", 0, 9)
+            top_queries = redis_conn.zrevrange(
+                "search_queries", 0, -1)  # Fetch all queries
+            page = self.paginate_queryset(top_queries)  # Paginate the result
+            if page is not None:
+                return self.get_paginated_response(page)
+
             return Response(top_queries)
         except Exception as e:
             logger.error(f"Error retrieving cached search queries: {e}")
@@ -354,6 +360,7 @@ class CachedSearchQueriesView(generics.ListAPIView):
 class UserSearchHistoryView(generics.ListAPIView):
     serializer_class = UserSearchHistorySerializer
     permission_classes = [CustomIsAuthenticated]
+    pagination_class = CustomPageNumberPagination  # Add your custom pagination here
 
     def get_queryset(self):
         return UserSearchHistory.objects.filter(user=self.request.user)
