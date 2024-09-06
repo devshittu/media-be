@@ -59,9 +59,21 @@ def cache_search_query(query, hits):
         logger.error(f"Error caching search query '{query}': {e}")
 
 
-def store_user_search_history(user, query):
-    if user.is_authenticated:
+# def store_user_search_history(user, query):
+#     if user.is_authenticated:
+#         UserSearchHistory.objects.create(user=user, query=query)
+#         logger.info(f"Stored search query '{query}' for user '{user}'.")
+
+
+def store_user_search_history(user, query, hit_count):
+    """
+    Stores the user's search query in the history only if there are valid hits (non-zero hit count).
+    """
+    if user.is_authenticated and hit_count > 0:
+        # Store search query only if hit_count is greater than 0
         UserSearchHistory.objects.create(user=user, query=query)
-        logger.info(f"Stored search query '{query}' for user '{user}'.")
+        logger.info(
+            f"Stored search query '{query}' with {hit_count} hits for user '{user}'.")
+
 
 # stories/utils.py
