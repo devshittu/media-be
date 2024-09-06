@@ -1,3 +1,4 @@
+from datetime import datetime
 import logging
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, filters, status, serializers
@@ -290,10 +291,6 @@ class StorySearchView(DocumentViewSet):
 
         logger.info(f"Received search request with query: {query}")
 
-        # Cache the search query
-        cache_search_query(query)
-        store_user_search_history(user, query)
-
         try:
             # Use ngram-based matching for more flexibility
             search = self.document.search().query(
@@ -317,6 +314,15 @@ class StorySearchView(DocumentViewSet):
                             "slop": 10}
                     ),
                 )
+            # Fetch the results
+            response = search.execute()
+
+            # Calculate the number of search results
+            result_count = response.hits.total.value
+
+            # Cache the search query with the result count
+            cache_search_query(query, result_count)
+            store_user_search_history(user, query)
 
             # Apply pagination
             page = self.paginate_queryset(search)
@@ -326,7 +332,6 @@ class StorySearchView(DocumentViewSet):
                 serializer = self.get_serializer(page, many=True)
                 return self.get_paginated_response(serializer.data)
 
-            response = search.execute()
             serializer = self.get_serializer(response, many=True)
             logger.info(f"Returning search results for query: {query}")
             return Response(serializer.data)
@@ -338,17 +343,58 @@ class StorySearchView(DocumentViewSet):
 
 class CachedSearchQueriesView(generics.ListAPIView):
     """
-    View to return the most frequently used search queries from Redis.
+    View to return the most frequently used search queries from Redis, with metadata.
     """
-    pagination_class = CustomPageNumberPagination  # Add your custom pagination here
+    pagination_class = CustomPageNumberPagination  # Use your custom pagination class
 
     def list(self, request, *args, **kwargs):
         try:
+            logger.debug("Attempting to retrieve search queries from Redis.")
             redis_conn = get_redis_connection("default")
-            top_queries = redis_conn.zrevrange(
-                "search_queries", 0, -1)  # Fetch all queries
-            page = self.paginate_queryset(top_queries)  # Paginate the result
+
+            # Retrieve all queries ordered by their score (timestamp), sorted descending
+            top_queries_with_scores = redis_conn.zrevrange(
+                "search_queries", 0, -1, withscores=True
+            )
+
+            if not top_queries_with_scores:
+                logger.info("No search queries found in Redis.")
+                return Response({"detail": "No search queries found."}, status=204)
+
+            # Collect metadata for each query
+            top_queries = []
+            logger.debug(
+                f"Found {len(top_queries_with_scores)} queries in Redis, processing each.")
+            for query, timestamp in top_queries_with_scores:
+                query = query.decode('utf-8')
+                query_data = redis_conn.hgetall(f"search_query:{query}")
+
+                if not query_data:
+                    logger.warning(
+                        f"No metadata found for query '{query}'. Skipping.")
+                    continue
+
+                # Decode the Redis hash fields
+                search_term = query_data.get(b'search_term').decode('utf-8')
+                hits = int(query_data.get(b'hits').decode('utf-8'))
+                searched_at = int(query_data.get(b'searched_at').decode(
+                    'utf-8'))  # Use Unix timestamp
+
+                # Add the query data to the list
+                top_queries.append({
+                    'search_term': search_term,
+                    'hits': hits,
+                    'searched_at': searched_at,  # Keep it as Unix timestamp
+                })
+
+            logger.info(
+                f"Successfully retrieved {len(top_queries)} queries from Redis.")
+
+            # Paginate the result
+            page = self.paginate_queryset(top_queries)
             if page is not None:
+                logger.debug(
+                    "Returning paginated response for search queries.")
                 return self.get_paginated_response(page)
 
             return Response(top_queries)
