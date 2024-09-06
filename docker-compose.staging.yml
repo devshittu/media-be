@@ -52,6 +52,7 @@ services:
     depends_on:
       - db-postgres
       - db-neo4j
+      - elasticsearch
       # - minio
       # - createbucket
     environment:
@@ -81,6 +82,7 @@ services:
       - logs_volume:/home/app/web/logs 
     depends_on:
       - db-postgres
+      - elasticsearch
       - redis
     environment:
       - VIRTUAL_HOST=api.staging.gong.ng
@@ -90,6 +92,45 @@ services:
       - my_media_network
     env_file:
       - .env.docker-compose
+
+  celery-beat:
+    container_name: celery-beat
+    image: devshittu/mediaapp:web-app-latest
+
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    command: celery -A core beat --loglevel=info
+    volumes:
+      - .:/code
+      - logs_volume:/home/app/web/logs 
+    depends_on:
+      - db-postgres
+      - elasticsearch
+      - redis
+    environment:
+      - VIRTUAL_HOST=api.staging.gong.ng
+      - LETSENCRYPT_HOST=api.staging.gong.ng
+      - LETSENCRYPT_EMAIL=devshittu@gmail.com
+    networks:
+      - my_media_network
+    env_file:
+      - .env.docker-compose
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - "ELASTIC_PASSWORD=changeme" # Set your password here
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - my_media_network
+    restart: always
 
   redis:
     container_name: db-redis
@@ -128,6 +169,7 @@ services:
     networks:
       - my_media_network
 volumes:
+  es_data:
   postgres_data:
   media_volume:
   neo4j_data:
