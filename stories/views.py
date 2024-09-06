@@ -322,7 +322,9 @@ class StorySearchView(DocumentViewSet):
 
             # Cache the search query with the result count
             cache_search_query(query, result_count)
-            store_user_search_history(user, query)
+            # store_user_search_history(user, query)
+            # Store the user search history if there are hits
+            store_user_search_history(user, query, result_count)
 
             # Apply pagination
             page = self.paginate_queryset(search)
