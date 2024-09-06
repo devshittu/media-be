@@ -15,6 +15,9 @@ wait_for_service() {
 # Wait for Neo4j to be ready
 wait_for_service $NEO4J_HOST $NEO4J_PORT
 
+# Wait for Elastic to be ready
+wait_for_service $ELASTICSEARCH_HOST $ELASTICSEARCH_PORT
+
 # Run Django setup commands
 echo "Running Django setup commands..."
 python manage.py collectstatic
@@ -35,6 +38,11 @@ echo "> Installing the seeds for neo4jdb"
 python manage.py importstories
 echo "..."
 echo "--== Completed autoseed successfully ==--"
+
+echo "> Installing/Building the indecies for elasticsearch"
+python manage.py search_index --rebuild
+echo "..."
+echo "--== Completed building index successfully ==--"
 
 # Create superuser - Use environment variables for email and password
 echo "Creating superuser..."
