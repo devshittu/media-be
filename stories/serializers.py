@@ -136,10 +136,16 @@ logger = logging.getLogger('app_logger')
 
 
 class UserSearchHistorySerializer(serializers.ModelSerializer):
+    searched_at = serializers.SerializerMethodField()
+
     class Meta:
         model = UserSearchHistory
         fields = ['query', 'searched_at']
 
+    def get_searched_at(self, obj):
+        # Return the Unix timestamp without microseconds
+        return int(obj.searched_at.timestamp())
+    
     def to_representation(self, instance):
         """
         Override to_representation to add logging when serializing the data.
