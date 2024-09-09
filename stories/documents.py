@@ -50,7 +50,8 @@ class StoryDocument(Document):
         analyzer='custom_text_analyzer',
         fields={
             # For ngram search in body
-            'ngram': fields.TextField(analyzer='ngram_analyzer')
+            'ngram': fields.TextField(analyzer='ngram_analyzer'),
+            'suggest': fields.CompletionField(),
         }
     )
 
