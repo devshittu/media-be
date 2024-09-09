@@ -20,7 +20,13 @@ class StoryDocument(Document):
 
     category = fields.ObjectField(properties={
         'id': fields.IntegerField(),
-        'title': fields.TextField(),
+        'title': fields.TextField(  # Add ngram and suggest to category title
+            fields={
+                'suggest': fields.CompletionField(),  # For autocomplete based on category
+                # Ngram search on category
+                'ngram': fields.TextField(analyzer='ngram_analyzer')
+            }
+        ),
     })
 
     parent_story = fields.ObjectField(properties={
@@ -44,7 +50,8 @@ class StoryDocument(Document):
         analyzer='custom_text_analyzer',
         fields={
             # For ngram search in body
-            'ngram': fields.TextField(analyzer='ngram_analyzer')
+            'ngram': fields.TextField(analyzer='ngram_analyzer'),
+            'suggest': fields.CompletionField(),
         }
     )
 
@@ -93,9 +100,6 @@ class StoryDocument(Document):
     class Django:
         model = Story
         fields = [
-            # 'title',
-            # 'slug',
-            # 'body',
             'source_link',
             'event_occurred_at',
             'event_reported_at',

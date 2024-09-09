@@ -1,3 +1,5 @@
+from difflib import get_close_matches
+import re
 from datetime import datetime
 import logging
 from django.shortcuts import get_object_or_404
@@ -20,7 +22,8 @@ from elasticsearch_dsl import Q as ElasticsearchQ
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 from .documents import StoryDocument
 from .serializers import StoryDocumentSerializer, UserSearchHistorySerializer
-from .utils import (cache_search_query, store_user_search_history)
+from .utils import (cache_search_query,
+                    store_user_search_history)
 
 from utils.permissions import CustomIsAuthenticated
 from utils.mixins import SoftDeleteMixin
@@ -148,24 +151,24 @@ class AutocompleteView(DocumentViewSet):
     serializer_class = AutocompleteSerializer
     lookup_field = 'id'
     pagination_class = CustomPageNumberPagination
-    filter_backends = [  # Specify the relevant filter backends for Elasticsearch
+    filter_backends = [
         SearchFilterBackend,
         CompoundSearchFilterBackend,
     ]
 
-    # Focus on the 'suggest' field for autocomplete
-    search_fields = ('title.suggest', 'title.ngram', 'body.ngram')
+    # Define the search fields including title and body ngram, and category title
+    search_fields = ('title.suggest', 'title.ngram',
+                     'body.ngram', 'category.title')
 
     def get_queryset(self):
-        return self.document.search().source(False)  # Do not return the entire source
+        return self.document.search().source(False)
 
     def list(self, request, *args, **kwargs):
-        query = request.query_params.get('q', '')
+        query = request.query_params.get('q', '').lower()
         logger.debug(f"Received autocomplete request with query: {query}")
         redis_conn = get_redis_connection("default")
 
         try:
-            # First check Redis for suggestions
             cached_suggestions = redis_conn.zrangebylex(
                 "autocomplete_titles", f"[{query}", f"[{query}\xff", 0, 5
             )
@@ -174,58 +177,43 @@ class AutocompleteView(DocumentViewSet):
                     f"Returning cached suggestions from Redis for query: {query}")
                 paginated_suggestions = self.paginate_queryset(
                     cached_suggestions)
-                # If Redis has results, return them
                 return self.get_paginated_response(paginated_suggestions)
-                # return Response(cached_suggestions)
 
-            # Fallback to Elasticsearch for autocomplete suggestions
+            # Elasticsearch fallback
             logger.info(
                 f"No Redis cache found for query: {query}. Querying Elasticsearch.")
-            # Multi-match search across title and body for ngrams and suggest
+
             search = self.document.search().query(
                 ElasticsearchQ("multi_match", query=query, fields=[
-                    'title.ngram^3',  # Boost title matches
-                    'body.ngram',     # Include body in ngram search
+                    'title.ngram^3', 'body.ngram', 'category.title'
                 ],
                     fuzziness="AUTO",
-                    operator="or",  # Match any of the terms
-                    type="most_fields")  # Consider the most matching fields
-            )
-
-            # Add suggest field to further refine autocomplete results
-            search = search.suggest(
-                'autocomplete', query, completion={
-                    'field': 'title.suggest',
-                    'fuzzy': {'fuzziness': 2},  # Allow for typos
-                    'size': 5  # Limit the number of suggestions
-                }
+                    operator="or",
+                    type="most_fields"
+                )
             )
 
             response = search.execute()
 
-            # Get the suggestions from the "autocomplete" suggest field
-            suggestions = response.suggest.autocomplete[0].options if response.suggest else [
-            ]
+            suggestions = []
+            for hit in response.hits:
+                probable_keywords = self.extract_ngram_suggestions(
+                    hit.title, hit.body, query)
+                suggestions.append({
+                    'story_id': hit.meta.id,
+                    'title': hit.title,
+                    'body_excerpt': hit.body[:150],
+                    'probable_keywords': probable_keywords
+                })
 
             logger.info(
                 f"Elasticsearch returned {len(suggestions)} suggestions for query: {query}")
 
-            # Extract suggestions and ngram results
-            ngram_suggestions = [hit.title for hit in response.hits]
-            completion_suggestions = [option.text for option in suggestions]
-
-            # Combine and return unique suggestions
-            combined_suggestions = list(
-                set(ngram_suggestions + completion_suggestions))
-
-            # Paginate the suggestions
-            paginated_suggestions = self.paginate_queryset(
-                combined_suggestions)
+            paginated_suggestions = self.paginate_queryset(suggestions)
             if paginated_suggestions is not None:
                 return self.get_paginated_response(paginated_suggestions)
 
-            # If no pagination, return all suggestions
-            return Response(combined_suggestions)
+            return Response(suggestions)
 
         except Exception as e:
             logger.error(
@@ -233,6 +221,185 @@ class AutocompleteView(DocumentViewSet):
             return Response({
                 "detail": "An error occurred while processing the autocomplete request."
             }, status=500)
+
+    def extract_ngram_suggestions(self, title, body, query):
+        """
+        Extract probable next words based on bigram/trigram ngram analysis with fuzzy and partial matching.
+        """
+        logger.debug(f"Extracting ngram suggestions for query: {query}")
+        stopwords = {"and", "or", "it", "the", "is", "of",
+                     "to", "for", "a", "in", "on", "at", "by", "an"}
+
+        query_words = query.lower().split()
+
+        # Function to generate ngrams
+        def generate_ngrams(text, n):
+            words = [word for word in re.findall(
+                r'\w+', text.lower()) if word not in stopwords]
+            ngrams = [tuple(words[i:i + n]) for i in range(len(words) - n + 1)]
+            logger.debug(f"Generated {n}-grams for text: {text} -> {ngrams}")
+            return ngrams
+
+        probable_keywords = []
+
+        # Generate bigrams and trigrams for both title and body
+        bigrams_title = generate_ngrams(title, 2)
+        trigrams_title = generate_ngrams(title, 3)
+
+        bigrams_body = generate_ngrams(body, 2)
+        trigrams_body = generate_ngrams(body, 3)
+
+        # Combine all ngrams
+        all_ngrams = bigrams_title + trigrams_title + bigrams_body + trigrams_body
+
+        logger.debug(f"All ngrams (bigrams & trigrams): {all_ngrams}")
+
+        # Fuzzy Matching Logic: Use fuzzy matching to allow for typos
+        for ngram in all_ngrams:
+            for word in query_words:
+                close_matches = get_close_matches(word, ngram, n=1, cutoff=0.7)
+                if close_matches:
+                    idx = ngram.index(close_matches[0])
+                    # Suggest the next words in the ngram (return the rest of the ngram after the match)
+                    if idx + 1 < len(ngram):
+                        suggestion = ' '.join(ngram[idx + 1:])
+                        if suggestion and suggestion not in probable_keywords:
+                            probable_keywords.append(suggestion)
+
+        logger.debug(
+            f"Final probable keywords before deduplication: {probable_keywords}")
+        probable_keywords = list(dict.fromkeys(
+            probable_keywords))  # Remove duplicates
+        logger.debug(
+            f"Final probable keywords after deduplication: {probable_keywords}")
+
+        return probable_keywords[:10]  # Limit to 5 probable keywords
+
+# Update AutocompleteView
+# class AutocompleteView(DocumentViewSet):
+#     document = StoryDocument
+#     serializer_class = AutocompleteSerializer
+#     lookup_field = 'id'
+#     pagination_class = CustomPageNumberPagination
+#     filter_backends = [
+#         SearchFilterBackend,
+#         CompoundSearchFilterBackend,
+#     ]
+
+#     search_fields = ('title.suggest', 'title.ngram',
+#                      'body.ngram', 'category.title')
+
+#     def get_queryset(self):
+#         return self.document.search().source(False)
+
+#     def list(self, request, *args, **kwargs):
+#         query = request.query_params.get('q', '').lower()
+#         logger.debug(f"Received autocomplete request with query: {query}")
+#         redis_conn = get_redis_connection("default")
+
+#         try:
+#             # Check Redis cache first
+#             cached_suggestions = redis_conn.zrangebylex(
+#                 "autocomplete_titles", f"[{query}", f"[{query}\xff", 0, 5
+#             )
+#             if cached_suggestions:
+#                 logger.info(
+#                     f"Returning cached suggestions from Redis for query: {query}")
+#                 paginated_suggestions = self.paginate_queryset(
+#                     cached_suggestions)
+#                 return self.get_paginated_response(paginated_suggestions)
+
+#             logger.info(
+#                 f"No Redis cache found for query: {query}. Querying Elasticsearch.")
+#             search = self.document.search().query(
+#                 'multi_match', query=query, fields=[
+#                     'title.ngram^3', 'body.ngram', 'category.title'
+#                 ],
+#                 fuzziness="AUTO",
+#                 operator="or",
+#                 type="most_fields"
+#             )
+
+#             response = search.execute()
+
+#             suggestions = []
+#             for hit in response.hits:
+#                 probable_keywords = self.extract_ngram_suggestions(
+#                     hit.title, hit.body, query)
+#                 suggestions.append({
+#                     'story_id': hit.meta.id,
+#                     'title': hit.title,
+#                     'body_excerpt': hit.body[:150],
+#                     'probable_keywords': probable_keywords
+#                 })
+
+#             logger.info(
+#                 f"Elasticsearch returned {len(suggestions)} suggestions for query: {query}")
+
+#             paginated_suggestions = self.paginate_queryset(suggestions)
+#             if paginated_suggestions is not None:
+#                 return self.get_paginated_response(paginated_suggestions)
+
+#             return Response(suggestions)
+
+#         except Exception as e:
+#             logger.error(
+#                 f"Error occurred during autocomplete search for query '{query}': {e}")
+#             return Response({
+#                 "detail": "An error occurred while processing the autocomplete request."
+#             }, status=500)
+
+#     def extract_ngram_suggestions(self, title, body, query):
+#         """
+#         Extract probable next and previous words based on bigram/trigram ngram analysis.
+#         """
+#         logger.debug(f"Extracting ngram suggestions for query: {query}")
+#         stopwords = {"and", "or", "it", "the", "is", "of",
+#                      "to", "for", "a", "in", "on", "at", "by", "an"}
+
+#         # Function to generate ngrams
+#         def generate_ngrams(text, n):
+#             words = [word for word in re.findall(
+#                 r'\w+', text.lower()) if word not in stopwords]
+#             return zip(*[deque(words, maxlen=n) for _ in range(n)])
+
+#         def fuzzy_match(query_word, word):
+#             return difflib.SequenceMatcher(None, query_word, word).ratio() > 0.5
+
+#         probable_keywords = {'before': [], 'after': []}
+#         query_words = query.split()
+
+#         # Generate bigrams and trigrams for both title and body
+#         bigrams_title = list(generate_ngrams(title, 2))
+#         trigrams_title = list(generate_ngrams(title, 3))
+#         bigrams_body = list(generate_ngrams(body, 2))
+#         trigrams_body = list(generate_ngrams(body, 3))
+
+#         all_ngrams = bigrams_title + trigrams_title + bigrams_body + trigrams_body
+#         logger.debug(f"All ngrams (bigrams & trigrams): {all_ngrams}")
+
+#         for ngram in all_ngrams:
+#             for query_word in query_words:
+#                 ngram_list = list(ngram)
+#                 logger.debug(
+#                     f"Checking ngram: {ngram_list} against query word: {query_word}")
+
+#                 for i, word in enumerate(ngram_list):
+#                     if fuzzy_match(query_word, word):
+#                         if i == 0 and len(ngram_list) > 1:
+#                             probable_keywords['after'].append(
+#                                 ' '.join(ngram_list[1:]))
+#                             logger.debug(
+#                                 f"Found 'after' suggestion: {' '.join(ngram_list[1:])} for query: {query}")
+#                         elif i > 0:
+#                             probable_keywords['before'].append(
+#                                 ' '.join(ngram_list[:i]))
+#                             logger.debug(
+#                                 f"Found 'before' suggestion: {' '.join(ngram_list[:i])} for query: {query}")
+
+#         logger.debug(
+#             f"Final probable keywords (before/after): {probable_keywords}")
+#         return probable_keywords
 
 
 class StorySearchView(DocumentViewSet):
