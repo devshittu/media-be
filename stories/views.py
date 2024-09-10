@@ -544,14 +544,14 @@ class CachedSearchQueriesView(generics.ListAPIView):
                     continue
 
                 # Decode the Redis hash fields
-                search_term = query_data.get(b'search_term').decode('utf-8')
+                search_term = query_data.get(b'query').decode('utf-8')
                 hits = int(query_data.get(b'hits').decode('utf-8'))
                 searched_at = int(query_data.get(b'searched_at').decode(
                     'utf-8'))  # Use Unix timestamp
 
                 # Add the query data to the list
                 top_queries.append({
-                    'search_term': search_term,
+                    'query': search_term,
                     'hits': hits,
                     'searched_at': searched_at,  # Keep it as Unix timestamp
                 })
