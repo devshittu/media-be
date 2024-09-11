@@ -404,7 +404,8 @@ class AutocompleteView(DocumentViewSet):
 
 class StorySearchView(DocumentViewSet):
     document = StoryDocument
-    serializer_class = StoryDocumentSerializer
+    # serializer_class = StoryDocumentSerializer
+    serializer_class = StorySerializer
     lookup_field = 'id'
     pagination_class = CustomPageNumberPagination
     filter_backends = [
@@ -493,15 +494,37 @@ class StorySearchView(DocumentViewSet):
             # Store the user search history if there are hits
             store_user_search_history(user, query, result_count)
 
+            # # Apply pagination
+            # page = self.paginate_queryset(search)
+            # if page is not None:
+            #     logger.info(
+            #         f"Returning paginated search results for query: {query}")
+            #     serializer = self.get_serializer(page, many=True)
+            #     return self.get_paginated_response(serializer.data)
+
+            # serializer = self.get_serializer(response, many=True)
+            # logger.info(f"Returning search results for query: {query}")
+            # return Response(serializer.data)
+
             # Apply pagination
-            page = self.paginate_queryset(search)
+            page = self.paginate_queryset(response.hits)
             if page is not None:
+                # Convert Elasticsearch documents into Django model instances
+                story_ids = [hit.meta.id for hit in page]
+                stories = Story.objects.filter(id__in=story_ids)
+
+                # Serialize using the native StorySerializer
+                serializer = self.get_serializer(stories, many=True)
                 logger.info(
                     f"Returning paginated search results for query: {query}")
-                serializer = self.get_serializer(page, many=True)
                 return self.get_paginated_response(serializer.data)
 
-            serializer = self.get_serializer(response, many=True)
+            # Convert Elasticsearch documents into Django model instances
+            story_ids = [hit.meta.id for hit in response.hits]
+            stories = Story.objects.filter(id__in=story_ids)
+
+            # Serialize using the native StorySerializer
+            serializer = self.get_serializer(stories, many=True)
             logger.info(f"Returning search results for query: {query}")
             return Response(serializer.data)
 
@@ -544,14 +567,14 @@ class CachedSearchQueriesView(generics.ListAPIView):
                     continue
 
                 # Decode the Redis hash fields
-                search_term = query_data.get(b'search_term').decode('utf-8')
+                search_term = query_data.get(b'query').decode('utf-8')
                 hits = int(query_data.get(b'hits').decode('utf-8'))
                 searched_at = int(query_data.get(b'searched_at').decode(
                     'utf-8'))  # Use Unix timestamp
 
                 # Add the query data to the list
                 top_queries.append({
-                    'search_term': search_term,
+                    'query': search_term,
                     'hits': hits,
                     'searched_at': searched_at,  # Keep it as Unix timestamp
                 })

@@ -39,7 +39,7 @@ def cache_search_query(query, hits):
 
         # Store query metadata in a Redis hash
         redis_conn.hset(f"search_query:{query}", mapping={
-            "search_term": query,
+            "query": query,
             "hits": hits,
             "searched_at": timestamp,  # Store Unix timestamp without microseconds
         })
