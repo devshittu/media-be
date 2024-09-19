@@ -72,32 +72,32 @@ resource "digitalocean_droplet" "media_app_instance" {
     ]
   }
 
-#   # Install fail2ban and UFW, set up firewall
-#   provisioner "remote-exec" {
-#     inline = [
-#       "export DEBIAN_FRONTEND=noninteractive",
-#       "sudo apt-get update -y",
-#       "sudo apt-get upgrade -y",
-#       "sudo apt-get install -y fail2ban ufw",
+  #   # Install fail2ban and UFW, set up firewall
+  #   provisioner "remote-exec" {
+  #     inline = [
+  #       "export DEBIAN_FRONTEND=noninteractive",
+  #       "sudo apt-get update -y",
+  #       "sudo apt-get upgrade -y",
+  #       "sudo apt-get install -y fail2ban ufw",
 
-#       # Set up firewall rules
-#       "sudo ufw default deny incoming",
-#       "sudo ufw default allow outgoing",
-#       "sudo ufw allow ssh",
-#       "sudo ufw allow 80/tcp",
-#       "sudo ufw allow 443/tcp",
-#       "sudo ufw --force enable",
+  #       # Set up firewall rules
+  #       "sudo ufw default deny incoming",
+  #       "sudo ufw default allow outgoing",
+  #       "sudo ufw allow ssh",
+  #       "sudo ufw allow 80/tcp",
+  #       "sudo ufw allow 443/tcp",
+  #       "sudo ufw --force enable",
 
-#       # Enable fail2ban service
-#       "sudo systemctl enable fail2ban",
-#       "sudo systemctl start fail2ban"
-#     ]
-#   }
+  #       # Enable fail2ban service
+  #       "sudo systemctl enable fail2ban",
+  #       "sudo systemctl start fail2ban"
+  #     ]
+  #   }
 
 
   # Ensure install_docker.sh is provisioned and executed
   provisioner "file" {
-    source      = "./scripts/install_docker.sh"
+    source      = "../scripts/install_docker.sh"
     destination = "/home/${var.ssh_username}/install_docker.sh"
 
     connection {
@@ -109,7 +109,7 @@ resource "digitalocean_droplet" "media_app_instance" {
   }
 
   provisioner "file" {
-    source      = "./scripts/startup-script.sh"
+    source      = "../scripts/startup-script.sh"
     destination = "/home/${var.ssh_username}/startup-script.sh"
 
     connection {
@@ -121,26 +121,26 @@ resource "digitalocean_droplet" "media_app_instance" {
   }
 
 
-#   Connect as lower-privileged user for Docker setup
-#   provisioner "remote-exec" {
-#     connection {
-#       type        = "ssh"
-#       user        = var.ssh_username
-#       private_key = file("~/.ssh/id_ed25519")
-#       host        = self.ipv4_address
-#       timeout     = "2m"
-#     }
+  #   Connect as lower-privileged user for Docker setup
+  #   provisioner "remote-exec" {
+  #     connection {
+  #       type        = "ssh"
+  #       user        = var.ssh_username
+  #       private_key = file("~/.ssh/id_ed25519")
+  #       host        = self.ipv4_address
+  #       timeout     = "2m"
+  #     }
 
-#     inline = [
-#       # Ensure Docker install script runs
-#       "chmod +x /home/${var.ssh_username}/install_docker.sh",
-#       "sudo /home/${var.ssh_username}/install_docker.sh",
+  #     inline = [
+  #       # Ensure Docker install script runs
+  #       "chmod +x /home/${var.ssh_username}/install_docker.sh",
+  #       "sudo /home/${var.ssh_username}/install_docker.sh",
 
-#       # Run startup script
-#       "chmod +x /home/${var.ssh_username}/startup-script.sh",
-#       "/home/${var.ssh_username}/startup-script.sh"
-#     ]
-#   }
+  #       # Run startup script
+  #       "chmod +x /home/${var.ssh_username}/startup-script.sh",
+  #       "/home/${var.ssh_username}/startup-script.sh"
+  #     ]
+  #   }
   tags = ["http-server", "https-server"]
 }
 
