@@ -199,7 +199,7 @@ resource "google_compute_instance" "media_app_instance" {
 
 
   provisioner "file" {
-    source      = "./scripts/install_docker.sh"
+    source      = "../scripts/install_docker.sh"
     destination = "/home/${var.ssh_username}/install_docker.sh"
 
     connection {
@@ -213,7 +213,7 @@ resource "google_compute_instance" "media_app_instance" {
 
 
   provisioner "file" {
-    source      = "./scripts/startup-script.sh"
+    source      = "../scripts/startup-script.sh"
     destination = "/home/${var.ssh_username}/startup-script.sh" // Temporary location
 
     connection {
@@ -225,7 +225,7 @@ resource "google_compute_instance" "media_app_instance" {
   }
 
   provisioner "file" {
-    source      = "./scripts/startup-script.service"
+    source      = "../scripts/startup-script.service"
     destination = "/home/${var.ssh_username}/startup-script.service" // Temporary location
 
     connection {
@@ -238,7 +238,7 @@ resource "google_compute_instance" "media_app_instance" {
 
 
   provisioner "file" {
-    source      = "./scripts/watch-runners.sh"
+    source      = "../scripts/watch-runners.sh"
     destination = "/home/${var.ssh_username}/watch-runners.sh"
 
     connection {
@@ -250,7 +250,7 @@ resource "google_compute_instance" "media_app_instance" {
   }
 
   provisioner "file" {
-    source      = "./scripts/actions.runners.service"
+    source      = "../scripts/actions.runners.service"
     destination = "/home/${var.ssh_username}/actions.runners.service"
 
     connection {

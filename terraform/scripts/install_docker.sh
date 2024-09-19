@@ -2,6 +2,15 @@
 
 # This script installs Docker on Ubuntu 22.04
 
+# Source environment variables
+source /etc/profile.d/docker_env.sh
+
+# Exit if credentials are not set
+if [ -z "$DOCKER_HUB_USERNAME" ] || [ -z "$DOCKER_HUB_TOKEN" ]; then
+  echo "Docker Hub credentials are not set."
+  exit 1
+fi
+
 # Step 1: Remove existing Docker key and list file
 sudo rm -f /usr/share/keyrings/docker-archive-keyring.gpg
 sudo rm -f /etc/apt/sources.list.d/docker.list

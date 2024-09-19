@@ -1,0 +1,17 @@
+digitalocean_token       = "dop_v1_..."
+region                   = "lon1" # DigitalOcean region similar to europe-west2
+dns_zone_name            = "gong-ng-zone"
+dns_name                 = "gong.ng"
+instance_name            = "media-app-instance"
+ssh_username             = "mediavmuser"
+regular_vm_user_username = "..."
+regular_vm_user_password = "..."
+# ssh_public_key_fingerprint = "your-ssh-fingerprint" # Find it using the DigitalOcean API or DO console
+ssh_private_key_path       = "~/.ssh/id_ed25519"
+machine_type               = "s-1vcpu-1gb" # Size is "s-1vcpu-1gb" which is a smaller equivalent
+ssh_public_key_fingerprint = "30:56:..."
+docker_hub_username        = "devshittu"
+docker_hub_token           = "dckr_pat_example"
+
+
+# terraform_do/terraform.staging.tfvars
