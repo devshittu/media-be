@@ -49,6 +49,11 @@ variable "ssh_private_key_path" {
   type        = string
 }
 
+variable "ssh_public_key_path" {
+  description = "The path to the public SSH key for connecting to the Droplet."
+  type        = string
+}
+
 variable "machine_type" {
   description = "The size of the DigitalOcean Droplet (e.g., s-1vcpu-1gb)."
   type        = string
