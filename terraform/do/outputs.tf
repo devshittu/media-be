@@ -1,15 +1,13 @@
-
-# Outputs to get key information
+# Update outputs to use the Floating IP
 output "droplet_ip" {
-  description = "Public IP address of the Droplet"
-  value       = digitalocean_droplet.media_app_instance.ipv4_address
+  description = "Public IP address of the Droplet (Floating IP)"
+  value       = digitalocean_floating_ip.static_ip_media_app.ip_address
 }
 
 output "ssh_command" {
   description = "SSH Command to connect to the Droplet"
-  value       = "ssh ${var.ssh_username}@${digitalocean_droplet.media_app_instance.ipv4_address} -i ~/.ssh/id_ed25519"
+  value       = "ssh ${var.ssh_username}@${digitalocean_floating_ip.static_ip_media_app.ip_address} -i ~/.ssh/id_ed25519"
 }
-
 # DNS A record for API Staging
 output "api_staging_a_record" {
   description = "DNS A record for API Staging"
