@@ -59,6 +59,12 @@ variable "machine_type" {
   type        = string
 }
 
+variable "os_image" {
+  description = "The image of the DigitalOcean Droplet (e.g., s-1vcpu-1gb)."
+  type        = string
+  default     = "ubuntu-24-04-x64"
+}
+
 variable "docker_hub_username" {
   description = "Docker Hub username for pulling images."
   type        = string

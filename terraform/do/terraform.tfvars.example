@@ -7,8 +7,11 @@ ssh_username             = "mediavmuser"
 regular_vm_user_username = "..."
 regular_vm_user_password = "..."
 # ssh_public_key_fingerprint = "your-ssh-fingerprint" # Find it using the DigitalOcean API or DO console
-ssh_private_key_path       = "~/.ssh/id_ed25519"
-machine_type               = "s-1vcpu-1gb" # Size is "s-1vcpu-1gb" which is a smaller equivalent
+
+ssh_private_key_path = "~/.ssh/id_ed25519"
+ssh_public_key_path  = "~/.ssh/id_ed25519.pub"
+machine_type               = "s-2vcpu-4gb"
+os_image                   = "ubuntu-24-04-x64"
 ssh_public_key_fingerprint = "30:56:..."
 docker_hub_username        = "devshittu"
 docker_hub_token           = "dckr_pat_example"

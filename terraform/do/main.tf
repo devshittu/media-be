@@ -26,8 +26,8 @@ resource "digitalocean_vpc" "my_vpc" {
 resource "digitalocean_droplet" "media_app_instance" {
   name   = var.instance_name
   region = var.region
-  size   = var.machine_type   # e.g., "s-1vcpu-1gb"
-  image  = "ubuntu-24-04-x64" # Ubuntu 24.04 LTS
+  size   = var.machine_type # e.g., "s-1vcpu-1gb"
+  image  = var.os_image     # Ubuntu 24.04 LTS
 
   ssh_keys = [
     digitalocean_ssh_key.mediavm_ssh.fingerprint
