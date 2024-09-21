@@ -12,11 +12,27 @@ wait_for_service() {
   echo "$service is ready!"
 }
 
+# Function to wait for Elasticsearch health status to be green or yellow
+wait_for_elasticsearch_health() {
+  local service=$1
+  echo "Checking Elasticsearch health status..."
+  while true; do
+    health_status=$(curl -s http://$service:9200/_cluster/health | jq -r .status)
+    if [ "$health_status" == "green" ] || [ "$health_status" == "yellow" ]; then
+      echo "Elasticsearch health status is $health_status"
+      break
+    else
+      echo "Elasticsearch health status is $health_status, waiting..."
+      sleep 5
+    fi
+  done
+}
 # Wait for Neo4j to be ready
 wait_for_service $NEO4J_HOST $NEO4J_PORT
 
-# Wait for Elastic to be ready
+# Wait for Elastic to be ready and healthy
 wait_for_service $ELASTICSEARCH_HOST $ELASTICSEARCH_PORT
+wait_for_elasticsearch_health $ELASTICSEARCH_HOST
 
 # Run Django setup commands
 echo "Running Django setup commands..."
