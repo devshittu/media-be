@@ -18,7 +18,7 @@ wait_for_elasticsearch_health() {
   echo "Checking Elasticsearch health status..."
   while true; do
     health_status=$(curl -s http://$service:9200/_cluster/health | jq -r .status)
-    if [ "$health_status" == "green" ] || [ "$health_status" == "yellow" ]; then
+    if [ "$health_status" = "green" ] || [ "$health_status" = "yellow" ]; then
       echo "Elasticsearch health status is $health_status"
       break
     else

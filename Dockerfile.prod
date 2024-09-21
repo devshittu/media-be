@@ -14,7 +14,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ffmpeg curl netcat  gcc \
+    && apt-get install -y --no-install-recommends ffmpeg curl netcat  gcc jq \
     && rm -rf /var/lib/apt/lists/*
 
 # lint
@@ -51,8 +51,8 @@ WORKDIR $APP_HOME
 
 # install dependencies
 # install dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg curl netcat && \
-    which netcat && which ffmpeg && which curl
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg curl netcat jq && \
+    which netcat && which ffmpeg && which curl && which jq
 
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
