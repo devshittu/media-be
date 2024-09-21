@@ -16,23 +16,33 @@ wait_for_service() {
 wait_for_elasticsearch_health() {
   local service=$1
   echo "Checking Elasticsearch health status..."
-  while true; do
+  max_attempts=60  # Maximum number of attempts (5 minutes)
+  attempt=1
+  while [ $attempt -le $max_attempts ]; do
     health_status=$(curl -s -u "elastic:$ELASTICSEARCH_PASSWORD" http://$service:9200/_cluster/health | jq -r .status)
     if [ "$health_status" = "green" ] || [ "$health_status" = "yellow" ]; then
       echo "Elasticsearch health status is $health_status"
       break
     else
-      echo "Elasticsearch health status is $health_status, waiting..."
+      echo "Elasticsearch health status is $health_status, waiting... attempt $attempt/$max_attempts"
       sleep 5
     fi
+    attempt=$((attempt+1))
   done
+
+  if [ $attempt -gt $max_attempts ]; then
+    echo "Elasticsearch did not become ready within the time limit."
+    exit 1
+  fi
 }
+
 # Wait for Neo4j to be ready
 wait_for_service $NEO4J_HOST $NEO4J_PORT
 
 # Wait for Elastic to be ready and healthy
 wait_for_service $ELASTICSEARCH_HOST $ELASTICSEARCH_PORT
 wait_for_elasticsearch_health $ELASTICSEARCH_HOST
+
 
 # Run Django setup commands
 echo "Running Django setup commands..."
