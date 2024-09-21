@@ -120,7 +120,18 @@ resource "digitalocean_droplet" "media_app_instance" {
       host        = self.ipv4_address
     }
   }
+  # Copy setup_github_actions.sh script
+  provisioner "file" {
+    source      = "../scripts/setup_github_actions.sh"
+    destination = "/home/${var.ssh_username}/setup_github_actions.sh"
 
+    connection {
+      type        = "ssh"
+      user        = var.ssh_username
+      private_key = file(var.ssh_private_key_path)
+      host        = self.ipv4_address
+    }
+  }
   # Execute scripts and set up services as the less privileged user
   provisioner "remote-exec" {
     connection {
@@ -154,25 +165,49 @@ resource "digitalocean_droplet" "media_app_instance" {
       "sudo systemctl start fail2ban",
 
       # Ensure Docker install script runs with preserved environment variables
+      # "chmod +x /home/${var.ssh_username}/install_docker.sh",
+      # "sudo -E env USER=${var.ssh_username} /home/${var.ssh_username}/install_docker.sh",
+
+
+      # # Create directories for action runners and logs
+      # "sudo mkdir -p /home/${var.ssh_username}/action-runners/backend",
+      # "sudo mkdir -p /home/${var.ssh_username}/action-runners/frontend",
+      # "sudo mkdir -p /home/${var.ssh_username}/action-runners/logs",
+
+      # # Set ownership and permissions
+      # "sudo chown -R ${var.ssh_username}:${var.ssh_username} /home/${var.ssh_username}/action-runners",
+      # "sudo chmod +x /home/${var.ssh_username}/watch-runners.sh",
+
+      # # Move service files to appropriate locations
+      # "sudo mv /home/${var.ssh_username}/startup-script.service /etc/systemd/system/startup-script.service",
+      # "sudo mv /home/${var.ssh_username}/actions.runners.service /etc/systemd/system/actions.runners.service",
+
+      # # Move watch-runners.sh to action-runners directory
+      # "sudo mv /home/${var.ssh_username}/watch-runners.sh /home/${var.ssh_username}/action-runners/watch-runners.sh",
+      # "sudo chown ${var.ssh_username}:${var.ssh_username} /home/${var.ssh_username}/action-runners/watch-runners.sh",
+
+
+      # Ensure Docker install script runs with preserved environment variables as non-root user
       "chmod +x /home/${var.ssh_username}/install_docker.sh",
-      "sudo -E /home/${var.ssh_username}/install_docker.sh",
+      "/home/${var.ssh_username}/install_docker.sh",
 
       # Create directories for action runners and logs
-      "sudo mkdir -p /home/${var.ssh_username}/action-runners/backend",
-      "sudo mkdir -p /home/${var.ssh_username}/action-runners/frontend",
-      "sudo mkdir -p /home/${var.ssh_username}/action-runners/logs",
+      "mkdir -p /home/${var.ssh_username}/action-runners/backend",
+      "mkdir -p /home/${var.ssh_username}/action-runners/frontend",
+      "mkdir -p /home/${var.ssh_username}/action-runners/logs",
 
       # Set ownership and permissions
-      "sudo chown -R ${var.ssh_username}:${var.ssh_username} /home/${var.ssh_username}/action-runners",
-      "sudo chmod +x /home/${var.ssh_username}/watch-runners.sh",
+      "chown -R ${var.ssh_username}:${var.ssh_username} /home/${var.ssh_username}/action-runners",
+      "chmod +x /home/${var.ssh_username}/watch-runners.sh",
+      "chmod +x /home/${var.ssh_username}/setup_github_actions.sh",
 
       # Move service files to appropriate locations
       "sudo mv /home/${var.ssh_username}/startup-script.service /etc/systemd/system/startup-script.service",
       "sudo mv /home/${var.ssh_username}/actions.runners.service /etc/systemd/system/actions.runners.service",
 
       # Move watch-runners.sh to action-runners directory
-      "sudo mv /home/${var.ssh_username}/watch-runners.sh /home/${var.ssh_username}/action-runners/watch-runners.sh",
-      "sudo chown ${var.ssh_username}:${var.ssh_username} /home/${var.ssh_username}/action-runners/watch-runners.sh",
+      "mv /home/${var.ssh_username}/watch-runners.sh /home/${var.ssh_username}/action-runners/watch-runners.sh",
+      "chown ${var.ssh_username}:${var.ssh_username} /home/${var.ssh_username}/action-runners/watch-runners.sh",
 
       # Enable and start services
       "sudo systemctl daemon-reload",
