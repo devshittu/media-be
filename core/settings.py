@@ -189,6 +189,9 @@ ELASTICSEARCH_DSL = {
         # 'hosts': f"http://{ES_USERNAME}:{ES_PASSWORD}@{ES_HOST}:{ES_PORT}",
         'hosts': f"http://{ES_HOST}:{ES_PORT}",
         'http_auth': (ES_USERNAME, ES_PASSWORD),
+        # 'timeout': 30,
+        # 'use_ssl': False,
+        # 'verify_certs': False,
     },
 }
 

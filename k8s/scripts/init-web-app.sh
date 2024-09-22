@@ -12,19 +12,20 @@ wait_for_service() {
   echo "$service is ready!"
 }
 
-# Function to wait for Elasticsearch health status to be green or yellow
-wait_for_elasticsearch_health() {
-  local service=$1
-  echo "Checking Elasticsearch health status..."
+
+# Function to wait for Elasticsearch to be ready using Django management command
+wait_for_elasticsearch() {
   max_attempts=60  # Maximum number of attempts (5 minutes)
   attempt=1
+  echo "Checking Elasticsearch readiness using Django management command..."
   while [ $attempt -le $max_attempts ]; do
-    health_status=$(curl -s -u "elastic:$ELASTICSEARCH_PASSWORD" http://$service:9200/_cluster/health | jq -r .status)
-    if [ "$health_status" = "green" ] || [ "$health_status" = "yellow" ]; then
-      echo "Elasticsearch health status is $health_status"
+    python manage.py check_elasticsearch
+    status=$?
+    if [ $status -eq 0 ]; then
+      echo "Elasticsearch is ready."
       break
     else
-      echo "Elasticsearch health status is $health_status, waiting... attempt $attempt/$max_attempts"
+      echo "Elasticsearch is not ready yet. Attempt $attempt/$max_attempts."
       sleep 5
     fi
     attempt=$((attempt+1))
@@ -39,9 +40,11 @@ wait_for_elasticsearch_health() {
 # Wait for Neo4j to be ready
 wait_for_service $NEO4J_HOST $NEO4J_PORT
 
-# Wait for Elastic to be ready and healthy
+# Wait for Elasticsearch port to be open
 wait_for_service $ELASTICSEARCH_HOST $ELASTICSEARCH_PORT
-wait_for_elasticsearch_health $ELASTICSEARCH_HOST
+
+# Wait for Elasticsearch to be ready using the management command
+wait_for_elasticsearch
 
 
 # Run Django setup commands
@@ -72,7 +75,21 @@ echo "--== Completed building index successfully ==--"
 
 # Create superuser - Use environment variables for email and password
 echo "Creating superuser..."
-echo "from django.contrib.auth import get_user_model; CustomUser = get_user_model(); CustomUser.objects.create_superuser(email='${DJANGO_SUPERUSER_EMAIL}', password='${DJANGO_SUPERUSER_PASSWORD}', username='${DJANGO_SUPERUSER_USERNAME}', display_name='${DJANGO_SUPERUSER_DISPLAY_NAME}', avatar_url='${DJANGO_SUPERUSER_AVATAR_URL}', has_completed_setup=${DJANGO_SUPERUSER_HAS_COMPLETED_SETUP})" | python manage.py shell
+# echo "from django.contrib.auth import get_user_model; CustomUser = get_user_model(); CustomUser.objects.create_superuser(email='${DJANGO_SUPERUSER_EMAIL}', password='${DJANGO_SUPERUSER_PASSWORD}', username='${DJANGO_SUPERUSER_USERNAME}', display_name='${DJANGO_SUPERUSER_DISPLAY_NAME}', avatar_url='${DJANGO_SUPERUSER_AVATAR_URL}', has_completed_setup=${DJANGO_SUPERUSER_HAS_COMPLETED_SETUP})" | python manage.py shell
+
+echo "
+from django.contrib.auth import get_user_model;
+CustomUser = get_user_model();
+if not CustomUser.objects.filter(username='${DJANGO_SUPERUSER_USERNAME}').exists():
+    CustomUser.objects.create_superuser(
+        email='${DJANGO_SUPERUSER_EMAIL}',
+        password='${DJANGO_SUPERUSER_PASSWORD}',
+        username='${DJANGO_SUPERUSER_USERNAME}',
+        display_name='${DJANGO_SUPERUSER_DISPLAY_NAME}',
+        avatar_url='${DJANGO_SUPERUSER_AVATAR_URL}',
+        has_completed_setup=${DJANGO_SUPERUSER_HAS_COMPLETED_SETUP}
+    )
+" | python manage.py shell
 
 echo "Setup completed successfully!"
 
