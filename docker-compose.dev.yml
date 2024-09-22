@@ -50,6 +50,8 @@ services:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - "ELASTIC_PASSWORD=changeme" # Set your password here
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=false 
     volumes:
       - es_data:/usr/share/elasticsearch/data
     ports:
