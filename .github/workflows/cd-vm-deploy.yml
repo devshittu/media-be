@@ -136,7 +136,6 @@ jobs:
 
       - name: Run init-web-app.sh in backend-app container
         run: sudo docker exec backend-app bash -c "./k8s/scripts/init-web-app.sh"
-        # retries: 3  # Add retries to the step
 
     #   - name: Remove Untagged Docker Images
     #     run: |
