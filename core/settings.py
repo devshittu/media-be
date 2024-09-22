@@ -197,7 +197,7 @@ ES_PORT = config("ELASTICSEARCH_PORT", default="9200")
 # TODO: the latest version of Elasticsearch 7.**
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': f"http://{ES_USERNAME}:{ES_PASSWORD}@{ES_HOST}:{ES_PORT}",
+        'hosts': f"https://{ES_USERNAME}:{ES_PASSWORD}@{ES_HOST}:{ES_PORT}",
     },
 }
 
