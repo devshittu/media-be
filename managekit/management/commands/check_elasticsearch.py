@@ -27,3 +27,6 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR(
                 f"Error connecting to Elasticsearch: {e}"))
             sys.exit(1)
+
+
+# python manage.py check_elasticsearch
