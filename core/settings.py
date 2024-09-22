@@ -191,7 +191,7 @@ ELASTICSEARCH_DSL = {
         'http_auth': (ES_USERNAME, ES_PASSWORD),
         'timeout': 30,
         'use_ssl': True,
-        'verify_certs': False,
+        'verify_certs': True,
     },
 }
 
