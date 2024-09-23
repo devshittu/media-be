@@ -1,4 +1,5 @@
 # Standard Library Imports
+from elasticsearch import RequestsHttpConnection
 from pathlib import Path
 from datetime import timedelta
 import os
@@ -195,22 +196,35 @@ ES_PORT = config("ELASTICSEARCH_PORT", default="9200")
 # }
 
 # TODO: the latest version of Elasticsearch 7.**
-ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': f"http://{ES_USERNAME}:{ES_PASSWORD}@{ES_HOST}:{ES_PORT}",
-    },
-}
-
-# TODO: the latest version of Elasticsearch 8.**
 # ELASTICSEARCH_DSL = {
 #     'default': {
-#         # 'hosts': f"http://{ES_HOST}:{ES_PORT}",
-#         # 'http_auth': (ES_USERNAME, ES_PASSWORD),
-#         # 'timeout': 30,
-#         # 'use_ssl': True,
-#         # 'verify_certs': True,
+#         'hosts': f"http://{ES_USERNAME}:{ES_PASSWORD}@{ES_HOST}:{ES_PORT}",
 #     },
 # }
+
+# TODO: the latest version of Elasticsearch 8.**
+
+# ELASTICSEARCH_DSL = {
+#     'default': {
+#         'hosts': f"http://{ES_HOST}:{ES_PORT}",
+#         'http_auth': (ES_USERNAME, ES_PASSWORD),
+#         # 'timeout': 30,
+#         'use_ssl': False,
+#         'verify_certs': False,
+#         'ca_certs': None,
+#     },
+# }
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': f"http://{ES_HOST}:{ES_PORT}",  # Use https for staging
+        'http_auth': (ES_USERNAME, ES_PASSWORD),  # Username and password
+        'use_ssl': False,  # Enable SSL
+        'verify_certs': False,  # Don't verify SSL certificates
+        'ca_certs': None,  # No CA certificates needed
+        'connection_class': RequestsHttpConnection,  # Ensure compatibility
+    },
+}
 
 # Neo4J Database Configuration
 
