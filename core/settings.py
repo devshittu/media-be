@@ -182,47 +182,38 @@ ES_HOST = config(
     "ELASTICSEARCH_HOST", default="elasticsearch"
 )  # default could also be 'localhost'
 ES_PORT = config("ELASTICSEARCH_PORT", default="9200")
+ES_CA_CERT = config("ELASTICSEARCH_CA_CERT",
+                    default="/etc/nginx/certs/es.staging.gong.ng.crt")
 
-# ELASTICSEARCH_DSL = {
-#     'default': {
-#         # 'hosts': f"http://{ES_USERNAME}:{ES_PASSWORD}@{ES_HOST}:{ES_PORT}",
-#         'hosts': f"http://{ES_HOST}:{ES_PORT}",
-#         'http_auth': (ES_USERNAME, ES_PASSWORD),
-#         # 'timeout': 30,
-#         # 'use_ssl': False,
-#         # 'verify_certs': False,
-#     },
-# }
+# Ensure this is added to serve static files during development
+if DEBUG:
+    ELASTICSEARCH_DSL = {
+        'default': {
+            # 'hosts': f"http://{ES_USERNAME}:{ES_PASSWORD}@{ES_HOST}:{ES_PORT}",
+            'hosts': f"http://{ES_HOST}:{ES_PORT}",
+            'http_auth': (ES_USERNAME, ES_PASSWORD),
+        },
+    }
+else:
 
-# TODO: the latest version of Elasticsearch 7.**
-# ELASTICSEARCH_DSL = {
-#     'default': {
-#         'hosts': f"http://{ES_USERNAME}:{ES_PASSWORD}@{ES_HOST}:{ES_PORT}",
-#     },
-# }
-
-# TODO: the latest version of Elasticsearch 8.**
-
-# ELASTICSEARCH_DSL = {
-#     'default': {
-#         'hosts': f"http://{ES_HOST}:{ES_PORT}",
-#         'http_auth': (ES_USERNAME, ES_PASSWORD),
-#         # 'timeout': 30,
-#         'use_ssl': False,
-#         'verify_certs': False,
-#         'ca_certs': None,
-#     },
-# }
-
-ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': f"https://{ES_HOST}:{ES_PORT}",
-        'http_auth': (ES_USERNAME, ES_PASSWORD),
-        'use_ssl': True,
-        'verify_certs': False,  # Disable cert verification if using self-signed certs
-        'ca_certs': None,
-    },
-}
+    ELASTICSEARCH_DSL = {
+        'default': {
+            'hosts': f"https://{ES_HOST}:{ES_PORT}",
+            'http_auth': (ES_USERNAME, ES_PASSWORD),
+            'use_ssl': True,
+            'verify_certs': False,  # Disable cert verification if using self-signed certs
+            'ca_certs': None,
+        },
+    }
+    # ELASTICSEARCH_DSL = {
+    #     'default': {
+    #         'hosts': f"https://{ES_HOST}:{ES_PORT}",
+    #         'http_auth': (ES_USERNAME, ES_PASSWORD),
+    #         'use_ssl': True,
+    #         'verify_certs': True,  # Enable cert verification
+    #         'ca_certs': ES_CA_CERT,
+    #     },
+    # }
 
 # Neo4J Database Configuration
 
