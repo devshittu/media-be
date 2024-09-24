@@ -47,6 +47,7 @@ services:
       - media_volume:/home/app/web/mediafiles
       - static_volume:/home/app/web/staticfiles
       - logs_volume:/home/app/web/logs
+      - letsencrypt-certs:/etc/nginx/certs 
     ports:
       - 8000:8000
     depends_on:
@@ -143,13 +144,13 @@ services:
       - "ELASTIC_PASSWORD=changeme" # Set your password here
       - xpack.security.enabled=false
       - xpack.security.http.ssl.enabled=false
-      # - VIRTUAL_HOST=es.staging.gong.ng
-      # - LETSENCRYPT_HOST=es.staging.gong.ng
-      # - LETSENCRYPT_EMAIL=devshittu@gmail.com
-    labels:
-      - "VIRTUAL_HOST=es.staging.gong.ng"
-      - "LETSENCRYPT_HOST=es.staging.gong.ng"
-      - "LETSENCRYPT_EMAIL=devshittu@gmail.com"
+      - VIRTUAL_HOST=es.staging.gong.ng
+      - LETSENCRYPT_HOST=es.staging.gong.ng
+      - LETSENCRYPT_EMAIL=devshittu@gmail.com
+    # labels:
+    #   - "VIRTUAL_HOST=es.staging.gong.ng"
+    #   - "LETSENCRYPT_HOST=es.staging.gong.ng"
+    #   - "LETSENCRYPT_EMAIL=devshittu@gmail.com"
     volumes:
       - es_data:/usr/share/elasticsearch/data
     networks:

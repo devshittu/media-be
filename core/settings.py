@@ -182,8 +182,8 @@ ES_HOST = config(
     "ELASTICSEARCH_HOST", default="elasticsearch"
 )  # default could also be 'localhost'
 ES_PORT = config("ELASTICSEARCH_PORT", default="9200")
-ES_CA_CERT = config("ELASTICSEARCH_CA_CERT",
-                    default="/etc/nginx/certs/es.staging.gong.ng.crt")
+# ES_CA_CERT = config("ELASTICSEARCH_CA_CERT",
+#                     default="/etc/nginx/certs/es.staging.gong.ng.crt")
 
 # Ensure this is added to serve static files during development
 if DEBUG:
@@ -196,24 +196,27 @@ if DEBUG:
     }
 else:
 
-    ELASTICSEARCH_DSL = {
-        'default': {
-            'hosts': f"https://{ES_HOST}:{ES_PORT}",
-            'http_auth': (ES_USERNAME, ES_PASSWORD),
-            'use_ssl': True,
-            'verify_certs': True,  # Disable cert verification if using self-signed certs
-            'ca_certs': None,
-        },
-    }
     # ELASTICSEARCH_DSL = {
     #     'default': {
     #         'hosts': f"https://{ES_HOST}:{ES_PORT}",
     #         'http_auth': (ES_USERNAME, ES_PASSWORD),
     #         'use_ssl': True,
-    #         'verify_certs': True,  # Enable cert verification
-    #         'ca_certs': ES_CA_CERT,
+    #         'verify_certs': True,  # Disable cert verification if using self-signed certs
+    #         'ca_certs': None,
     #     },
     # }
+    # Update to the correct cert path
+    ES_CA_CERT = "/etc/nginx/certs/es.staging.gong.ng/fullchain.pem"
+
+    ELASTICSEARCH_DSL = {
+        'default': {
+            'hosts': f"https://{ES_HOST}:{ES_PORT}",
+            'http_auth': (ES_USERNAME, ES_PASSWORD),
+            'use_ssl': True,
+            'verify_certs': True,  # Enable cert verification
+            'ca_certs': ES_CA_CERT,
+        },
+    }
 
 # Neo4J Database Configuration
 
