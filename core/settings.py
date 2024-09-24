@@ -195,28 +195,27 @@ if DEBUG:
         },
     }
 else:
+    ELASTICSEARCH_DSL = {
+        'default': {
+            'hosts': f"https://{ES_HOST}:{ES_PORT}",
+            'http_auth': (ES_USERNAME, ES_PASSWORD),
+            'use_ssl': True,
+            'verify_certs': False,  # Disable cert verification if using self-signed certs
+            'ca_certs': None,
+        },
+    }
+    # Update to the correct cert path
+    # ES_CA_CERT = "/etc/nginx/certs/es.staging.gong.ng.chain.pem"
 
     # ELASTICSEARCH_DSL = {
     #     'default': {
     #         'hosts': f"https://{ES_HOST}:{ES_PORT}",
     #         'http_auth': (ES_USERNAME, ES_PASSWORD),
     #         'use_ssl': True,
-    #         'verify_certs': True,  # Disable cert verification if using self-signed certs
-    #         'ca_certs': None,
+    #         'verify_certs': True,  # Enable cert verification
+    #         'ca_certs': ES_CA_CERT,
     #     },
     # }
-    # Update to the correct cert path
-    ES_CA_CERT = "/etc/nginx/certs/es.staging.gong.ng.chain.pem"
-
-    ELASTICSEARCH_DSL = {
-        'default': {
-            'hosts': f"https://{ES_HOST}:{ES_PORT}",
-            'http_auth': (ES_USERNAME, ES_PASSWORD),
-            'use_ssl': True,
-            'verify_certs': True,  # Enable cert verification
-            'ca_certs': ES_CA_CERT,
-        },
-    }
 
 # Neo4J Database Configuration
 
