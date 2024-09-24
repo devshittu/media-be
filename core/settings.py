@@ -1,5 +1,4 @@
 # Standard Library Imports
-from elasticsearch import RequestsHttpConnection
 from pathlib import Path
 from datetime import timedelta
 import os
@@ -217,12 +216,11 @@ ES_PORT = config("ELASTICSEARCH_PORT", default="9200")
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': f"http://{ES_HOST}:{ES_PORT}",  # Use https for staging
-        'http_auth': (ES_USERNAME, ES_PASSWORD),  # Username and password
-        'use_ssl': False,  # Enable SSL
-        'verify_certs': False,  # Don't verify SSL certificates
-        'ca_certs': None,  # No CA certificates needed
-        'connection_class': RequestsHttpConnection,  # Ensure compatibility
+        'hosts': f"https://{ES_HOST}:{ES_PORT}",
+        'http_auth': (ES_USERNAME, ES_PASSWORD),
+        'use_ssl': True,
+        'verify_certs': False,  # Disable cert verification if using self-signed certs
+        'ca_certs': None,
     },
 }
 

@@ -1,6 +1,7 @@
 # from django.core.management.base import BaseCommand
 # from django.conf import settings
 # from elasticsearch import Elasticsearch, ElasticsearchException
+# from elasticsearch.connection import RequestsHttpConnection
 # import sys
 
 
@@ -10,8 +11,22 @@
 #     def handle(self, *args, **options):
 #         es_settings = settings.ELASTICSEARCH_DSL['default']
 #         es_hosts = es_settings['hosts']
+#         http_auth = es_settings.get('http_auth', None)
+#         use_ssl = es_settings.get('use_ssl', False)
+#         verify_certs = es_settings.get('verify_certs', True)
+
 #         try:
-#             es = Elasticsearch(es_hosts, verify_certs=False, timeout=30)
+#             # Set up Elasticsearch client with proper connection class and auth
+#             es = Elasticsearch(
+#                 es_hosts,
+#                 http_auth=http_auth,
+#                 use_ssl=use_ssl,
+#                 verify_certs=verify_certs,
+#                 ca_certs=es_settings.get('ca_certs'),
+#                 connection_class=RequestsHttpConnection,
+#                 timeout=30
+#             )
+
 #             # Attempt to get cluster health
 #             health = es.cluster.health()
 #             status = health['status']
@@ -29,14 +44,17 @@
 #             sys.exit(1)
 
 
-# # python manage.py check_elasticsearch
+# managekit/management/commands/check_elasticsearch.py
 
-
-from django.core.management.base import BaseCommand
-from django.conf import settings
-from elasticsearch import Elasticsearch, ElasticsearchException
-from elasticsearch.connection import RequestsHttpConnection
 import sys
+import warnings
+from elasticsearch import Elasticsearch, ElasticsearchException
+from django.conf import settings
+from django.core.management.base import BaseCommand
+from urllib3.exceptions import InsecureRequestWarning
+
+# Suppress only the InsecureRequestWarning from urllib3
+warnings.filterwarnings('ignore', category=InsecureRequestWarning)
 
 
 class Command(BaseCommand):
@@ -48,20 +66,18 @@ class Command(BaseCommand):
         http_auth = es_settings.get('http_auth', None)
         use_ssl = es_settings.get('use_ssl', False)
         verify_certs = es_settings.get('verify_certs', True)
+        ca_certs = es_settings.get('ca_certs', None)
 
         try:
-            # Set up Elasticsearch client with proper connection class and auth
             es = Elasticsearch(
-                es_hosts,
+                [es_hosts],
                 http_auth=http_auth,
                 use_ssl=use_ssl,
                 verify_certs=verify_certs,
-                ca_certs=es_settings.get('ca_certs'),
-                connection_class=RequestsHttpConnection,
-                timeout=30
+                ca_certs=ca_certs,
+                timeout=30,
             )
 
-            # Attempt to get cluster health
             health = es.cluster.health()
             status = health['status']
             if status in ['green', 'yellow']:
@@ -76,3 +92,6 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR(
                 f"Error connecting to Elasticsearch: {e}"))
             sys.exit(1)
+
+
+# # python manage.py check_elasticsearch
