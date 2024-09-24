@@ -252,6 +252,14 @@ resource "digitalocean_record" "app_staging_a" {
   ttl    = 300
 }
 
+resource "digitalocean_record" "es_staging_a" {
+  domain = digitalocean_domain.gong_ng.name
+  type   = "A"
+  name   = "es.staging"
+  value  = digitalocean_floating_ip.static_ip_media_app.ip_address
+  ttl    = 300
+}
+
 resource "digitalocean_record" "gong_ng_a" {
   domain = digitalocean_domain.gong_ng.name
   type   = "A"
@@ -281,6 +289,14 @@ resource "digitalocean_record" "www_app_staging_gong_ng_cname" {
   domain = digitalocean_domain.gong_ng.name
   type   = "CNAME"
   name   = "www.app.staging"
+  value  = "${var.dns_name}."
+  ttl    = 300
+}
+
+resource "digitalocean_record" "www_es_staging_gong_ng_cname" {
+  domain = digitalocean_domain.gong_ng.name
+  type   = "CNAME"
+  name   = "www.es.staging"
   value  = "${var.dns_name}."
   ttl    = 300
 }
