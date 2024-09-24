@@ -201,7 +201,7 @@ else:
             'hosts': f"https://{ES_HOST}:{ES_PORT}",
             'http_auth': (ES_USERNAME, ES_PASSWORD),
             'use_ssl': True,
-            'verify_certs': False,  # Disable cert verification if using self-signed certs
+            'verify_certs': True,  # Disable cert verification if using self-signed certs
             'ca_certs': None,
         },
     }
