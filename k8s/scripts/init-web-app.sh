@@ -69,7 +69,9 @@ echo "..."
 echo "--== Completed autoseed successfully ==--"
 
 echo "> Installing/Building the indecies for elasticsearch"
-python manage.py search_index --rebuild
+# python manage.py search_index --rebuild
+echo "y" | python manage.py search_index --rebuild
+
 echo "..."
 echo "--== Completed building index successfully ==--"
 
