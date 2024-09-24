@@ -206,7 +206,7 @@ else:
     #     },
     # }
     # Update to the correct cert path
-    ES_CA_CERT = "/etc/nginx/certs/es.staging.gong.ng/fullchain.pem"
+    ES_CA_CERT = "/etc/nginx/certs/es.staging.gong.ng.crt"
 
     ELASTICSEARCH_DSL = {
         'default': {
