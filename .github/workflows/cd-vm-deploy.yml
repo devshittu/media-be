@@ -62,6 +62,7 @@ jobs:
           echo "POSTGRES_PORT=${{ vars.POSTGRES_PORT }}" >> .env.docker-compose
           echo "ELASTICSEARCH_HOST=${{ vars.__DOCKER_COMPOSE_ELASTICSEARCH_HOST }}" >> .env.docker-compose
           echo "ELASTICSEARCH_PORT=${{ vars.__DOCKER_COMPOSE_ELASTICSEARCH_PORT }}" >> .env.docker-compose
+          echo "ELASTICSEARCH_CA_CERT=${{ vars.__DOCKER_COMPOSE_ELASTICSEARCH_CA_CERT }}" >> .env.docker-compose
           echo "ELASTICSEARCH_USERNAME=${{ vars.__DOCKER_COMPOSE_ELASTICSEARCH_USERNAME }}" >> .env.docker-compose
           echo "ELASTICSEARCH_PASSWORD=${{ vars.__DOCKER_COMPOSE_ELASTICSEARCH_PASSWORD }}" >> .env.docker-compose
           echo "NEO4J_USERNAME=${{ vars.__DOCKER_COMPOSE_NEO4J_USERNAME }}" >> .env.docker-compose
