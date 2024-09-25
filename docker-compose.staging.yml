@@ -17,7 +17,8 @@ services:
       - my_media_network
 
   letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
+    # image: jrcs/letsencrypt-nginx-proxy-companion
+    image: nginxproxy/acme-companion
     container_name: letsencrypt
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -30,7 +31,7 @@ services:
       - DEFAULT_EMAIL=devshittu@gmail.com
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - DEBUG=true
-      - ACME_CA_URI=https://acme-staging-v02.api.letsencrypt.org/directory # Use Let's Encrypt staging
+      # - ACME_CA_URI=https://acme-staging-v02.api.letsencrypt.org/directory # Use Let's Encrypt staging
     networks:
       - my_media_network
 
