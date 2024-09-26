@@ -71,6 +71,7 @@ jobs:
           echo "NEO4J_HOST=${{ vars.__DOCKER_COMPOSE_NEO4J_HOST }}" >> .env.docker-compose
           echo "NEO4J_PORT=${{ vars.__DOCKER_COMPOSE_NEO4J_PORT }}" >> .env.docker-compose
           echo "REDIS_PASSWORD=${{ vars.REDIS_PASSWORD }}" >> .env.docker-compose
+          echo "REDIS_USERNAME=${{ vars.__DOCKER_COMPOSE_REDIS_USERNAME }}" >> .env.docker-compose
           echo "REDIS_HOST=${{ vars.__DOCKER_COMPOSE_REDIS_HOST }}" >> .env.docker-compose
           echo "REDIS_PORT=${{ vars.REDIS_PORT }}" >> .env.docker-compose
           echo "CELERY_BROKER_URL=${{ vars.__DOCKER_COMPOSE_CELERY_BROKER_URL }}" >> .env.docker-compose
