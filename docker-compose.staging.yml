@@ -168,7 +168,7 @@ services:
     container_name: db-redis
     image: "redis:alpine"
     volumes:
-      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      # - ./redis.conf:/usr/local/etc/redis/redis.conf
       - redis_data:/data
     ports:
       - "6379:6379"

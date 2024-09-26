@@ -433,8 +433,8 @@ else:
         'default': {
             'BACKEND': 'django_redis.cache.RedisCache',
             # Use a different Redis DB for caching
-            'LOCATION': f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/1',
-            # 'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}/1',
+            # 'LOCATION': f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/1',
+            'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}/1',
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
                 # 'PASSWORD': REDIS_PASSWORD,  # Add this only if you have password authentication
