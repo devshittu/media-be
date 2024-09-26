@@ -17,7 +17,6 @@ services:
       - my_media_network
 
   letsencrypt:
-    # image: jrcs/letsencrypt-nginx-proxy-companion
     image: nginxproxy/acme-companion
     container_name: letsencrypt
     volumes:
@@ -119,23 +118,6 @@ services:
     env_file:
       - .env.docker-compose
 
-  # elasticsearch:
-  #   container_name: elasticsearch
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
-  #   environment:
-  #     - discovery.type=single-node
-  #     - ES_JAVA_OPTS=-Xms512m -Xmx512m
-  #     - "ELASTIC_PASSWORD=changeme" # Set your password here
-  #     - xpack.security.enabled=false
-  #     - xpack.security.http.ssl.enabled=false
-  #   volumes:
-  #     - es_data:/usr/share/elasticsearch/data
-  #   ports:
-  #     - "9200:9200"
-  #   networks:
-  #     - my_media_network
-  #   restart: always
-
   elasticsearch:
     container_name: elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
@@ -168,7 +150,6 @@ services:
     container_name: db-redis
     image: "redis:alpine"
     volumes:
-      # - ./redis.conf:/usr/local/etc/redis/redis.conf
       - redis_data:/data
     ports:
       - "6379:6379"
