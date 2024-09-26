@@ -390,7 +390,7 @@ TEST_RUNNER = "pytest_django.runner.DjangoTestSuiteRunner"
 
 # Celery configurations
 # Fetch Redis password from environment, defaulting to an empty string if not found
-REDIS_USERNAME = config("REDIS_USERNAME", default="")
+REDIS_USERNAME = config("REDIS_USERNAME", default="django")
 REDIS_PASSWORD = config("REDIS_PASSWORD", default="")
 REDIS_HOST = config("REDIS_HOST", default="redis")
 REDIS_PORT = config("REDIS_PORT", default="6379")
@@ -412,7 +412,7 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "UTC"
 CELERY_BEAT_SCHEDULE = {
     'clean_search_queries_every_day': {
-        'task': 'your_app.tasks.clean_old_search_queries',
+        'task': 'stories.tasks.clean_old_search_queries',
         'schedule': crontab(minute=0, hour=0),  # Runs daily at midnight
     },
 }
@@ -433,10 +433,11 @@ else:
         'default': {
             'BACKEND': 'django_redis.cache.RedisCache',
             # Use a different Redis DB for caching
-            'LOCATION': f'redis://{REDIS_USERNAME}:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/1',
+            'LOCATION': f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/1',
+            # 'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}/1',
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-                'PASSWORD': REDIS_PASSWORD,  # Add this only if you have password authentication
+                # 'PASSWORD': REDIS_PASSWORD,  # Add this only if you have password authentication
             }
         }
     }
