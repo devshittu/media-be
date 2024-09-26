@@ -133,7 +133,7 @@ jobs:
           else
             echo "Restarting only web-app and celery containers..."
             sudo docker compose -f docker-compose.staging.yml down web-app celery celery-beat redis || true
-            sudo docker compose --env-file .env.docker-compose -f docker-compose.staging.yml up -d --no-recreate web-app celery
+            sudo docker compose --env-file .env.docker-compose -f docker-compose.staging.yml up -d --no-recreate web-app celery celery-beat redis 
           fi
 
       - name: Run init-web-app.sh in backend-app container
