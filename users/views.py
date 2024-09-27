@@ -14,17 +14,34 @@ from utils.error_codes import ErrorCode
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
 from .utils import create_default_settings
+import logging
+
+logger = logging.getLogger('app_logger')
 
 
 class UserListCreateView(generics.ListCreateAPIView):
     """
     API view to retrieve list of users or create a new user.
     """
-
     # Must be admin to create a new user
     # permission_classes = [CustomIsAuthenticated, IsStaffUser]
     queryset = CustomUser.objects.all().order_by("-id")
     serializer_class = CustomUserSerializer
+
+    def get_queryset(self):
+        """
+        Exclude the authenticated user from the queryset if they are authenticated.
+        Otherwise, return all users.
+        """
+        user = self.request.user
+        if user.is_authenticated:
+            logger.debug(
+                f'Authenticated user: {user.id}, excluding them from the list')
+            queryset = CustomUser.objects.exclude(id=user.id).order_by("-id")
+        else:
+            logger.debug('User is not authenticated, returning all users')
+            queryset = CustomUser.objects.all().order_by("-id")
+        return queryset
 
 
 class UserRetrieveUpdateDestroyView(
