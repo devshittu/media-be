@@ -85,10 +85,12 @@ class ObtainTokensView(APIView):
                 }
             )
 
+        # Attach the user to the request (this makes is_authenticated work in future requests)
+        request.user = user  # Ensure request.user is set after login
+
         # Generate tokens for the authenticated user
-        refresh = RefreshToken.for_user(
-            user
-        )  # Assuming user is your authenticated user
+        # Assuming user is your authenticated user
+        refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
 
         # Decode the access token to get the token ID
@@ -115,8 +117,6 @@ class ObtainTokensView(APIView):
             }
         )
 
-        # Set refresh token as HttpOnly cookie
-        # response = set_refresh_token_cookie(response, refresh)
         return response
 
 
