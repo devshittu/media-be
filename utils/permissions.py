@@ -36,3 +36,5 @@ class CustomIsAuthenticated(permissions.IsAuthenticated):
             )
 
         return super().has_permission(request, view)
+
+# utils/permissions.py
